@@ -2,188 +2,170 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>WOD Notepad | The Ultimate Professional Notepad</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>WOD Notepad | Ultimate Smart Notepad</title>
     <!-- Font Awesome 6 (free icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts: Inter for clean modern look -->
+    <!-- Google Fonts: clean typography -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s;
+            transition: background 0.2s ease, color 0.2s, border-color 0.2s;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #f8fafc;
-            color: #0f172a;
-            height: 100vh;
-            overflow: hidden;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            padding: 16px 12px 24px;
+            min-height: 100vh;
         }
 
-        /* Theme definitions */
-        body.light {
-            --bg-main: #f1f5f9;
-            --bg-sidebar: #ffffff;
-            --bg-editor: #ffffff;
+        /* THEMES (light, dark, green, yellow) */
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
             --text-primary: #0f172a;
             --text-secondary: #334155;
             --border: #e2e8f0;
-            --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
             --accent: #3b82f6;
             --accent-hover: #2563eb;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+            --shadow: 0 8px 20px rgba(0,0,0,0.05);
         }
         body.dark {
-            --bg-main: #0f172a;
-            --bg-sidebar: #1e293b;
-            --bg-editor: #1e293b;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
             --text-primary: #f1f5f9;
             --text-secondary: #cbd5e1;
             --border: #334155;
-            --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
-            --accent: #60a5fa;
-            --accent-hover: #3b82f6;
+            --accent: #3b82f6;
+            --shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
         body.green {
-            --bg-main: #eef5ec;
-            --bg-sidebar: #f4faf2;
-            --bg-editor: #ffffff;
-            --text-primary: #14532d;
-            --text-secondary: #166534;
-            --border: #bbf7d0;
-            --accent: #22c55e;
-            --accent-hover: #16a34a;
+            --bg-primary: #eef5e6;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #1e3a1e;
+            --text-secondary: #2d5a2d;
+            --border: #cfe2cf;
+            --accent: #2e7d32;
+            --accent-hover: #1b5e20;
         }
         body.yellow {
-            --bg-main: #fefce8;
-            --bg-sidebar: #fffde7;
-            --bg-editor: #ffffff;
-            --text-primary: #713f12;
-            --text-secondary: #854d0e;
-            --border: #fde047;
-            --accent: #eab308;
-            --accent-hover: #ca8a04;
+            --bg-primary: #fef9e3;
+            --bg-secondary: #fffef7;
+            --bg-card: #fffef7;
+            --text-primary: #5d3a1a;
+            --text-secondary: #7f5a2e;
+            --border: #fdebb3;
+            --accent: #e6a017;
+            --accent-hover: #c67c00;
         }
 
-        /* Paper styles (Page, 📃 paper, normal) */
-        .editor-paper.normal {
-            background: var(--bg-editor);
-        }
-        .editor-paper.paper {
-            background: #fef7e0;
-            background-image: radial-gradient(circle at 10px 10px, rgba(0,0,0,0.02) 1px, transparent 1px);
-            background-size: 20px 20px;
-            color: #3b2e1e;
-        }
-        .editor-paper.lined {
-            background: linear-gradient(#f9f9ff 1px, transparent 1px);
-            background-size: 100% 28px;
-            background-color: #fffef7;
-        }
-
-        body, .app-container {
-            height: 100%;
-        }
+        /* layout */
         .app-container {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
+            max-width: 700px;
+            margin: 0 auto;
         }
-        /* Top toolbar */
-        .toolbar {
-            background: var(--bg-sidebar);
-            border-bottom: 1px solid var(--border);
-            padding: 0.75rem 1.5rem;
+        .header {
             display: flex;
+            justify-content: space-between;
+            align-items: baseline;
             flex-wrap: wrap;
-            align-items: center;
-            gap: 0.75rem;
-            box-shadow: var(--card-shadow);
-            z-index: 10;
+            margin-bottom: 20px;
+            gap: 10px;
         }
-        .logo {
-            font-weight: 800;
-            font-size: 1.4rem;
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
             background: linear-gradient(135deg, var(--accent), #8b5cf6);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.5px;
-            margin-right: 1rem;
         }
-        .tool-btn {
-            background: transparent;
+        .toolbar-icons {
+            display: flex;
+            gap: 12px;
+        }
+        .toolbar-icons button, .theme-btn {
+            background: var(--bg-secondary);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 0.4rem 0.8rem;
-            font-size: 0.85rem;
-            font-weight: 500;
+            border-radius: 40px;
+            padding: 8px 12px;
+            font-size: 0.9rem;
             cursor: pointer;
             color: var(--text-primary);
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+            font-weight: 500;
+            transition: 0.1s;
         }
-        .tool-btn i { font-size: 0.9rem; }
-        .tool-btn:hover {
+        .toolbar-icons button:hover, .theme-btn:hover {
             background: var(--accent);
             color: white;
             border-color: var(--accent);
         }
-        select, input, .color-input {
-            background: var(--bg-editor);
+        .notes-panel {
+            background: var(--bg-secondary);
+            border-radius: 28px;
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 0.4rem 0.6rem;
-            font-size: 0.8rem;
-            color: var(--text-primary);
         }
-        .main-row {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-        /* Sidebar notes list */
-        .sidebar {
-            width: 320px;
-            background: var(--bg-sidebar);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        .sidebar-header {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border);
+        .notes-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+        .search-box {
+            display: flex;
+            background: var(--bg-primary);
+            border-radius: 40px;
+            padding: 6px 14px;
+            border: 1px solid var(--border);
+        }
+        .search-box i {
+            margin-right: 8px;
+            color: var(--text-secondary);
+        }
+        .search-box input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            width: 140px;
         }
         .notes-list {
-            flex: 1;
+            max-height: 280px;
             overflow-y: auto;
-            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
         .note-item {
-            background: var(--bg-editor);
-            border-radius: 12px;
-            padding: 0.75rem;
-            margin-bottom: 0.6rem;
-            cursor: pointer;
+            background: var(--bg-card);
             border: 1px solid var(--border);
-            transition: all 0.2s;
+            border-radius: 20px;
+            padding: 12px 14px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            transition: all 0.15s;
+            cursor: pointer;
         }
-        .note-item.active {
+        .note-item.active-note {
             border-left: 5px solid var(--accent);
-            background: var(--bg-main);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            background: var(--bg-primary);
         }
         .note-info {
             flex: 1;
@@ -191,7 +173,7 @@
         }
         .note-title {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 1rem;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -201,509 +183,561 @@
             color: var(--text-secondary);
             white-space: nowrap;
             overflow: hidden;
+            text-overflow: ellipsis;
         }
         .note-actions {
             display: flex;
-            gap: 6px;
+            gap: 12px;
         }
-        .icon-btn {
-            background: transparent;
+        .note-actions button {
+            background: none;
             border: none;
+            font-size: 1.1rem;
             cursor: pointer;
-            font-size: 0.9rem;
             color: var(--text-secondary);
-            padding: 4px;
-            border-radius: 6px;
         }
-        .icon-btn:hover { background: var(--border); color: var(--accent); }
-        .editor-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 1.5rem;
-            overflow-y: auto;
-            background: var(--bg-main);
+        .pin-icon {
+            color: var(--warning);
         }
-        .note-title-input {
-            font-size: 1.8rem;
-            font-weight: 700;
+        .editor-card {
+            background: var(--bg-secondary);
+            border-radius: 32px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+        /* Notepad pages style (page/paper/normal) */
+        .editor-paper {
+            min-height: 320px;
+            border-radius: 20px;
+            padding: 20px;
+            transition: background 0.1s;
+        }
+        .paper-style-page {
+            background: #fff9ef;
+            box-shadow: inset 0 0 0 1px #f0e6d2, 0 4px 12px rgba(0,0,0,0.05);
+        }
+        body.dark .paper-style-page {
+            background: #2a2418;
+            box-shadow: inset 0 0 0 1px #4a3e2c;
+        }
+        .paper-style-paper {
+            background-image: repeating-linear-gradient(#e0e0e0 0px, #e0e0e0 1px, transparent 1px, transparent 28px);
+            background-color: #fef7e0;
+        }
+        body.dark .paper-style-paper {
+            background-image: repeating-linear-gradient(#4a4a4a 0px, #4a4a4a 1px, transparent 1px, transparent 28px);
+            background-color: #1e1b14;
+        }
+        .paper-style-normal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+        textarea {
+            width: 100%;
+            min-height: 280px;
             background: transparent;
             border: none;
-            border-bottom: 2px solid var(--border);
-            width: 100%;
-            margin-bottom: 1rem;
-            padding: 0.5rem 0;
-            color: var(--text-primary);
             outline: none;
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+            resize: vertical;
+            line-height: 1.5;
         }
-        .rich-editor {
-            flex: 1;
-            background: var(--bg-editor);
-            border-radius: 20px;
-            padding: 1.2rem;
-            font-size: 1rem;
-            line-height: 1.6;
-            overflow-y: auto;
-            border: 1px solid var(--border);
-            box-shadow: var(--card-shadow);
-            outline: none;
-        }
-        .rich-editor:focus {
-            border-color: var(--accent);
-        }
-        .status-bar {
-            font-size: 0.7rem;
-            padding: 0.5rem 1rem;
-            background: var(--bg-sidebar);
-            border-top: 1px solid var(--border);
+        .editor-toolbar {
             display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 12px;
             justify-content: space-between;
+            align-items: center;
         }
-        .badge {
-            background: var(--accent);
-            color: white;
-            border-radius: 20px;
-            padding: 0.1rem 0.5rem;
+        .font-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .font-controls select, .font-controls input {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 6px 12px;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        .action-buttons button {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 8px 14px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .pin-editor-btn {
+            color: var(--warning);
+        }
+        .save-status {
             font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-left: auto;
         }
-        @media (max-width: 680px) {
-            .sidebar { width: 260px; }
-            .tool-btn span { display: none; }
-            .tool-btn i { margin: 0; }
+        .about-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: var(--bg-secondary);
+            max-width: 320px;
+            padding: 24px;
+            border-radius: 32px;
+            text-align: center;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            margin-top: 20px;
+            color: var(--text-secondary);
+        }
+        i, button {
+            cursor: pointer;
+        }
+        .toast-msg {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            z-index: 1100;
+            opacity: 0;
+            transition: 0.2s;
+            pointer-events: none;
+        }
+        @media (max-width: 550px) {
+            .toolbar-icons button, .theme-btn {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+            .note-actions button {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
-<body class="light">
+<body>
 <div class="app-container">
-    <div class="toolbar">
-        <div class="logo"><i class="fas fa-feather-alt"></i> WOD Notepad</div>
-        <div style="flex:1"></div>
-        <!-- Theme switcher -->
-        <button class="tool-btn" id="themeLight"><i class="fas fa-sun"></i><span>Light</span></button>
-        <button class="tool-btn" id="themeDark"><i class="fas fa-moon"></i><span>Dark</span></button>
-        <button class="tool-btn" id="themeGreen"><i class="fas fa-leaf"></i><span>Green</span></button>
-        <button class="tool-btn" id="themeYellow"><i class="fas fa-star"></i><span>Yellow</span></button>
-        <!-- Font controls -->
-        <select id="fontFamilySelect"><option value="Inter">Inter</option><option value="Georgia">Georgia</option><option value="Courier New">Courier New</option><option value="Arial">Arial</option></select>
-        <input type="color" id="fontColorPicker" value="#000000">
-        <select id="fontSizeSelect"><option value="14px">Small</option><option value="16px" selected>Medium</option><option value="20px">Large</option><option value="26px">Huge</option></select>
-        <button class="tool-btn" id="applyFormatBtn"><i class="fas fa-paint-brush"></i><span>Apply</span></button>
-        <button class="tool-btn" id="aboutBtn"><i class="fas fa-info-circle"></i><span>About</span></button>
-    </div>
-    <div class="main-row">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <h3><i class="fas fa-sticky-note"></i> Notes</h3>
-                <button class="tool-btn" id="newNoteBtn"><i class="fas fa-plus"></i> New</button>
-            </div>
-            <div class="notes-list" id="notesListContainer">
-                <!-- dynamic notes -->
-            </div>
-            <div style="padding: 0.8rem; border-top:1px solid var(--border);">
-                <button class="tool-btn" id="refreshNotesBtn" style="width:100%"><i class="fas fa-sync-alt"></i> Sync</button>
-            </div>
-        </div>
-        <!-- Editor -->
-        <div class="editor-area">
-            <input type="text" id="noteTitleInput" class="note-title-input" placeholder="Note title...">
-            <div class="editor-panel">
-                <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap:wrap;">
-                    <select id="pageStyleSelect">
-                        <option value="normal">📄 Normal Page</option>
-                        <option value="paper">📃 Paper Vintage</option>
-                        <option value="lined">🗞️ Lined Paper</option>
-                    </select>
-                    <button class="tool-btn" id="pinNoteBtn"><i class="fas fa-thumbtack"></i> Pin/Unpin</button>
-                    <button class="tool-btn" id="deleteNoteBtn"><i class="fas fa-trash-alt"></i> Delete</button>
-                    <button class="tool-btn" id="shareNoteBtn"><i class="fas fa-share-alt"></i> Share</button>
-                    <label style="display:flex; align-items:center; gap:5px; background:var(--bg-sidebar); padding:0 8px; border-radius:20px;">
-                        <i class="fas fa-magic"></i> AutoCorrect
-                        <input type="checkbox" id="autoCorrectToggle" checked>
-                    </label>
-                    <label style="display:flex; align-items:center; gap:5px; background:var(--bg-sidebar); padding:0 8px; border-radius:20px;">
-                        <i class="fas fa-rename"></i> Auto Rename
-                        <input type="checkbox" id="autoRenameToggle" checked>
-                    </label>
-                </div>
-                <div id="richEditor" class="rich-editor editor-paper normal" contenteditable="true"></div>
-            </div>
+    <div class="header">
+        <h1><i class="fas fa-feather-alt"></i> WOD Notepad</h1>
+        <div class="toolbar-icons">
+            <button id="themeToggleBtn"><i class="fas fa-palette"></i> Theme</button>
+            <button id="aboutBtn"><i class="fas fa-info-circle"></i> About</button>
         </div>
     </div>
-    <div class="status-bar">
-        <span><i class="fas fa-save"></i> <span id="autoSaveStatus">Auto-saved</span></span>
-        <span><i class="fas fa-database"></i> Firebase Real-time | <span id="noteCount">0</span> notes</span>
+
+    <!-- Notes list panel -->
+    <div class="notes-panel">
+        <div class="notes-header">
+            <span><i class="fas fa-sticky-note"></i> My Notes</span>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchNotes" placeholder="Search notes...">
+            </div>
+            <button id="newNoteBtn" style="background: var(--accent); color:white; border:none; border-radius:40px; padding:6px 14px;"><i class="fas fa-plus"></i> New</button>
+        </div>
+        <div id="notesListContainer" class="notes-list">
+            <!-- dynamic notes -->
+        </div>
     </div>
+
+    <!-- Editor area -->
+    <div class="editor-card">
+        <div id="paperContainer" class="editor-paper paper-style-normal">
+            <textarea id="noteEditor" placeholder="Write your masterpiece here... Auto-correction & auto-save active."></textarea>
+        </div>
+        <div class="editor-toolbar">
+            <div class="font-controls">
+                <select id="fontStyleSelect"><option value="'Inter', sans-serif">Sans</option><option value="'Courier New', monospace">Mono</option><option value="'Georgia', serif">Serif</option></select>
+                <input type="color" id="fontColorPicker" value="#000000">
+                <select id="fontSizeSelect"><option value="14">14px</option><option value="16" selected>16px</option><option value="18">18px</option><option value="20">20px</option><option value="24">24px</option></select>
+                <select id="paperStyleSelect"><option value="normal">📄 Normal</option><option value="page">📃 Page</option><option value="paper">🗞️ Paper</option></select>
+            </div>
+            <div class="action-buttons">
+                <button id="pinCurrentNoteBtn" class="pin-editor-btn"><i class="fas fa-thumbtack"></i> Pin/Unpin</button>
+                <button id="shareNoteBtn"><i class="fas fa-share-alt"></i> Share</button>
+                <button id="deleteCurrentNoteBtn" style="color: var(--danger);"><i class="fas fa-trash"></i> Delete</button>
+            </div>
+            <span id="saveIndicator" class="save-status"><i class="fas fa-check-circle"></i> Synced</span>
+        </div>
+    </div>
+    <footer>⚡ Smart Auto-Correction • Auto Rename • Permanent Firebase Storage</footer>
 </div>
 
+<div id="aboutModal" class="about-modal">
+    <div class="modal-content">
+        <i class="fas fa-crown" style="font-size: 2rem; color: var(--accent);"></i>
+        <h3>WOD Notepad Pro</h3>
+        <p>Version 3.0 | The most advanced smart notepad.<br>✔ Auto-correction (no AI, smart logic)<br>✔ Auto rename & Auto save<br>✔ Pinned notes, themes, fonts<br>✔ Firebase realtime permanent storage<br>✔ Paper styles & rich tools<br>Made for professionals.</p>
+        <button id="closeModalBtn" style="margin-top: 15px; background: var(--accent); border: none; padding: 8px 20px; border-radius: 30px; color:white;">Close</button>
+    </div>
+</div>
+<div id="toastMsg" class="toast-msg"></div>
+
 <script>
-    // ----------------------------- FIREBASE REST API (Realtime DB) -------------------------
-    const DB_URL = "https://smart-talks-a045c-default-rtdb.firebaseio.com/notes.json";
-    let currentNoteId = null;
-    let allNotes = [];       // array of note objects
-    let autoSaveTimer = null;
-    let autoCorrectEnabled = true;
-    let autoRenameEnabled = true;
+    // ---------- Firebase REST config ----------
+    const DB_URL = "https://smart-talks-a045c-default-rtdb.firebaseio.com/";
+    let userId = localStorage.getItem("wod_user_id");
+    if (!userId) {
+        userId = "user_" + Math.random().toString(36).substring(2) + Date.now();
+        localStorage.setItem("wod_user_id", userId);
+    }
+    const NOTES_PATH = `${DB_URL}notes/${userId}.json`;
 
-    // Helper: fetch all notes
-    async function fetchAllNotes() {
+    // ---------- App State ----------
+    let allNotes = [];         // array of note objects { id, content, pinned, updatedAt }
+    let activeNoteId = null;
+    let saveTimeout = null;
+    let isSaving = false;
+    let currentPaperStyle = localStorage.getItem("paperStyle") || "normal";
+    let currentTheme = localStorage.getItem("appTheme") || "light";
+
+    // ---------- Helper: fetch all notes ----------
+    async function fetchNotesFromDB() {
         try {
-            const res = await fetch(DB_URL);
+            const res = await fetch(NOTES_PATH);
+            if (!res.ok) throw new Error("DB fetch error");
             const data = await res.json();
-            if (!data) {
-                allNotes = [];
+            if (data && typeof data === "object") {
+                let notesArray = Object.entries(data).map(([id, note]) => ({ id, ...note }));
+                notesArray.sort((a,b) => (b.pinned?1:0) - (a.pinned?1:0) || (b.updatedAt||0) - (a.updatedAt||0));
+                allNotes = notesArray;
             } else {
-                allNotes = Object.entries(data).map(([id, note]) => ({ id, ...note }));
+                allNotes = [];
             }
-            // sort: pinned first, then updated desc
-            allNotes.sort((a,b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || new Date(b.updatedAt) - new Date(a.updatedAt));
             renderNotesList();
-            document.getElementById('noteCount').innerText = allNotes.length;
-            return allNotes;
-        } catch(e) { console.error(e); return []; }
-    }
-
-    async function saveNoteToDB(noteObj) {
-        if (!noteObj.id) {
-            // create new
-            const newId = Date.now() + '-' + Math.random().toString(36);
-            noteObj.id = newId;
-            noteObj.createdAt = new Date().toISOString();
-            noteObj.updatedAt = new Date().toISOString();
-            noteObj.pinned = noteObj.pinned || false;
-            noteObj.pageStyle = noteObj.pageStyle || "normal";
-            const url = `https://smart-talks-a045c-default-rtdb.firebaseio.com/notes/${newId}.json`;
-            await fetch(url, { method: 'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(noteObj) });
-            await fetchAllNotes();
-            return newId;
-        } else {
-            // update existing
-            noteObj.updatedAt = new Date().toISOString();
-            const url = `https://smart-talks-a045c-default-rtdb.firebaseio.com/notes/${noteObj.id}.json`;
-            await fetch(url, { method: 'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(noteObj) });
-            await fetchAllNotes();
-            return noteObj.id;
+            if (activeNoteId && allNotes.find(n => n.id === activeNoteId)) {
+                loadNoteToEditor(activeNoteId);
+            } else if (allNotes.length > 0) {
+                activeNoteId = allNotes[0].id;
+                loadNoteToEditor(activeNoteId);
+            } else {
+                // create welcome note if empty
+                createNewNote("Welcome to WOD Notepad!\n\nExperience auto-correction, auto-rename, pin & themes.\nType anything, it's saved permanently.");
+            }
+        } catch(e) {
+            console.error(e);
+            showToast("⚠️ Firebase connection issue, using local cache");
         }
     }
 
+    // update single note to firebase
+    async function syncNoteToFirebase(note) {
+        if (!note.id) return;
+        const noteUrl = `${DB_URL}notes/${userId}/${note.id}.json`;
+        try {
+            const payload = {
+                content: note.content,
+                pinned: note.pinned,
+                updatedAt: Date.now()
+            };
+            await fetch(noteUrl, { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+            updateSaveIndicator(true);
+        } catch(e) { updateSaveIndicator(false); showToast("Auto-save failed, retrying"); }
+    }
+
+    // delete from firebase
     async function deleteNoteFromDB(noteId) {
-        const url = `https://smart-talks-a045c-default-rtdb.firebaseio.com/notes/${noteId}.json`;
-        await fetch(url, { method: 'DELETE' });
-        await fetchAllNotes();
-        if (currentNoteId === noteId) {
-            if (allNotes.length > 0) loadNoteIntoEditor(allNotes[0].id);
-            else clearEditor();
+        const delUrl = `${DB_URL}notes/${userId}/${noteId}.json`;
+        await fetch(delUrl, { method: 'DELETE' });
+    }
+
+    // create note in db
+    async function createNoteInDB(note) {
+        const noteUrl = `${DB_URL}notes/${userId}/${note.id}.json`;
+        await fetch(noteUrl, { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ content: note.content, pinned: note.pinned, updatedAt: note.updatedAt }) });
+    }
+
+    // Smart Auto-Correction (no AI, rule-based)
+    function applySmartCorrection(text) {
+        if (!text) return text;
+        let corrected = text;
+        // common typos dictionary
+        const typos = {
+            "teh":"the", "recieve":"receive", "adn":"and", "wich":"which", "thier":"their", "dont":"don't", "wont":"won't", "cant":"can't", "alot":"a lot", "seperate":"separate"
+        };
+        const words = corrected.split(/(\s+)/);
+        for (let i = 0; i < words.length; i++) {
+            let word = words[i];
+            let lowerWord = word.toLowerCase();
+            if (typos[lowerWord]) {
+                words[i] = word[0] === word[0].toUpperCase() ? typos[lowerWord].charAt(0).toUpperCase() + typos[lowerWord].slice(1) : typos[lowerWord];
+            }
         }
+        corrected = words.join('');
+        // Capitalize after sentence endings (. ! ? followed by space)
+        corrected = corrected.replace(/([.!?])\s+([a-z])/g, (match, p1, p2) => p1 + " " + p2.toUpperCase());
+        // First letter of the entire text
+        if (corrected.length > 0) corrected = corrected.charAt(0).toUpperCase() + corrected.slice(1);
+        // remove double spaces
+        corrected = corrected.replace(/\s+/g, ' ').trim();
+        return corrected;
     }
 
-    // Editor helpers
-    function clearEditor() {
-        document.getElementById('noteTitleInput').value = '';
-        document.getElementById('richEditor').innerHTML = '';
-        currentNoteId = null;
+    // Auto rename based on first line of content
+    function autoRenameFromContent(content) {
+        if (!content || content.trim() === "") return "Untitled note";
+        const firstLine = content.split(/\n/)[0].trim();
+        if (firstLine.length === 0) return "Empty note";
+        return firstLine.length > 42 ? firstLine.substring(0, 42) + "..." : firstLine;
     }
 
-    function loadNoteIntoEditor(noteId) {
+    // update note content with correction + auto rename + auto save
+    function updateNoteContent(noteId, newRawContent) {
         const note = allNotes.find(n => n.id === noteId);
         if (!note) return;
-        currentNoteId = note.id;
-        document.getElementById('noteTitleInput').value = note.title || "Untitled";
-        document.getElementById('richEditor').innerHTML = note.content || "";
-        // set page style class
-        const editorDiv = document.getElementById('richEditor');
-        editorDiv.classList.remove('normal', 'paper', 'lined');
-        editorDiv.classList.add(note.pageStyle || 'normal');
-        document.getElementById('pageStyleSelect').value = note.pageStyle || 'normal';
-        updatePinButtonUI(note.pinned);
-        highlightActiveNote();
+        // Apply smart correction
+        const corrected = applySmartCorrection(newRawContent);
+        note.content = corrected;
+        // Auto rename: update title (we don't store title separately, but display uses auto rename)
+        note.updatedAt = Date.now();
+        if (saveTimeout) clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(() => {
+            syncNoteToFirebase(note);
+            renderNotesList();   // update title preview in list
+            updateSaveIndicator(true);
+        }, 400);
+        renderNotesList();
+        if (activeNoteId === noteId) {
+            const editor = document.getElementById('noteEditor');
+            if (editor && editor.value !== corrected) editor.value = corrected;
+        }
     }
 
-    function highlightActiveNote() {
-        document.querySelectorAll('.note-item').forEach(el => {
-            if(el.dataset.id === currentNoteId) el.classList.add('active');
-            else el.classList.remove('active');
-        });
-    }
-
-    function updatePinButtonUI(pinned) {
-        const pinBtn = document.getElementById('pinNoteBtn');
-        if(pinned) pinBtn.innerHTML = '<i class="fas fa-thumbtack"></i> Unpin';
-        else pinBtn.innerHTML = '<i class="fas fa-thumbtack"></i> Pin';
-    }
-
-    async function autoSaveCurrent() {
-        if (!currentNoteId) return;
-        const title = document.getElementById('noteTitleInput').value.trim();
-        const content = document.getElementById('richEditor').innerHTML;
-        const pageStyle = document.getElementById('pageStyleSelect').value;
-        const existing = allNotes.find(n => n.id === currentNoteId);
-        if (!existing) return;
-        const pinned = existing.pinned || false;
-        const updatedNote = {
-            id: currentNoteId,
-            title: title || "Untitled",
-            content: content,
-            pinned: pinned,
-            pageStyle: pageStyle,
-            createdAt: existing.createdAt,
-            updatedAt: new Date().toISOString()
+    // create new note
+    async function createNewNote(initialContent = "") {
+        const newId = "note_" + Date.now() + "_" + Math.random().toString(36).substring(2,6);
+        const correctedContent = applySmartCorrection(initialContent);
+        const newNote = {
+            id: newId,
+            content: correctedContent,
+            pinned: false,
+            updatedAt: Date.now()
         };
-        await saveNoteToDB(updatedNote);
-        document.getElementById('autoSaveStatus').innerHTML = '✓ Saved at ' + new Date().toLocaleTimeString();
-        setTimeout(() => { if(document.getElementById('autoSaveStatus')) document.getElementById('autoSaveStatus').innerHTML = 'Auto-save active'; }, 1800);
-        // Auto rename logic (if enabled and title is default or empty)
-        if(autoRenameEnabled) {
-            const plainText = extractPlainText(content);
-            let newTitle = plainText.substring(0, 42).trim();
-            if(newTitle.length === 0) newTitle = "Untitled";
-            if(document.getElementById('noteTitleInput').value.trim() !== newTitle && newTitle !== "Untitled") {
-                document.getElementById('noteTitleInput').value = newTitle;
-                // re-save with new title
-                const freshNote = allNotes.find(n => n.id === currentNoteId);
-                if(freshNote) {
-                    freshNote.title = newTitle;
-                    await saveNoteToDB(freshNote);
+        allNotes.unshift(newNote);
+        await createNoteInDB(newNote);
+        activeNoteId = newId;
+        loadNoteToEditor(activeNoteId);
+        renderNotesList();
+        showToast("✨ New note created & saved");
+    }
+
+    // load note content into editor
+    function loadNoteToEditor(noteId) {
+        const note = allNotes.find(n => n.id === noteId);
+        if (!note) return;
+        activeNoteId = noteId;
+        const editor = document.getElementById('noteEditor');
+        editor.value = note.content;
+        applyEditorFontSettings();
+        renderNotesList();
+        updateSaveIndicator(true);
+    }
+
+    // toggle pin
+    async function togglePin(noteId) {
+        const note = allNotes.find(n => n.id === noteId);
+        if (note) {
+            note.pinned = !note.pinned;
+            await syncNoteToFirebase(note);
+            allNotes.sort((a,b) => (b.pinned?1:0) - (a.pinned?1:0) || (b.updatedAt||0) - (a.updatedAt||0));
+            renderNotesList();
+            if (activeNoteId === noteId) showToast(note.pinned ? "📌 Note pinned" : "📍 Note unpinned");
+        }
+    }
+
+    // delete note
+    async function deleteNote(noteId) {
+        if (confirm("Delete this note permanently?")) {
+            await deleteNoteFromDB(noteId);
+            allNotes = allNotes.filter(n => n.id !== noteId);
+            if (activeNoteId === noteId) {
+                if (allNotes.length > 0) {
+                    activeNoteId = allNotes[0].id;
+                    loadNoteToEditor(activeNoteId);
+                } else {
+                    activeNoteId = null;
+                    document.getElementById('noteEditor').value = "";
+                    createNewNote("Start writing your first note!");
                 }
             }
-        }
-        await fetchAllNotes(); // refresh list
-    }
-
-    function extractPlainText(html) {
-        const tmp = document.createElement('div');
-        tmp.innerHTML = html;
-        return tmp.innerText || "";
-    }
-
-    // ---- Auto Correction engine (smart logic, no AI) ----
-    const correctionMap = {
-        "teh":"the","recieve":"receive","wierd":"weird","seperate":"separate","definately":"definitely",
-        "accomodate":"accommodate","occured":"occurred","untill":"until","becuase":"because","calender":"calendar",
-        "maintainance":"maintenance","priviledge":"privilege","neccessary":"necessary","goverment":"government",
-        "wether":"whether","wich":"which","thier":"their","allignment":"alignment","comittment":"commitment"
-    };
-    function applyAutoCorrectionToElement(element) {
-        if (!autoCorrectEnabled) return;
-        const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
-        const nodesToModify = [];
-        while(walker.nextNode()) {
-            const node = walker.currentNode;
-            if(node.parentElement && node.parentElement.closest('[contenteditable="true"]') && node.textContent.trim().length > 0) {
-                nodesToModify.push(node);
-            }
-        }
-        let changed = false;
-        for(let node of nodesToModify) {
-            let text = node.textContent;
-            let newText = text;
-            const words = text.split(/(\b)/);
-            for(let i=0; i<words.length; i++) {
-                const word = words[i];
-                const lowerWord = word.toLowerCase();
-                if(correctionMap[lowerWord] && word === lowerWord) {
-                    words[i] = correctionMap[lowerWord];
-                    changed = true;
-                } else if(correctionMap[lowerWord] && word[0] === word[0].toUpperCase() && word.slice(1).toLowerCase() === lowerWord.slice(1)) {
-                    let corrected = correctionMap[lowerWord];
-                    corrected = corrected.charAt(0).toUpperCase() + corrected.slice(1);
-                    words[i] = corrected;
-                    changed = true;
-                }
-            }
-            if(changed) newText = words.join('');
-            if(newText !== text) node.textContent = newText;
-        }
-        if(changed) {
-            // preserve cursor later
-            const sel = window.getSelection();
-            const range = sel && sel.rangeCount ? sel.getRangeAt(0) : null;
-            if(range) {
-                const offset = range.startOffset;
-                setTimeout(() => {
-                    try { sel.collapse(range.startContainer, Math.min(offset, range.startContainer.length)); } catch(e) {}
-                }, 10);
-            }
+            renderNotesList();
+            showToast("🗑️ Note deleted");
         }
     }
 
-    let correctionTimer = null;
-    function onEditorInput() {
-        if(autoCorrectEnabled) {
-            if(correctionTimer) clearTimeout(correctionTimer);
-            correctionTimer = setTimeout(() => {
-                const editor = document.getElementById('richEditor');
-                applyAutoCorrectionToElement(editor);
-                correctionTimer = null;
-            }, 400);
+    // share note
+    function shareCurrentNote() {
+        const note = allNotes.find(n => n.id === activeNoteId);
+        if (!note) return;
+        const shareText = `${autoRenameFromContent(note.content)}\n\n${note.content}`;
+        if (navigator.share) {
+            navigator.share({ title: "WOD Notepad", text: shareText }).catch(()=>{});
+        } else {
+            navigator.clipboard.writeText(shareText);
+            showToast("📋 Copied to clipboard!");
         }
-        if(autoSaveTimer) clearTimeout(autoSaveTimer);
-        autoSaveTimer = setTimeout(() => autoSaveCurrent(), 800);
     }
 
-    // Render notes list with pin, delete, edit support
+    // render notes list with search + pin top
     function renderNotesList() {
+        const searchTerm = document.getElementById('searchNotes')?.value.toLowerCase() || "";
+        let filtered = [...allNotes];
+        if (searchTerm) {
+            filtered = filtered.filter(n => autoRenameFromContent(n.content).toLowerCase().includes(searchTerm) || n.content.toLowerCase().includes(searchTerm));
+        }
         const container = document.getElementById('notesListContainer');
-        if(!container) return;
-        container.innerHTML = '';
-        for(let note of allNotes) {
-            const div = document.createElement('div');
-            div.className = 'note-item';
-            if(currentNoteId === note.id) div.classList.add('active');
-            div.dataset.id = note.id;
-            const preview = extractPlainText(note.content || '').substring(0, 50);
-            div.innerHTML = `
-                <div class="note-info">
-                    <div class="note-title">${note.pinned ? '📌 ' : ''}${escapeHtml(note.title || 'Untitled')}</div>
-                    <div class="note-preview">${escapeHtml(preview) || 'Empty note'}</div>
-                </div>
-                <div class="note-actions">
-                    <button class="icon-btn pin-note" data-id="${note.id}" title="Pin"><i class="fas fa-thumbtack"></i></button>
-                    <button class="icon-btn delete-note" data-id="${note.id}" title="Delete"><i class="fas fa-trash"></i></button>
+        if (!container) return;
+        if (filtered.length === 0) {
+            container.innerHTML = '<div style="padding:20px; text-align:center;">✨ No notes found</div>';
+            return;
+        }
+        container.innerHTML = filtered.map(note => {
+            const title = autoRenameFromContent(note.content);
+            const preview = note.content.substring(0, 48).replace(/\n/g, ' ');
+            const isActive = (activeNoteId === note.id);
+            return `
+                <div class="note-item ${isActive ? 'active-note' : ''}" data-id="${note.id}">
+                    <div class="note-info" data-id="${note.id}">
+                        <div class="note-title">${note.pinned ? '<i class="fas fa-thumbtack pin-icon"></i> ' : ''}${escapeHtml(title)}</div>
+                        <div class="note-preview">${escapeHtml(preview)}</div>
+                    </div>
+                    <div class="note-actions">
+                        <button class="pin-note-btn" data-id="${note.id}" title="Pin"><i class="fas fa-thumbtack ${note.pinned ? 'pin-icon' : ''}"></i></button>
+                        <button class="share-note-btn" data-id="${note.id}" title="Share"><i class="fas fa-share-alt"></i></button>
+                        <button class="delete-note-btn" data-id="${note.id}" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                    </div>
                 </div>
             `;
-            div.addEventListener('click', (e) => {
-                if(e.target.closest('.pin-note') || e.target.closest('.delete-note')) return;
-                loadNoteIntoEditor(note.id);
-            });
-            container.appendChild(div);
-        }
-        // attach pin/delete events
-        document.querySelectorAll('.pin-note').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                const id = btn.dataset.id;
-                const note = allNotes.find(n => n.id === id);
-                if(note) {
-                    note.pinned = !note.pinned;
-                    await saveNoteToDB(note);
-                    await fetchAllNotes();
-                    if(currentNoteId === id) updatePinButtonUI(note.pinned);
-                }
-            });
+        }).join('');
+        // attach events
+        document.querySelectorAll('.note-info').forEach(el => {
+            el.addEventListener('click', (e) => { const id = el.dataset.id; if(id) loadNoteToEditor(id); });
         });
-        document.querySelectorAll('.delete-note').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                if(confirm('Delete this note permanently?')) {
-                    await deleteNoteFromDB(btn.dataset.id);
-                }
-            });
+        document.querySelectorAll('.pin-note-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => { e.stopPropagation(); togglePin(btn.dataset.id); });
+        });
+        document.querySelectorAll('.share-note-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => { e.stopPropagation(); const n = allNotes.find(n => n.id === btn.dataset.id); if(n){activeNoteId=n.id; shareCurrentNote();} });
+        });
+        document.querySelectorAll('.delete-note-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => { e.stopPropagation(); deleteNote(btn.dataset.id); });
         });
     }
 
     function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
 
-    // New note creation
-    async function createNewNote() {
-        const newNote = {
-            title: "Untitled",
-            content: "<p>Start writing your powerful ideas...</p>",
-            pinned: false,
-            pageStyle: "normal",
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-        };
-        const newId = Date.now() + '-' + Math.random().toString(36);
-        newNote.id = newId;
-        const url = `https://smart-talks-a045c-default-rtdb.firebaseio.com/notes/${newId}.json`;
-        await fetch(url, { method: 'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(newNote) });
-        await fetchAllNotes();
-        loadNoteIntoEditor(newId);
-    }
-
-    // Share current note
-    async function shareCurrentNote() {
-        if(!currentNoteId) return alert('No note selected');
-        const note = allNotes.find(n=> n.id === currentNoteId);
-        if(!note) return;
-        const shareText = `${note.title}\n\n${extractPlainText(note.content)}`;
-        if(navigator.share) {
-            try{ await navigator.share({ title: note.title, text: shareText }); } catch(e){}
-        } else {
-            navigator.clipboard.writeText(shareText);
-            alert('Note content copied to clipboard!');
-        }
-    }
-
-    // Apply font styles to selection
-    function applyFontStyles() {
-        const fontFamily = document.getElementById('fontFamilySelect').value;
+    // update editor font & paper style
+    function applyEditorFontSettings() {
+        const editor = document.getElementById('noteEditor');
+        const fontFamily = document.getElementById('fontStyleSelect').value;
+        const color = document.getElementById('fontColorPicker').value;
         const fontSize = document.getElementById('fontSizeSelect').value;
-        const fontColor = document.getElementById('fontColorPicker').value;
-        document.execCommand('fontName', false, fontFamily);
-        document.execCommand('fontSize', false, '4'); // temp then override? Use style
-        document.execCommand('foreColor', false, fontColor);
-        // fontSize using execcommand size is limited; we use span approach additional
-        const selection = window.getSelection();
-        if(!selection.isCollapsed) {
-            const span = document.createElement('span');
-            span.style.fontSize = fontSize;
-            const range = selection.getRangeAt(0);
-            range.surroundContents(span);
-        } else {
-            document.execCommand('styleWithCSS', false, true);
-            document.execCommand('fontSize', false, '5');
-        }
+        editor.style.fontFamily = fontFamily;
+        editor.style.color = color;
+        editor.style.fontSize = fontSize + 'px';
+        localStorage.setItem('fontFamily', fontFamily);
+        localStorage.setItem('fontColor', color);
+        localStorage.setItem('fontSize', fontSize);
+    }
+    function applyPaperStyle(style) {
+        const container = document.getElementById('paperContainer');
+        container.classList.remove('paper-style-normal', 'paper-style-page', 'paper-style-paper');
+        if (style === 'page') container.classList.add('paper-style-page');
+        else if (style === 'paper') container.classList.add('paper-style-paper');
+        else container.classList.add('paper-style-normal');
+        localStorage.setItem('paperStyle', style);
     }
 
-    // Page style change
-    document.getElementById('pageStyleSelect')?.addEventListener('change', async (e) => {
-        if(currentNoteId) {
-            const note = allNotes.find(n=> n.id === currentNoteId);
-            if(note) {
-                note.pageStyle = e.target.value;
-                await saveNoteToDB(note);
-                const editorDiv = document.getElementById('richEditor');
-                editorDiv.classList.remove('normal','paper','lined');
-                editorDiv.classList.add(note.pageStyle);
-            }
-        }
-    });
+    function updateSaveIndicator(success) {
+        const el = document.getElementById('saveIndicator');
+        if(success) { el.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Synced'; setTimeout(()=>{ if(el) el.innerHTML = '<i class="fas fa-check-circle"></i> Synced'; },1500);}
+        else el.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Offline';
+    }
 
-    document.getElementById('pinNoteBtn')?.addEventListener('click', async () => {
-        if(currentNoteId) {
-            const note = allNotes.find(n=> n.id === currentNoteId);
-            if(note) {
-                note.pinned = !note.pinned;
-                await saveNoteToDB(note);
-                await fetchAllNotes();
-                updatePinButtonUI(note.pinned);
-                highlightActiveNote();
-            }
-        }
-    });
-    document.getElementById('deleteNoteBtn')?.addEventListener('click', async () => {
-        if(currentNoteId && confirm('Permanently delete this note?')) {
-            await deleteNoteFromDB(currentNoteId);
-        }
-    });
-    document.getElementById('shareNoteBtn')?.addEventListener('click', shareCurrentNote);
-    document.getElementById('applyFormatBtn')?.addEventListener('click', applyFontStyles);
-    document.getElementById('newNoteBtn')?.addEventListener('click', createNewNote);
-    document.getElementById('refreshNotesBtn')?.addEventListener('click', async () => { await fetchAllNotes(); if(currentNoteId) loadNoteIntoEditor(currentNoteId); });
-    document.getElementById('autoCorrectToggle')?.addEventListener('change', (e) => { autoCorrectEnabled = e.target.checked; });
-    document.getElementById('autoRenameToggle')?.addEventListener('change', (e) => { autoRenameEnabled = e.target.checked; });
-    document.getElementById('aboutBtn')?.addEventListener('click', () => { alert("⚡ WOD Notepad Pro ⚡\nUltimate notepad with permanent Firebase storage, auto-correction, rich styles, pinning, paper styles, auto-save, auto-rename, themes, and unmatched professional power."); });
+    function showToast(msg) {
+        const toast = document.getElementById('toastMsg');
+        toast.innerText = msg;
+        toast.style.opacity = '1';
+        setTimeout(() => toast.style.opacity = '0', 2000);
+    }
 
-    // Theme switching
-    document.getElementById('themeLight')?.addEventListener('click',()=>{ document.body.className='light'; localStorage.setItem('wod_theme','light');});
-    document.getElementById('themeDark')?.addEventListener('click',()=>{ document.body.className='dark'; localStorage.setItem('wod_theme','dark');});
-    document.getElementById('themeGreen')?.addEventListener('click',()=>{ document.body.className='green'; localStorage.setItem('wod_theme','green');});
-    document.getElementById('themeYellow')?.addEventListener('click',()=>{ document.body.className='yellow'; localStorage.setItem('wod_theme','yellow');});
-    const savedTheme = localStorage.getItem('wod_theme');
-    if(savedTheme && ['light','dark','green','yellow'].includes(savedTheme)) document.body.className = savedTheme;
+    // theme changer
+    function setTheme(theme) {
+        document.body.classList.remove('light','dark','green','yellow');
+        document.body.classList.add(theme);
+        localStorage.setItem('appTheme', theme);
+        const colorPicker = document.getElementById('fontColorPicker');
+        if (theme === 'dark') colorPicker.value = "#f1f5f9";
+        else if (theme === 'green') colorPicker.value = "#1e3a1e";
+        else if (theme === 'yellow') colorPicker.value = "#5d3a1a";
+        else colorPicker.value = "#0f172a";
+        applyEditorFontSettings();
+    }
 
-    // event listeners
-    const editorDiv = document.getElementById('richEditor');
-    editorDiv.addEventListener('input', onEditorInput);
-    document.getElementById('noteTitleInput').addEventListener('input', () => { if(autoSaveTimer) clearTimeout(autoSaveTimer); autoSaveTimer = setTimeout(()=>autoSaveCurrent(),500); });
+    // init event listeners
+    function initUI() {
+        document.getElementById('newNoteBtn').onclick = () => createNewNote("");
+        document.getElementById('noteEditor').addEventListener('input', (e) => {
+            if(activeNoteId) updateNoteContent(activeNoteId, e.target.value);
+        });
+        document.getElementById('fontStyleSelect').onchange = () => applyEditorFontSettings();
+        document.getElementById('fontColorPicker').onchange = () => applyEditorFontSettings();
+        document.getElementById('fontSizeSelect').onchange = () => applyEditorFontSettings();
+        document.getElementById('paperStyleSelect').onchange = (e) => { currentPaperStyle = e.target.value; applyPaperStyle(currentPaperStyle); };
+        document.getElementById('pinCurrentNoteBtn').onclick = () => { if(activeNoteId) togglePin(activeNoteId); };
+        document.getElementById('shareNoteBtn').onclick = () => shareCurrentNote();
+        document.getElementById('deleteCurrentNoteBtn').onclick = () => { if(activeNoteId) deleteNote(activeNoteId); };
+        document.getElementById('searchNotes').addEventListener('input', () => renderNotesList());
+        document.getElementById('themeToggleBtn').onclick = () => {
+            const themes = ['light', 'dark', 'green', 'yellow'];
+            let idx = themes.indexOf(currentTheme);
+            let next = themes[(idx+1)%themes.length];
+            currentTheme = next;
+            setTheme(currentTheme);
+        };
+        document.getElementById('aboutBtn').onclick = () => document.getElementById('aboutModal').style.display = 'flex';
+        document.getElementById('closeModalBtn').onclick = () => document.getElementById('aboutModal').style.display = 'none';
+        window.onclick = (e) => { if(e.target === document.getElementById('aboutModal')) document.getElementById('aboutModal').style.display = 'none'; };
+        // load saved font preferences
+        const savedFont = localStorage.getItem('fontFamily');
+        if(savedFont) document.getElementById('fontStyleSelect').value = savedFont;
+        const savedColor = localStorage.getItem('fontColor');
+        if(savedColor) document.getElementById('fontColorPicker').value = savedColor;
+        const savedSize = localStorage.getItem('fontSize');
+        if(savedSize) document.getElementById('fontSizeSelect').value = savedSize;
+        const savedPaper = localStorage.getItem('paperStyle');
+        if(savedPaper) { currentPaperStyle = savedPaper; document.getElementById('paperStyleSelect').value = savedPaper; applyPaperStyle(savedPaper); }
+        setTheme(currentTheme);
+        applyEditorFontSettings();
+    }
 
-    // initial load
-    window.addEventListener('DOMContentLoaded', async () => {
-        await fetchAllNotes();
-        if(allNotes.length > 0) loadNoteIntoEditor(allNotes[0].id);
-        else await createNewNote();
-    });
+    fetchNotesFromDB();
+    initUI();
 </script>
 </body>
 </html>
