@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <title>WOD Notepad – World of Discoveries</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Firebase v8 (works with firebase.auth(), firebase.database()) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
   <style>
     :root {
       --bg: #020204;
@@ -852,6 +858,94 @@
       transform: translateX(-50%) translateY(-4px);
     }
 
+    /* LOGIN / SIGNUP SCREENS */
+
+    .auth-shell {
+      flex: 1;
+      padding: 24px 18px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top, #050509 0, #020204 70%);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      box-shadow: var(--shadow-soft);
+      padding: 18px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .auth-title {
+      font-size: 16px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .auth-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .auth-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-align: left;
+    }
+
+    .auth-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .auth-input {
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: #020617;
+      color: var(--text-main);
+      font-size: 13px;
+      padding: 8px 10px;
+      outline: none;
+      width: 100%;
+    }
+
+    .auth-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(245, 196, 81, 0.9);
+      background: radial-gradient(circle at top, var(--accent) 0, #7c5b1a 70%);
+      color: #020617;
+      font-size: 14px;
+      padding: 8px 18px;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.9);
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .auth-link {
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .auth-error {
+      font-size: 11px;
+      color: #fecaca;
+      min-height: 14px;
+      text-align: left;
+    }
+
     @media (max-width: 360px) {
       .brand-title {
         font-size: 18px;
@@ -866,7 +960,71 @@
 </head>
 <body>
   <div class="app-root">
-    <div id="screen-lock" class="screen active">
+    <!-- LOGIN SCREEN -->
+    <div id="screen-login" class="screen active">
+      <div class="auth-shell">
+        <div class="lock-logo">W</div>
+        <div class="auth-card">
+          <div class="auth-title">LOGIN</div>
+          <div class="auth-sub">Sign in to your WOD Notepad account</div>
+
+          <div class="auth-field">
+            <label class="auth-label" for="loginEmail">Email</label>
+            <input id="loginEmail" class="auth-input" type="email" autocomplete="email" />
+          </div>
+
+          <div class="auth-field">
+            <label class="auth-label" for="loginPassword">Password</label>
+            <input id="loginPassword" class="auth-input" type="password" autocomplete="current-password" />
+          </div>
+
+          <div class="auth-error" id="loginError"></div>
+
+          <button class="auth-btn" id="loginBtn">Login</button>
+          <div>
+            <span class="auth-sub">No account?</span>
+            <span class="auth-link" id="goSignup">Create one</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIGNUP SCREEN -->
+    <div id="screen-signup" class="screen">
+      <div class="auth-shell">
+        <div class="lock-logo">W</div>
+        <div class="auth-card">
+          <div class="auth-title">SIGN UP</div>
+          <div class="auth-sub">Create your WOD Notepad account</div>
+
+          <div class="auth-field">
+            <label class="auth-label" for="signupEmail">Email</label>
+            <input id="signupEmail" class="auth-input" type="email" autocomplete="email" />
+          </div>
+
+          <div class="auth-field">
+            <label class="auth-label" for="signupPassword">Password</label>
+            <input id="signupPassword" class="auth-input" type="password" autocomplete="new-password" />
+          </div>
+
+          <div class="auth-field">
+            <label class="auth-label" for="signupPassword2">Confirm Password</label>
+            <input id="signupPassword2" class="auth-input" type="password" autocomplete="new-password" />
+          </div>
+
+          <div class="auth-error" id="signupError"></div>
+
+          <button class="auth-btn" id="signupBtn">Sign Up</button>
+          <div>
+            <span class="auth-sub">Already have an account?</span>
+            <span class="auth-link" id="goLogin">Login</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOCK SCREEN (PER USER PIN) -->
+    <div id="screen-lock" class="screen">
       <div class="lock-shell">
         <div class="lock-logo">W</div>
         <div class="lock-title">WOD NOTEPAD</div>
@@ -884,6 +1042,7 @@
       </div>
     </div>
 
+    <!-- HOME SCREEN -->
     <div id="screen-home" class="screen">
       <div class="app-shell">
         <div class="top-bar">
@@ -896,6 +1055,7 @@
           </div>
           <div class="top-actions">
             <button class="icon-btn" id="settingsBtn">⚙️</button>
+            <button class="icon-btn" id="logoutBtn">⏻</button>
           </div>
         </div>
 
@@ -953,6 +1113,7 @@
       <button class="fab" id="fab">+</button>
     </div>
 
+    <!-- EDITOR SCREEN -->
     <div id="screen-editor" class="screen">
       <div class="editor-shell">
         <div class="editor-top">
@@ -1003,6 +1164,7 @@
       </div>
     </div>
 
+    <!-- VIEWER SCREEN -->
     <div id="screen-viewer" class="screen">
       <div class="viewer-shell">
         <div class="viewer-header">
@@ -1079,6 +1241,7 @@
       </div>
     </div>
 
+    <!-- SETTINGS SCREEN -->
     <div id="screen-settings" class="screen">
       <div class="settings-shell">
         <div class="top-bar">
@@ -1131,7 +1294,22 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    const DB_BASE = "https://let-s-talk-e57c6-default-rtdb.firebaseio.com/notes";
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBMKrFDt5uvRDjTDDeaRKQQHXNrwc0SAEo",
+      authDomain: "let-s-talk-e57c6.firebaseapp.com",
+      databaseURL: "https://let-s-talk-e57c6-default-rtdb.firebaseio.com",
+      projectId: "let-s-talk-e57c6",
+      storageBucket: "let-s-talk-e57c6.firebasestorage.app",
+      messagingSenderId: "958080107908",
+      appId: "1:958080107908:web:d9b11b958af59bb315c9d1",
+      measurementId: "G-QG6K3BNH6G"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+
     const APP_LINK = "https://imzeeworld-code.github.io/";
 
     let notes = [];
@@ -1140,32 +1318,26 @@
     let editingNoteId = null;
     let editingPinned = false;
     let viewingNoteId = null;
-
-    const screenLock = document.getElementById("screen-lock");
-    const screenHome = document.getElementById("screen-home");
-    const screenEditor = document.getElementById("screen-editor");
-    const screenViewer = document.getElementById("screen-viewer");
-    const screenSettings = document.getElementById("screen-settings");
+    let currentUID = null;
+    let notesListenerRef = null;
 
     const screens = {
-      lock: screenLock,
-      home: screenHome,
-      editor: screenEditor,
-      viewer: screenViewer,
-      settings: screenSettings,
+      login: document.getElementById("screen-login"),
+      signup: document.getElementById("screen-signup"),
+      lock: document.getElementById("screen-lock"),
+      home: document.getElementById("screen-home"),
+      editor: document.getElementById("screen-editor"),
+      viewer: document.getElementById("screen-viewer"),
+      settings: document.getElementById("screen-settings"),
     };
 
-    let currentScreen = "lock";
+    let currentScreen = "login";
 
     function showScreen(name) {
       if (name === currentScreen) return;
       const prev = screens[currentScreen];
       const next = screens[name];
-
-      Object.values(screens).forEach((s) => {
-        s.classList.remove("active", "below");
-      });
-
+      Object.values(screens).forEach((s) => s.classList.remove("active", "below"));
       if (prev) prev.classList.add("below");
       if (next) next.classList.add("active");
       currentScreen = name;
@@ -1194,6 +1366,7 @@
     const editorTitleLabelEl = document.getElementById("editorTitleLabel");
     const toastEl = document.getElementById("toast");
     const settingsBtnEl = document.getElementById("settingsBtn");
+    const logoutBtnEl = document.getElementById("logoutBtn");
 
     const viewerTitleEl = document.getElementById("viewerTitle");
     const viewerCategoryEl = document.getElementById("viewerCategory");
@@ -1215,6 +1388,19 @@
     const settingsSavePinBtn = document.getElementById("settingsSavePinBtn");
     const settingsOpenLinkBtn = document.getElementById("settingsOpenLinkBtn");
 
+    const loginEmailEl = document.getElementById("loginEmail");
+    const loginPasswordEl = document.getElementById("loginPassword");
+    const loginBtnEl = document.getElementById("loginBtn");
+    const loginErrorEl = document.getElementById("loginError");
+    const goSignupEl = document.getElementById("goSignup");
+
+    const signupEmailEl = document.getElementById("signupEmail");
+    const signupPasswordEl = document.getElementById("signupPassword");
+    const signupPassword2El = document.getElementById("signupPassword2");
+    const signupBtnEl = document.getElementById("signupBtn");
+    const signupErrorEl = document.getElementById("signupError");
+    const goLoginEl = document.getElementById("goLogin");
+
     function showToast(message) {
       toastEl.textContent = message;
       toastEl.classList.add("show");
@@ -1235,10 +1421,7 @@
 
     function wordCount(text) {
       if (!text) return 0;
-      return text
-        .trim()
-        .split(/\s+/)
-        .filter(Boolean).length;
+      return text.trim().split(/\s+/).filter(Boolean).length;
     }
 
     function formatDateShort(timestamp) {
@@ -1256,26 +1439,28 @@
       );
     }
 
-    async function fetchNotes() {
-      try {
-        setCenterState(true, "Loading notes...", "Syncing with WOD cloud");
-        const res = await fetch(DB_BASE + ".json");
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        notes = [];
-        if (data) {
-          for (const [id, value] of Object.entries(data)) {
-            notes.push({
-              id,
-              title: value.title || "",
-              body: value.body || "",
-              category: value.category || "Personal",
-              pinned: !!value.pinned,
-              createdAt: value.createdAt || Date.now(),
-              deleted: !!value.deleted,
-            });
-          }
-        }
+    function userNotesPath() {
+      return `users/${currentUID}/notes`;
+    }
+
+    function attachNotesListener() {
+      if (!currentUID) return;
+      if (notesListenerRef) {
+        notesListenerRef.off();
+      }
+      notesListenerRef = db.ref(userNotesPath());
+      setCenterState(true, "Loading notes...", "Syncing with WOD cloud");
+      notesListenerRef.on("value", (snapshot) => {
+        const data = snapshot.val() || {};
+        notes = Object.keys(data).map((id) => ({
+          id,
+          title: data[id].title || "",
+          body: data[id].body || "",
+          category: data[id].category || "Personal",
+          pinned: !!data[id].pinned,
+          createdAt: data[id].createdAt || Date.now(),
+          deleted: !!data[id].deleted,
+        }));
         notes.sort((a, b) => {
           if (a.deleted && !b.deleted) return 1;
           if (!a.deleted && b.deleted) return -1;
@@ -1284,9 +1469,7 @@
           return b.createdAt - a.createdAt;
         });
         renderNotes();
-      } catch (err) {
-        setCenterState(true, "Offline?", "Could not reach WOD cloud");
-      }
+      });
     }
 
     async function createNote(note) {
@@ -1298,51 +1481,15 @@
         createdAt: note.createdAt || Date.now(),
         deleted: false,
       };
-      const res = await fetch(DB_BASE + ".json", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) throw new Error("Failed to create note");
-      const data = await res.json();
-      const id = data.name;
-      notes.unshift({ id, ...payload });
-      renderNotes();
+      await db.ref(userNotesPath()).push(payload);
     }
 
     async function updateNote(id, patch) {
-      const res = await fetch(DB_BASE + "/" + id + ".json", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(patch),
-      });
-      if (!res.ok) throw new Error("Failed to update note");
-      const idx = notes.findIndex((n) => n.id === id);
-      if (idx !== -1) {
-        notes[idx] = { ...notes[idx], ...patch };
-        notes.sort((a, b) => {
-          if (a.deleted && !b.deleted) return 1;
-          if (!a.deleted && b.deleted) return -1;
-          if (a.pinned && !b.pinned) return -1;
-          if (!a.pinned && b.pinned) return 1;
-          return b.createdAt - a.createdAt;
-        });
-        renderNotes();
-      }
+      await db.ref(userNotesPath()).child(id).update(patch);
     }
 
     async function deleteNote(id) {
-      const res = await fetch(DB_BASE + "/" + id + ".json", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ deleted: true }),
-      });
-      if (!res.ok) throw new Error("Failed to delete note");
-      const idx = notes.findIndex((n) => n.id === id);
-      if (idx !== -1) {
-        notes[idx].deleted = true;
-        renderNotes();
-      }
+      await db.ref(userNotesPath()).child(id).update({ deleted: true });
     }
 
     function renderStats() {
@@ -1618,10 +1765,14 @@
       const note = notes.find((n) => n.id === viewingNoteId);
       if (!note) return;
       const text = (note.title ? note.title + "\n\n" : "") + (note.body || "");
-      navigator.clipboard.writeText(text).then(
-        () => showToast("Copied"),
-        () => showToast("Copy failed")
-      );
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(
+          () => showToast("Copied"),
+          () => showToast("Copy failed")
+        );
+      } else {
+        showToast("Copy not supported");
+      }
     }
 
     function shareViewerNote() {
@@ -1691,12 +1842,14 @@
     });
 
     settingsBtnEl.addEventListener("click", () => {
-      const storedPin = localStorage.getItem("wod_pin") || "";
+      if (!currentUID) return;
+      const storedPin = localStorage.getItem(`wod_pin_${currentUID}`) || "";
       settingsPinInput.value = storedPin;
       showScreen("settings");
     });
 
     settingsSavePinBtn.addEventListener("click", () => {
+      if (!currentUID) return;
       const pin = settingsPinInput.value.trim();
       if (pin && pin.length !== 5) {
         showToast("PIN must be 5 digits");
@@ -1707,10 +1860,10 @@
         return;
       }
       if (pin) {
-        localStorage.setItem("wod_pin", pin);
+        localStorage.setItem(`wod_pin_${currentUID}`, pin);
         showToast("PIN saved");
       } else {
-        localStorage.removeItem("wod_pin");
+        localStorage.removeItem(`wod_pin_${currentUID}`);
         showToast("PIN removed");
       }
     });
@@ -1719,12 +1872,16 @@
       window.open(APP_LINK, "_blank");
     });
 
-    function checkLockOnStart() {
-      const storedPin = localStorage.getItem("wod_pin");
+    function checkLockOrHome() {
+      if (!currentUID) {
+        showScreen("login");
+        return;
+      }
+      const storedPin = localStorage.getItem(`wod_pin_${currentUID}`);
       if (storedPin && storedPin.length === 5) {
-        showScreen("lock");
         lockPinInput.value = "";
         lockErrorEl.textContent = "";
+        showScreen("lock");
         setTimeout(() => lockPinInput.focus(), 100);
       } else {
         showScreen("home");
@@ -1732,7 +1889,11 @@
     }
 
     lockUnlockBtn.addEventListener("click", () => {
-      const storedPin = localStorage.getItem("wod_pin");
+      if (!currentUID) {
+        showScreen("login");
+        return;
+      }
+      const storedPin = localStorage.getItem(`wod_pin_${currentUID}`);
       const entered = lockPinInput.value.trim();
       if (!storedPin) {
         showScreen("home");
@@ -1753,9 +1914,86 @@
       }
     });
 
+    // AUTH: LOGIN / SIGNUP / LOGOUT
+
+    loginBtnEl.addEventListener("click", async () => {
+      const email = loginEmailEl.value.trim();
+      const password = loginPasswordEl.value.trim();
+      loginErrorEl.textContent = "";
+      if (!email || !password) {
+        loginErrorEl.textContent = "Enter email and password.";
+        return;
+      }
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        loginErrorEl.textContent = "";
+      } catch (err) {
+        loginErrorEl.textContent = err.message || "Login failed.";
+      }
+    });
+
+    signupBtnEl.addEventListener("click", async () => {
+      const email = signupEmailEl.value.trim();
+      const password = signupPasswordEl.value.trim();
+      const password2 = signupPassword2El.value.trim();
+      signupErrorEl.textContent = "";
+      if (!email || !password || !password2) {
+        signupErrorEl.textContent = "Fill all fields.";
+        return;
+      }
+      if (password !== password2) {
+        signupErrorEl.textContent = "Passwords do not match.";
+        return;
+      }
+      if (password.length < 6) {
+        signupErrorEl.textContent = "Password must be at least 6 characters.";
+        return;
+      }
+      try {
+        await auth.createUserWithEmailAndPassword(email, password);
+        signupErrorEl.textContent = "";
+      } catch (err) {
+        signupErrorEl.textContent = err.message || "Signup failed.";
+      }
+    });
+
+    goSignupEl.addEventListener("click", () => {
+      loginErrorEl.textContent = "";
+      showScreen("signup");
+    });
+
+    goLoginEl.addEventListener("click", () => {
+      signupErrorEl.textContent = "";
+      showScreen("login");
+    });
+
+    logoutBtnEl.addEventListener("click", async () => {
+      try {
+        await auth.signOut();
+        currentUID = null;
+        notes = [];
+        if (notesListenerRef) notesListenerRef.off();
+        showScreen("login");
+      } catch (err) {
+        showToast("Logout failed");
+      }
+    });
+
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        currentUID = user.uid;
+        attachNotesListener();
+        checkLockOrHome();
+      } else {
+        currentUID = null;
+        notes = [];
+        if (notesListenerRef) notesListenerRef.off();
+        showScreen("login");
+      }
+    });
+
     window.addEventListener("load", () => {
-      checkLockOnStart();
-      fetchNotes();
+      showScreen("login");
     });
   </script>
 </body>
