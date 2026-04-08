@@ -35,13 +35,14 @@
       font-family: var(--font-main);
       background: radial-gradient(circle at top, #151827 0, #050608 55%);
       color: var(--text-main);
-      overflow: hidden;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
 
     .app-root {
-      position: fixed;
-      inset: 0;
-      max-width: 480px;
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
       margin: 0 auto;
       background: radial-gradient(circle at top, #151827 0, #050608 55%);
       overflow: hidden;
@@ -75,6 +76,7 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
+      overflow-y: auto;
     }
 
     .top-bar {
@@ -220,6 +222,7 @@
     .tabs {
       display: flex;
       gap: 6px;
+      overflow-x: auto;
     }
 
     .tab-chip {
@@ -230,6 +233,7 @@
       background: transparent;
       color: var(--text-muted);
       cursor: pointer;
+      white-space: nowrap;
     }
 
     .tab-chip.active {
@@ -517,12 +521,17 @@
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.9);
     }
 
-    .editor-shell {
+    .editor-shell,
+    .viewer-shell,
+    .settings-shell,
+    .trash-shell,
+    .about-shell {
       flex: 1;
       padding: 14px 14px 24px;
       display: flex;
       flex-direction: column;
       gap: 10px;
+      overflow-y: auto;
     }
 
     .editor-top {
@@ -586,7 +595,7 @@
     }
 
     .editor-textarea {
-      min-height: 160px;
+      min-height: 200px;
       resize: vertical;
     }
 
@@ -651,17 +660,6 @@
     .toast.show {
       opacity: 1;
       transform: translateX(-50%) translateY(-4px);
-    }
-
-    .settings-shell,
-    .trash-shell,
-    .about-shell,
-    .viewer-shell {
-      flex: 1;
-      padding: 14px 14px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
     }
 
     .screen-title-row {
@@ -791,19 +789,24 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 8px;
       padding: 4px 2px 8px;
+      flex-wrap: wrap;
     }
 
     .viewer-title-block {
       display: flex;
       flex-direction: column;
       gap: 2px;
+      flex: 1;
+      min-width: 0;
     }
 
     .viewer-title {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
       color: var(--accent);
+      word-break: break-word;
     }
 
     .viewer-meta {
@@ -815,6 +818,8 @@
       display: flex;
       gap: 6px;
       align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
     .viewer-body-wrap {
@@ -829,8 +834,8 @@
     }
 
     .viewer-body {
-      font-size: 14px;
-      line-height: 1.6;
+      font-size: 15px;
+      line-height: 1.7;
       color: #e5e7eb;
       white-space: pre-wrap;
     }
@@ -841,6 +846,8 @@
       justify-content: space-between;
       font-size: 11px;
       color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 4px;
     }
 
     @media (max-width: 360px) {
@@ -872,7 +879,7 @@
             <button class="icon-btn" id="viewToggleBtn">▦</button>
             <button class="icon-btn" id="trashViewBtn">🗑</button>
             <button class="icon-btn" id="settingsBtn">⚙</button>
-            <button class="icon-btn" id="clockBtn">⏱</button>
+            <button class="icon-btn" id="aboutBtn">ℹ</button>
           </div>
         </div>
 
@@ -955,7 +962,7 @@
     <div id="screen-editor" class="screen">
       <div class="editor-shell">
         <div class="editor-top">
-          <div class="back-btn" data-back="viewer">
+          <div class="back-btn" data-back="home">
             <span>←</span>
             <span>Back</span>
           </div>
@@ -1083,8 +1090,15 @@
             in your WOD cloud using Firebase Realtime Database.
           </div>
           <div class="about-text" style="margin-top:6px;">
-            Built for mobile first. Designed to feel like a studio, a notebook, and a
-            control room in your pocket.
+            Notes are synced to:
+            <br />
+            <span style="color:#e5e7eb;font-size:10px;">
+              https://let-s-talk-e57c6-default-rtdb.firebaseio.com/
+            </span>
+          </div>
+          <div class="about-text" style="margin-top:6px;">
+            Designed for phones. No desktop required. Just open, type, and your words
+            stay in the WOD cloud.
           </div>
         </div>
       </div>
@@ -1116,7 +1130,7 @@
       </div>
     </div>
 
-    <!-- ABOUT SCREEN (extra info) -->
+    <!-- ABOUT SCREEN -->
     <div id="screen-about" class="screen">
       <div class="about-shell">
         <div class="screen-title-row">
@@ -1135,15 +1149,15 @@
             capturing thoughts, building systems, and keeping your creative flow alive.
           </div>
           <div class="about-text" style="margin-top:6px;">
-            Notes are synced to:
+            Your notes live in your personal vault:
             <br />
             <span style="color:#e5e7eb;font-size:10px;">
               https://let-s-talk-e57c6-default-rtdb.firebaseio.com/
             </span>
           </div>
           <div class="about-text" style="margin-top:6px;">
-            Designed for phones. No desktop required. Just open, type, and your words
-            stay in the WOD cloud.
+            Built for mobile first. Designed to feel like a studio, a notebook, and a
+            control room in your pocket.
           </div>
         </div>
       </div>
@@ -1191,8 +1205,8 @@
         s.classList.remove("active", "below");
       });
 
-      prev.classList.add("below");
-      next.classList.add("active");
+      if (prev) prev.classList.add("below");
+      if (next) next.classList.add("active");
       currentScreen = name;
     }
 
@@ -1222,12 +1236,12 @@
     const toastEl = document.getElementById("toast");
 
     const settingsBtnEl = document.getElementById("settingsBtn");
+    const aboutBtnEl = document.getElementById("aboutBtn");
     const themeSelectEl = document.getElementById("themeSelect");
     const fontSizeSelectEl = document.getElementById("fontSizeSelect");
     const cardShapeSelectEl = document.getElementById("cardShapeSelect");
     const viewToggleBtnEl = document.getElementById("viewToggleBtn");
     const trashViewBtnEl = document.getElementById("trashViewBtn");
-    const clockBtnEl = document.getElementById("clockBtn");
     const trashItemsEl = document.getElementById("trashItems");
     const trashEmptyStateEl = document.getElementById("trashEmptyState");
 
@@ -1789,17 +1803,12 @@
       showScreen("trash");
     });
 
-    clockBtnEl.addEventListener("click", () => {
-      const now = new Date();
-      const timeStr =
-        now.getHours().toString().padStart(2, "0") +
-        ":" +
-        now.getMinutes().toString().padStart(2, "0");
-      showToast("WOD time: " + timeStr);
-    });
-
     settingsBtnEl.addEventListener("click", () => {
       showScreen("settings");
+    });
+
+    aboutBtnEl.addEventListener("click", () => {
+      showScreen("about");
     });
 
     viewerEditBtn.addEventListener("click", () => {
