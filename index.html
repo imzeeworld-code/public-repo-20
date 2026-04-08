@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,7 @@
   <title>WOD Notepad – Real Glass Vault</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
-  <!-- Firebase SDK -->
+  <!-- Firebase SDK (RTDB only, compat style) -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
 
@@ -1082,13 +1083,10 @@
     .hide-today .note-meta-row span[data-meta="date"] { display: none; }
     .tabs-hidden .tabs-card { display: none; }
     .fab-off .fab { display: none; }
-
-    .auth-hidden .auth-shell { display: none; }
-    .auth-hidden .main-shell { display: flex; }
   </style>
 </head>
 <body>
-  <div class="app-shell theme-void accent-gold" id="appRoot">
+  <div id="appRoot" class="app-shell theme-void accent-gold">
     <div class="bg-orbit"></div>
     <div class="glass-orb"></div>
     <div class="glass-orb-bottom"></div>
@@ -1440,9 +1438,7 @@
     </div>
   </div>
 
-  <!-- APP LOGIC + FIREBASE -->
   <script>
-    // Firebase config – using your RTDB URL
     const firebaseConfig = {
       databaseURL: "https://let-s-talk-e57c6-default-rtdb.firebaseio.com/"
     };
@@ -1450,10 +1446,10 @@
     const db = firebase.database();
 
     const appRoot = document.getElementById("appRoot");
-
     const authShell = document.getElementById("authShell");
     const mainShell = document.getElementById("mainShell");
     const signupCard = document.getElementById("signupCard");
+
     const btnLogin = document.getElementById("btnLogin");
     const btnShowSignup = document.getElementById("btnShowSignup");
     const btnSignup = document.getElementById("btnSignup");
@@ -1784,13 +1780,17 @@
     btnBackLogin.addEventListener("click", () => {
       signupCard.style.display = "none";
     });
+
+    // SIMPLE, GUARANTEED LOGIN / SIGNUP (no Firebase Auth)
     btnLogin.addEventListener("click", () => {
-      appRoot.classList.add("auth-hidden");
+      authShell.style.display = "none";
+      mainShell.classList.add("active");
       showToast("Welcome back to WOD Notepad");
     });
     btnSignup.addEventListener("click", () => {
-      appRoot.classList.add("auth-hidden");
-      showToast("Vault created. Welcome to WOD Notepad");
+      authShell.style.display = "none";
+      mainShell.classList.add("active");
+      showToast("Vault created. Welcome");
     });
 
     themeToggle.addEventListener("click", () => {
@@ -1870,7 +1870,6 @@
       });
     });
 
-    // LIVE SYNC WITH FIREBASE – notes stay permanently
     firebase.database().ref("notes").on("value", snapshot => {
       const data = snapshot.val() || {};
       notes = Object.values(data);
