@@ -393,30 +393,9 @@ function openReader(id) {
   document.getElementById('readerTitle').textContent = n.title || 'Untitled';
   document.getElementById('readerContent').innerHTML = n.content || '';
   showScreen('screenReader');
-  startReaderAutoScroll();
 }
 
-function startReaderAutoScroll() {
-  if(APP.autoScrollInterval) clearInterval(APP.autoScrollInterval);
-  const readerBody = document.querySelector('.reader-body');
-  if(!readerBody) return;
-  
-  let scrollPos = 0;
-  const maxScroll = readerBody.scrollHeight - readerBody.clientHeight;
-  
-  APP.autoScrollInterval = setInterval(() => {
-    if(maxScroll > 0) {
-      scrollPos += readerBody.clientHeight * 0.5;
-      if(scrollPos > maxScroll) scrollPos = 0;
-      readerBody.scrollTo({ top: scrollPos, behavior: 'smooth' });
-    }
-  }, 5000);
-  
-  readerBody.onmouseenter = () => { if(APP.autoScrollInterval) clearInterval(APP.autoScrollInterval); };
-  readerBody.onmouseleave = () => { startReaderAutoScroll(); };
-  readerBody.ontouchstart = () => { if(APP.autoScrollInterval) clearInterval(APP.autoScrollInterval); };
-  readerBody.ontouchend = () => { startReaderAutoScroll(); };
-}
+
 
 document.getElementById('fabNew').onclick = () => {
   APP.curId = null;
@@ -478,8 +457,8 @@ function showScreen(id) {
 document.getElementById('avatarBtn').onclick = () => showScreen('screenSettings');
 document.getElementById('btnSettings').onclick = () => showScreen('screenSettings');
 document.getElementById('settingsBack').onclick = () => showScreen('screenMain');
-document.getElementById('editorBack').onclick = () => { stopAutoScroll(); showScreen('screenMain'); startAutoScroll(); };
-document.getElementById('readerBack').onclick = () => { stopAutoScroll(); showScreen('screenMain'); startAutoScroll(); };
+document.getElementById('editorBack').onclick = () => showScreen('screenMain');
+document.getElementById('readerBack').onclick = () => showScreen('screenMain');
 document.getElementById('readerEditBtn').onclick = () => {
   const n = APP.notes[APP.curId];
   document.getElementById('edTitle').value = n.title || '';
