@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AETHER NOTES – WOD Notepad</title>
+  <title>WOD Notepad – Aether Glass</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
   <style>
@@ -10,8 +10,8 @@
       --bg-void: radial-gradient(circle at top, #020617 0, #02010a 40%, #000000 100%);
       --bg-aurora: radial-gradient(circle at top, #e5f0ff 0, #c7d2fe 40%, #0f172a 100%);
 
-      --glass-dark: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7));
-      --glass-light: linear-gradient(145deg, rgba(248,250,252,0.96), rgba(226,232,240,0.9));
+      --glass-dark: linear-gradient(145deg, rgba(15,23,42,0.98), rgba(15,23,42,0.78));
+      --glass-light: linear-gradient(145deg, rgba(248,250,252,0.98), rgba(226,232,240,0.9));
 
       --accent-gold: #facc15;
       --accent-gold-soft: rgba(250,204,21,0.7);
@@ -20,20 +20,20 @@
       --accent-diamond: #38bdf8;
       --accent-diamond-soft: rgba(56,189,248,0.7);
 
-      --shadow-strong: 0 30px 80px rgba(0,0,0,1);
-      --shadow-soft: 0 18px 50px rgba(0,0,0,0.9);
-      --glass-blur: 26px;
-      --glass-glow: 0.45;
+      --shadow-strong: 0 36px 110px rgba(0,0,0,1);
+      --shadow-soft: 0 22px 70px rgba(0,0,0,0.95);
+      --glass-blur: 28px;
+      --glass-glow: 0.55;
 
-      --radius-card: 22px;
+      --radius-card: 26px;
       --radius-pill: 999px;
 
       --font-main: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
       --font-serif: "Georgia", "Times New Roman", serif;
       --font-mono: "JetBrains Mono", "SF Mono", "Consolas", monospace;
 
-      --note-font-size: 13px;
-      --title-font-size: 15px;
+      --note-font-size: 14px;
+      --title-font-size: 17px;
     }
 
     * {
@@ -68,27 +68,27 @@
       position: absolute;
       inset: -80px;
       background:
-        radial-gradient(circle at 10% 0%, rgba(255,255,255,0.18), transparent 55%),
-        radial-gradient(circle at 90% 10%, rgba(250,204,21,0.25), transparent 55%),
-        radial-gradient(circle at 50% 100%, rgba(56,189,248,0.22), transparent 55%);
+        radial-gradient(circle at 10% 0%, rgba(255,255,255,0.22), transparent 55%),
+        radial-gradient(circle at 90% 10%, rgba(250,204,21,0.32), transparent 55%),
+        radial-gradient(circle at 50% 100%, rgba(56,189,248,0.28), transparent 55%);
       filter: blur(40px);
-      opacity: 0.9;
+      opacity: 0.95;
       pointer-events: none;
       z-index: 0;
     }
 
     .glass-orb {
       position: absolute;
-      width: 220px;
-      height: 220px;
+      width: 260px;
+      height: 260px;
       border-radius: 999px;
-      top: -60px;
-      right: -40px;
+      top: -70px;
+      right: -60px;
       background:
-        radial-gradient(circle at 20% 0%, rgba(255,255,255,0.9), transparent 40%),
-        radial-gradient(circle at 80% 100%, rgba(250,204,21,0.9), #b45309 50%, #020617 100%);
-      opacity: 0.18;
-      filter: blur(2px);
+        radial-gradient(circle at 20% 0%, rgba(255,255,255,0.95), transparent 40%),
+        radial-gradient(circle at 80% 100%, rgba(250,204,21,0.95), #b45309 50%, #020617 100%);
+      opacity: 0.22;
+      filter: blur(3px);
       pointer-events: none;
       z-index: 0;
     }
@@ -105,7 +105,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     .brand-left {
       display: flex;
@@ -113,16 +113,16 @@
       gap: 10px;
     }
     .brand-crystal {
-      width: 46px;
-      height: 46px;
-      border-radius: 18px;
+      width: 52px;
+      height: 52px;
+      border-radius: 20px;
       background:
-        linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.1)),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.9), transparent 45%),
-        radial-gradient(circle at 100% 100%, rgba(250,204,21,0.9), #b45309 50%, #020617 100%);
+        linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.1)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.95), transparent 45%),
+        radial-gradient(circle at 100% 100%, rgba(250,204,21,0.95), #b45309 50%, #020617 100%);
       box-shadow:
-        0 0 0 1px rgba(148,163,184,0.7),
-        0 26px 70px rgba(0,0,0,1);
+        0 0 0 1px rgba(148,163,184,0.9),
+        0 32px 90px rgba(0,0,0,1);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -134,16 +134,16 @@
       position: absolute;
       inset: -40%;
       background:
-        linear-gradient(135deg, rgba(255,255,255,0.6), transparent 60%),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.7), transparent 55%);
+        linear-gradient(135deg, rgba(255,255,255,0.7), transparent 60%),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.8), transparent 55%);
       mix-blend-mode: screen;
-      opacity: 0.7;
+      opacity: 0.8;
       pointer-events: none;
     }
     .brand-crystal span {
-      font-weight: 800;
-      font-size: 20px;
-      letter-spacing: 0.12em;
+      font-weight: 900;
+      font-size: 22px;
+      letter-spacing: 0.16em;
       color: #020617;
       position: relative;
       z-index: 1;
@@ -154,14 +154,14 @@
       gap: 2px;
     }
     .brand-title {
-      font-size: 18px;
-      letter-spacing: 0.18em;
+      font-size: 19px;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      font-weight: 700;
+      font-weight: 800;
     }
     .brand-subtitle {
       font-size: 11px;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: #9ca3af;
     }
@@ -172,26 +172,26 @@
       align-items: center;
     }
     .icon-btn {
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       border-radius: var(--radius-pill);
-      border: 1px solid rgba(148,163,184,0.7);
+      border: 1px solid rgba(148,163,184,0.9);
       background:
-        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+        linear-gradient(145deg, rgba(15,23,42,0.98), rgba(15,23,42,0.78)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.2), transparent 55%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       box-shadow:
-        0 18px 50px rgba(0,0,0,1),
-        0 0 0 1px rgba(15,23,42,0.9);
+        0 22px 70px rgba(0,0,0,1),
+        0 0 0 1px rgba(15,23,42,0.95);
     }
     .icon-btn svg {
-      width: 16px;
-      height: 16px;
+      width: 17px;
+      height: 17px;
       stroke: #e5e7eb;
       fill: none;
       stroke-width: 1.8;
@@ -205,17 +205,17 @@
       gap: 16px;
     }
     .auth-card {
-      border-radius: 26px;
-      padding: 16px 14px 14px;
+      border-radius: 28px;
+      padding: 18px 16px 14px;
       background:
         var(--glass-dark),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.2), transparent 55%);
       backdrop-filter: blur(var(--glass-blur));
       -webkit-backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid rgba(148,163,184,0.7);
+      border: 1px solid rgba(148,163,184,0.9);
       box-shadow:
         var(--shadow-strong),
-        0 0 0 1px rgba(15,23,42,0.9);
+        0 0 0 1px rgba(15,23,42,0.95);
       position: relative;
       overflow: hidden;
     }
@@ -227,7 +227,7 @@
         radial-gradient(circle at 0% 0%, rgba(255,255,255,var(--glass-glow)), transparent 55%),
         radial-gradient(circle at 100% 100%, rgba(56,189,248,var(--glass-glow)), transparent 55%);
       mix-blend-mode: screen;
-      opacity: 0.6;
+      opacity: 0.7;
       pointer-events: none;
     }
     .auth-inner {
@@ -236,10 +236,11 @@
     }
     .auth-title {
       font-size: 16px;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: #e5e7eb;
       margin-bottom: 4px;
+      font-weight: 700;
     }
     .auth-tagline {
       font-size: 12px;
@@ -262,18 +263,18 @@
       color: #cbd5f5;
     }
     .field input {
-      border-radius: 12px;
-      border: 1px solid rgba(148,163,184,0.7);
+      border-radius: 14px;
+      border: 1px solid rgba(148,163,184,0.9);
       background:
-        linear-gradient(135deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%);
+        linear-gradient(135deg, rgba(15,23,42,0.98), rgba(15,23,42,0.78)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
       color: #f9fafb;
-      padding: 8px 10px;
+      padding: 9px 11px;
       font-size: 13px;
       outline: none;
       box-shadow:
-        inset 0 0 0 1px rgba(15,23,42,0.9),
-        0 16px 40px rgba(0,0,0,0.9);
+        inset 0 0 0 1px rgba(15,23,42,0.95),
+        0 18px 46px rgba(0,0,0,0.95);
     }
     .auth-actions {
       display: flex;
@@ -288,28 +289,28 @@
         radial-gradient(circle at 80% 100%, var(--accent-gold) 0, #b45309 40%, #020617 100%);
       color: #020617;
       font-size: 13px;
-      font-weight: 600;
-      padding: 9px 12px;
+      font-weight: 700;
+      padding: 10px 12px;
       text-align: center;
       cursor: pointer;
       box-shadow:
-        0 26px 70px rgba(0,0,0,1),
-        0 0 0 1px rgba(15,23,42,0.9);
+        0 30px 80px rgba(0,0,0,1),
+        0 0 0 1px rgba(15,23,42,0.95);
     }
     .btn-ghost {
       border-radius: var(--radius-pill);
-      border: 1px solid rgba(148,163,184,0.7);
+      border: 1px solid rgba(148,163,184,0.9);
       background:
-        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%);
+        linear-gradient(145deg, rgba(15,23,42,0.98), rgba(15,23,42,0.78)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
       color: #e5e7eb;
       font-size: 12px;
-      padding: 7px 10px;
+      padding: 8px 10px;
       text-align: center;
       cursor: pointer;
       box-shadow:
-        0 18px 50px rgba(0,0,0,1),
-        0 0 0 1px rgba(15,23,42,0.9);
+        0 22px 60px rgba(0,0,0,1),
+        0 0 0 1px rgba(15,23,42,0.95);
     }
     .auth-footnote {
       font-size: 11px;
@@ -328,18 +329,18 @@
 
     .search-card,
     .tabs-card {
-      border-radius: 22px;
-      padding: 10px 12px;
-      margin-bottom: 10px;
+      border-radius: 24px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
       background:
         var(--glass-dark),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.2), transparent 55%);
       backdrop-filter: blur(var(--glass-blur));
       -webkit-backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid rgba(148,163,184,0.7);
+      border: 1px solid rgba(148,163,184,0.9);
       box-shadow:
         var(--shadow-strong),
-        0 0 0 1px rgba(15,23,42,0.9);
+        0 0 0 1px rgba(15,23,42,0.95);
       position: relative;
       overflow: hidden;
     }
@@ -352,7 +353,7 @@
         radial-gradient(circle at 0% 0%, rgba(255,255,255,var(--glass-glow)), transparent 55%),
         radial-gradient(circle at 100% 100%, rgba(56,189,248,var(--glass-glow)), transparent 55%);
       mix-blend-mode: screen;
-      opacity: 0.5;
+      opacity: 0.6;
       pointer-events: none;
     }
     .search-inner,
@@ -365,24 +366,24 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
     .search-input {
       flex: 1;
       border-radius: var(--radius-pill);
-      border: 1px solid rgba(148,163,184,0.7);
+      border: 1px solid rgba(148,163,184,0.9);
       background:
-        linear-gradient(135deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%);
+        linear-gradient(135deg, rgba(15,23,42,0.98), rgba(15,23,42,0.78)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
       color: #f9fafb;
-      padding: 7px 11px;
+      padding: 8px 12px;
       font-size: 13px;
       display: flex;
       align-items: center;
       gap: 6px;
       box-shadow:
-        inset 0 0 0 1px rgba(15,23,42,0.9),
-        0 16px 40px rgba(0,0,0,0.9);
+        inset 0 0 0 1px rgba(15,23,42,0.95),
+        0 20px 50px rgba(0,0,0,0.95);
     }
     .search-input input {
       flex: 1;
@@ -403,58 +404,58 @@
     .stats-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
+      gap: 8px;
     }
     .stat-pill {
       border-radius: var(--radius-pill);
-      padding: 6px 8px;
+      padding: 7px 9px;
       font-size: 9px;
       text-transform: uppercase;
       letter-spacing: 0.16em;
       color: #9ca3af;
       background:
-        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%);
-      border: 1px solid rgba(148,163,184,0.7);
+        linear-gradient(145deg, rgba(15,23,42,0.98), rgba(15,23,42,0.78)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
+      border: 1px solid rgba(148,163,184,0.9);
       box-shadow:
         var(--shadow-soft),
-        0 0 0 1px rgba(15,23,42,0.9);
+        0 0 0 1px rgba(15,23,42,0.95);
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
     .stat-value {
       margin-top: 2px;
-      font-size: 11px;
-      font-weight: 600;
+      font-size: 12px;
+      font-weight: 700;
       color: var(--accent-gold);
     }
 
     .tabs-row {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       margin-bottom: 8px;
       flex-wrap: wrap;
     }
     .tab-pill {
       border-radius: var(--radius-pill);
-      padding: 6px 10px;
+      padding: 7px 12px;
       font-size: 11px;
-      border: 1px solid rgba(148,163,184,0.7);
+      border: 1px solid rgba(148,163,184,0.9);
       color: #9ca3af;
       background:
-        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%);
+        linear-gradient(145deg, rgba(15,23,42,0.98), rgba(15,23,42,0.78)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
       cursor: pointer;
       box-shadow:
-        0 18px 50px rgba(0,0,0,0.9),
-        0 0 0 1px rgba(15,23,42,0.9);
+        0 22px 60px rgba(0,0,0,0.95),
+        0 0 0 1px rgba(15,23,42,0.95);
     }
     .tab-pill.active {
       border-color: var(--accent-gold-soft);
       color: var(--accent-gold);
       box-shadow:
-        0 26px 70px rgba(0,0,0,1),
+        0 32px 90px rgba(0,0,0,1),
         0 0 0 1px var(--accent-gold-soft);
     }
 
@@ -466,36 +467,40 @@
     }
     .section-title {
       font-size: 11px;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: #9ca3af;
+    }
+    .section-sub {
+      font-size: 11px;
+      color: #6b7280;
     }
 
     .notes-scroll {
       flex: 1;
       overflow-y: auto;
       padding-right: 4px;
-      padding-bottom: 80px;
+      padding-bottom: 90px;
     }
     .note-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
     .note-card {
       position: relative;
       border-radius: var(--radius-card);
-      padding: 10px 11px;
+      padding: 14px 14px 12px;
       background:
         var(--glass-dark),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.22), transparent 55%);
       backdrop-filter: blur(var(--glass-blur));
       -webkit-backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid rgba(148,163,184,0.7);
+      border: 1px solid rgba(148,163,184,0.95);
       box-shadow:
         var(--shadow-strong),
-        0 0 0 1px rgba(15,23,42,0.9);
+        0 0 0 1px rgba(15,23,42,0.95);
       cursor: pointer;
       overflow: hidden;
       transform: translateZ(0);
@@ -509,13 +514,13 @@
         radial-gradient(circle at 0% 0%, rgba(255,255,255,var(--glass-glow)), transparent 55%),
         radial-gradient(circle at 100% 100%, rgba(56,189,248,var(--glass-glow)), transparent 55%);
       mix-blend-mode: screen;
-      opacity: 0.5;
+      opacity: 0.65;
       pointer-events: none;
     }
     .note-card:hover {
-      transform: translateY(-3px);
+      transform: translateY(-3px) scale(1.01);
       box-shadow:
-        0 34px 90px rgba(0,0,0,1),
+        0 40px 120px rgba(0,0,0,1),
         0 0 0 1px var(--accent-gold-soft);
       border-color: var(--accent-gold-soft);
     }
@@ -523,7 +528,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       font-size: 11px;
       color: #9ca3af;
       position: relative;
@@ -532,34 +537,37 @@
     .note-tag {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       text-transform: uppercase;
       letter-spacing: 0.16em;
+      font-weight: 600;
     }
     .note-tag-dot {
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       border-radius: 999px;
       background: linear-gradient(135deg, #facc15, #f97316);
-      box-shadow: 0 0 8px rgba(250,204,21,0.8);
+      box-shadow: 0 0 10px rgba(250,204,21,0.9);
     }
     .note-title {
       font-size: var(--title-font-size);
-      font-weight: 600;
-      margin-bottom: 4px;
+      font-weight: 800;
+      margin-bottom: 6px;
       position: relative;
       z-index: 1;
+      letter-spacing: 0.02em;
     }
     .note-body-preview {
       font-size: var(--note-font-size);
       color: #e5e7eb;
-      max-height: 40px;
+      max-height: 60px;
       overflow: hidden;
       position: relative;
       z-index: 1;
+      line-height: 1.5;
     }
     .note-footer-row {
-      margin-top: 4px;
+      margin-top: 8px;
       font-size: 11px;
       color: #9ca3af;
       display: flex;
@@ -575,21 +583,33 @@
       align-items: center;
       gap: 4px;
     }
-    .note-share-btn {
+
+    .note-actions-row {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      position: relative;
+      z-index: 1;
+    }
+    .note-action-btn {
       border-radius: var(--radius-pill);
-      border: 1px solid rgba(148,163,184,0.7);
+      border: 1px solid rgba(148,163,184,0.9);
       background:
-        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%);
+        linear-gradient(145deg, rgba(15,23,42,0.98), rgba(15,23,42,0.78)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
       color: #e5e7eb;
       font-size: 10px;
-      padding: 3px 8px;
+      padding: 4px 9px;
       display: inline-flex;
       align-items: center;
       gap: 4px;
       cursor: pointer;
+      box-shadow:
+        0 18px 46px rgba(0,0,0,0.95),
+        0 0 0 1px rgba(15,23,42,0.95);
     }
-    .note-share-btn svg {
+    .note-action-btn svg {
       width: 12px;
       height: 12px;
       stroke: currentColor;
@@ -601,16 +621,16 @@
       position: absolute;
       right: 18px;
       bottom: 18px;
-      width: 60px;
-      height: 60px;
+      width: 64px;
+      height: 64px;
       border-radius: var(--radius-pill);
       border: 1px solid var(--accent-gold-soft);
       background:
-        radial-gradient(circle at 20% 0%, #ffffff 0, rgba(255,255,255,0.2) 18%, transparent 40%),
+        radial-gradient(circle at 20% 0%, #ffffff 0, rgba(255,255,255,0.22) 18%, transparent 40%),
         radial-gradient(circle at 80% 100%, var(--accent-gold) 0, #b45309 40%, #020617 100%);
       box-shadow:
-        0 34px 90px rgba(0,0,0,1),
-        0 0 0 1px rgba(15,23,42,0.9);
+        0 40px 120px rgba(0,0,0,1),
+        0 0 0 1px rgba(15,23,42,0.95);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -619,15 +639,15 @@
       animation: fabPulse 2.4s ease-in-out infinite;
     }
     .fab svg {
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
       stroke: #020617;
       fill: none;
       stroke-width: 2;
     }
     @keyframes fabPulse {
       0%,100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-2px) scale(1.03); }
+      50% { transform: translateY(-2px) scale(1.04); }
     }
 
     .toast {
@@ -636,15 +656,15 @@
       bottom: 10px;
       transform: translateX(-50%);
       background:
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), rgba(15,23,42,0.96));
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), rgba(15,23,42,0.98));
       color: #f9fafb;
-      padding: 7px 14px;
+      padding: 8px 16px;
       border-radius: var(--radius-pill);
       font-size: 12px;
-      border: 1px solid rgba(148,163,184,0.7);
+      border: 1px solid rgba(148,163,184,0.9);
       box-shadow:
-        0 18px 40px rgba(0,0,0,1),
-        0 0 0 1px rgba(15,23,42,0.9);
+        0 22px 50px rgba(0,0,0,1),
+        0 0 0 1px rgba(15,23,42,0.95);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.2s ease-out, transform 0.2s ease-out;
@@ -668,17 +688,17 @@
       display: flex;
     }
     .overlay-card {
-      border-radius: 24px;
+      border-radius: 26px;
       padding: 12px;
       background:
         var(--glass-dark),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.22), transparent 55%);
       backdrop-filter: blur(var(--glass-blur));
       -webkit-backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid rgba(148,163,184,0.7);
+      border: 1px solid rgba(148,163,184,0.95);
       box-shadow:
         var(--shadow-strong),
-        0 0 0 1px rgba(15,23,42,0.9);
+        0 0 0 1px rgba(15,23,42,0.95);
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -693,7 +713,7 @@
         radial-gradient(circle at 0% 0%, rgba(255,255,255,var(--glass-glow)), transparent 55%),
         radial-gradient(circle at 100% 100%, rgba(56,189,248,var(--glass-glow)), transparent 55%);
       mix-blend-mode: screen;
-      opacity: 0.6;
+      opacity: 0.7;
       pointer-events: none;
     }
     .overlay-inner {
@@ -711,7 +731,7 @@
     }
     .overlay-title {
       font-size: 14px;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: #9ca3af;
     }
@@ -723,10 +743,10 @@
     }
     .overlay-btn {
       border-radius: var(--radius-pill);
-      border: 1px solid rgba(148,163,184,0.7);
+      border: 1px solid rgba(148,163,184,0.9);
       background:
-        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%);
+        linear-gradient(145deg, rgba(15,23,42,0.98), rgba(15,23,42,0.78)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
       color: #e5e7eb;
       font-size: 11px;
       padding: 4px 10px;
@@ -734,6 +754,9 @@
       align-items: center;
       gap: 4px;
       cursor: pointer;
+      box-shadow:
+        0 18px 46px rgba(0,0,0,0.95),
+        0 0 0 1px rgba(15,23,42,0.95);
     }
     .overlay-btn.primary {
       border-color: var(--accent-gold-soft);
@@ -757,41 +780,41 @@
     .overlay-field input,
     .overlay-field select,
     .overlay-field textarea {
-      border-radius: 12px;
-      border: 1px solid rgba(148,163,184,0.7);
+      border-radius: 14px;
+      border: 1px solid rgba(148,163,184,0.9);
       background:
-        linear-gradient(135deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%);
+        linear-gradient(135deg, rgba(15,23,42,0.98), rgba(15,23,42,0.78)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
       color: #f9fafb;
-      padding: 7px 9px;
+      padding: 8px 10px;
       font-size: 13px;
       outline: none;
       box-shadow:
-        inset 0 0 0 1px rgba(15,23,42,0.9),
-        0 16px 40px rgba(0,0,0,0.9);
+        inset 0 0 0 1px rgba(15,23,42,0.95),
+        0 18px 46px rgba(0,0,0,0.95);
       resize: none;
     }
     .overlay-field textarea {
-      min-height: 140px;
+      min-height: 160px;
     }
 
     .settings-panel {
       position: absolute;
       top: 52px;
       right: 10px;
-      width: 260px;
-      max-height: 70vh;
-      border-radius: 20px;
+      width: 270px;
+      max-height: 72vh;
+      border-radius: 22px;
       padding: 10px;
       background:
         var(--glass-dark),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.22), transparent 55%);
       backdrop-filter: blur(var(--glass-blur));
       -webkit-backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid rgba(148,163,184,0.7);
+      border: 1px solid rgba(148,163,184,0.95);
       box-shadow:
         var(--shadow-strong),
-        0 0 0 1px rgba(15,23,42,0.9);
+        0 0 0 1px rgba(15,23,42,0.95);
       z-index: 4;
       overflow-y: auto;
       display: none;
@@ -799,16 +822,32 @@
     .settings-panel.active {
       display: block;
     }
+    .settings-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
     .settings-title {
       font-size: 11px;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: #9ca3af;
-      margin-bottom: 6px;
+    }
+    .settings-back-btn {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148,163,184,0.9);
+      background:
+        linear-gradient(145deg, rgba(15,23,42,0.98), rgba(15,23,42,0.78)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
+      color: #e5e7eb;
+      font-size: 10px;
+      padding: 3px 8px;
+      cursor: pointer;
     }
     .settings-group {
       margin-bottom: 8px;
-      border-bottom: 1px solid rgba(31,41,55,0.8);
+      border-bottom: 1px solid rgba(31,41,55,0.9);
       padding-bottom: 6px;
     }
     .settings-label {
@@ -823,10 +862,10 @@
     }
     .settings-pill {
       border-radius: var(--radius-pill);
-      border: 1px solid rgba(148,163,184,0.7);
+      border: 1px solid rgba(148,163,184,0.9);
       background:
-        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%);
+        linear-gradient(145deg, rgba(15,23,42,0.98), rgba(15,23,42,0.78)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
       color: #e5e7eb;
       font-size: 10px;
       padding: 3px 8px;
@@ -861,7 +900,7 @@
     .theme-aurora .auth-card {
       background:
         var(--glass-light),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.9), transparent 55%);
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.95), transparent 55%);
       color: #020617;
     }
     .theme-aurora .note-body-preview,
@@ -871,7 +910,7 @@
 
     .accent-gold .note-tag-dot {
       background: linear-gradient(135deg, var(--accent-gold), #f97316);
-      box-shadow: 0 0 8px rgba(250,204,21,0.8);
+      box-shadow: 0 0 10px rgba(250,204,21,0.9);
     }
     .accent-gold .stat-value,
     .accent-gold .tab-pill.active,
@@ -883,13 +922,13 @@
     .accent-gold .fab {
       border-color: var(--accent-gold-soft);
       background:
-        radial-gradient(circle at 20% 0%, #ffffff 0, rgba(255,255,255,0.2) 18%, transparent 40%),
+        radial-gradient(circle at 20% 0%, #ffffff 0, rgba(255,255,255,0.22) 18%, transparent 40%),
         radial-gradient(circle at 80% 100%, var(--accent-gold) 0, #b45309 40%, #020617 100%);
     }
 
     .accent-silver .note-tag-dot {
       background: linear-gradient(135deg, var(--accent-silver), #9ca3af);
-      box-shadow: 0 0 8px rgba(209,213,219,0.8);
+      box-shadow: 0 0 10px rgba(209,213,219,0.9);
     }
     .accent-silver .stat-value,
     .accent-silver .tab-pill.active,
@@ -901,13 +940,13 @@
     .accent-silver .fab {
       border-color: var(--accent-silver-soft);
       background:
-        radial-gradient(circle at 20% 0%, #ffffff 0, rgba(255,255,255,0.2) 18%, transparent 40%),
+        radial-gradient(circle at 20% 0%, #ffffff 0, rgba(255,255,255,0.22) 18%, transparent 40%),
         radial-gradient(circle at 80% 100%, var(--accent-silver) 0, #4b5563 40%, #020617 100%);
     }
 
     .accent-diamond .note-tag-dot {
       background: linear-gradient(135deg, var(--accent-diamond), #0ea5e9);
-      box-shadow: 0 0 8px rgba(56,189,248,0.8);
+      box-shadow: 0 0 10px rgba(56,189,248,0.9);
     }
     .accent-diamond .stat-value,
     .accent-diamond .tab-pill.active,
@@ -919,7 +958,7 @@
     .accent-diamond .fab {
       border-color: var(--accent-diamond-soft);
       background:
-        radial-gradient(circle at 20% 0%, #ffffff 0, rgba(255,255,255,0.2) 18%, transparent 40%),
+        radial-gradient(circle at 20% 0%, #ffffff 0, rgba(255,255,255,0.22) 18%, transparent 40%),
         radial-gradient(circle at 80% 100%, var(--accent-diamond) 0, #0369a1 40%, #020617 100%);
     }
 
@@ -927,24 +966,24 @@
     .font-mono { font-family: var(--font-mono); }
 
     .size-notes-small { --note-font-size: 12px; }
-    .size-notes-large { --note-font-size: 15px; }
-    .size-title-small { --title-font-size: 13px; }
-    .size-title-large { --title-font-size: 17px; }
+    .size-notes-large { --note-font-size: 16px; }
+    .size-title-small { --title-font-size: 15px; }
+    .size-title-large { --title-font-size: 19px; }
 
-    .radius-soft { --radius-card: 16px; }
-    .radius-sharp { --radius-card: 10px; }
+    .radius-soft { --radius-card: 20px; }
+    .radius-sharp { --radius-card: 12px; }
 
-    .shadow-soft-mode { --shadow-strong: 0 18px 50px rgba(0,0,0,0.85); }
-    .shadow-ultra-mode { --shadow-strong: 0 40px 110px rgba(0,0,0,1); }
+    .shadow-soft-mode { --shadow-strong: 0 24px 80px rgba(0,0,0,0.9); }
+    .shadow-ultra-mode { --shadow-strong: 0 46px 140px rgba(0,0,0,1); }
 
-    .glass-low { --glass-blur: 16px; }
-    .glass-high { --glass-blur: 32px; }
+    .glass-low { --glass-blur: 18px; }
+    .glass-high { --glass-blur: 34px; }
 
-    .glow-low { --glass-glow: 0.25; }
-    .glow-high { --glass-glow: 0.7; }
+    .glow-low { --glass-glow: 0.3; }
+    .glow-high { --glass-glow: 0.75; }
 
-    .compact-on .note-card { padding: 8px 9px; }
-    .compact-on .note-body-preview { max-height: 32px; }
+    .compact-on .note-card { padding: 10px 11px 9px; }
+    .compact-on .note-body-preview { max-height: 40px; }
 
     .headings-soft .section-title,
     .headings-soft .brand-title {
@@ -971,8 +1010,8 @@
         <div class="brand-left">
           <div class="brand-crystal"><span>W</span></div>
           <div class="brand-text">
-            <div class="brand-title">AETHER NOTES</div>
-            <div class="brand-subtitle">WORLD OF DISCOVERIES</div>
+            <div class="brand-title">WOD NOTEPAD</div>
+            <div class="brand-subtitle">AETHER GLASS EDITION</div>
           </div>
         </div>
         <div class="top-actions">
@@ -994,11 +1033,11 @@
         <div class="auth-card">
           <div class="auth-inner">
             <div class="auth-title">SIGN IN</div>
-            <div class="auth-tagline">Enter the glass vault where your ideas become crystal.</div>
+            <div class="auth-tagline">Enter the WOD Notepad glass vault where every idea lands and stays.</div>
             <div class="auth-fields">
               <div class="field">
                 <label>Email</label>
-                <input type="email" id="authEmail" placeholder="you@aether.world" />
+                <input type="email" id="authEmail" placeholder="you@wod.world" />
               </div>
               <div class="field">
                 <label>Password</label>
@@ -1006,8 +1045,8 @@
               </div>
             </div>
             <div class="auth-actions">
-              <div class="btn-primary" id="btnLogin">Enter Aether</div>
-              <div class="btn-ghost" id="btnShowSignup">Create Aether Account</div>
+              <div class="btn-primary" id="btnLogin">Open WOD Notepad</div>
+              <div class="btn-ghost" id="btnShowSignup">Create WOD Account</div>
             </div>
           </div>
         </div>
@@ -1015,15 +1054,15 @@
         <div class="auth-card" id="signupCard" style="margin-top:10px; display:none;">
           <div class="auth-inner">
             <div class="auth-title">SIGN UP</div>
-            <div class="auth-tagline">Forge your crystal identity and claim your vault.</div>
+            <div class="auth-tagline">Forge your WOD identity and claim your glass vault.</div>
             <div class="auth-fields">
               <div class="field">
                 <label>Name</label>
-                <input type="text" id="signupName" placeholder="Aether Explorer" />
+                <input type="text" id="signupName" placeholder="WOD Explorer" />
               </div>
               <div class="field">
                 <label>Email</label>
-                <input type="email" id="signupEmail" placeholder="you@aether.world" />
+                <input type="email" id="signupEmail" placeholder="you@wod.world" />
               </div>
               <div class="field">
                 <label>Password</label>
@@ -1031,14 +1070,14 @@
               </div>
             </div>
             <div class="auth-actions">
-              <div class="btn-primary" id="btnSignup">Create Vault</div>
+              <div class="btn-primary" id="btnSignup">Create Glass Vault</div>
               <div class="btn-ghost" id="btnBackLogin">Back to Sign In</div>
             </div>
           </div>
         </div>
 
         <div class="auth-footnote">
-          100% glass. 0% lost ideas. Your thoughts land here and never escape.
+          100% real glass. 0% lost notes. WOD Notepad catches everything you think.
         </div>
       </div>
 
@@ -1051,7 +1090,7 @@
                   <path d="M11 5a6 6 0 1 1 0 12 6 6 0 0 1 0-12z" />
                   <path d="M16.5 16.5 20 20" />
                 </svg>
-                <input id="searchInput" type="text" placeholder="Search crystal notes..." />
+                <input id="searchInput" type="text" placeholder="Search WOD notes..." />
               </div>
             </div>
             <div class="stats-row">
@@ -1085,7 +1124,8 @@
               <button class="tab-pill" data-tab="todo">To-Do</button>
             </div>
             <div class="section-header">
-              <div class="section-title">NOTES</div>
+              <div class="section-title">RECENT NOTES</div>
+              <div class="section-sub">Newest at the top · WOD Notepad</div>
             </div>
           </div>
         </div>
@@ -1117,7 +1157,7 @@
             <div class="overlay-body">
               <div class="overlay-field">
                 <label>Title</label>
-                <input id="noteTitle" type="text" placeholder="Crystal thought title..." />
+                <input id="noteTitle" type="text" placeholder="Bold WOD thought title..." />
               </div>
               <div class="overlay-field">
                 <label>Category</label>
@@ -1136,7 +1176,7 @@
               </div>
               <div class="overlay-field">
                 <label>Note</label>
-                <textarea id="noteBody" placeholder="Write boldly. Think wildly. Discover dangerously."></textarea>
+                <textarea id="noteBody" placeholder="Write boldly. Think wildly. Discover dangerously. WOD Notepad is listening."></textarea>
               </div>
             </div>
           </div>
@@ -1169,7 +1209,7 @@
               </div>
               <div class="overlay-field">
                 <label>Note</label>
-                <div id="viewerBody" style="white-space:pre-wrap;font-size:14px;line-height:1.45;color:#e5e7eb;"></div>
+                <div id="viewerBody" style="white-space:pre-wrap;font-size:15px;line-height:1.5;color:#e5e7eb;"></div>
               </div>
             </div>
           </div>
@@ -1177,7 +1217,10 @@
       </div>
 
       <div class="settings-panel" id="settingsPanel">
-        <div class="settings-title">AETHER GLASS SETTINGS</div>
+        <div class="settings-header-row">
+          <div class="settings-title">AETHER GLASS SETTINGS</div>
+          <button class="settings-back-btn" id="settingsBack">Back</button>
+        </div>
 
         <div class="settings-group">
           <div class="settings-label">1. Theme</div>
@@ -1353,6 +1396,7 @@
 
     const settingsBtn = document.getElementById("settingsBtn");
     const settingsPanel = document.getElementById("settingsPanel");
+    const settingsBack = document.getElementById("settingsBack");
     const settingsPills = document.querySelectorAll(".settings-pill");
     const settingsToggles = document.querySelectorAll(".settings-toggle input");
     const themeToggle = document.getElementById("themeToggle");
@@ -1378,6 +1422,27 @@
       setTimeout(() => toast.classList.remove("show"), 1600);
     }
 
+    function exportNoteAsFile(note) {
+      const blob = new Blob(
+        [
+          "Title: " + note.title + "\\n",
+          "Category: " + note.category + "\\n",
+          "Date: " + note.date + "\\n",
+          "Words: " + note.words + "\\n\\n",
+          note.body
+        ],
+        { type: "text/plain" }
+      );
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "wod-note-" + note.id + ".txt";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
     function renderNotes() {
       const search = (searchInput.value || "").toLowerCase();
       noteListEl.innerHTML = "";
@@ -1385,7 +1450,9 @@
       let pinnedCount = 0;
       let todayCount = 0;
 
-      notes.forEach(note => {
+      const sorted = [...notes].sort((a, b) => (b.date + b.id).localeCompare(a.date + a.id));
+
+      sorted.forEach(note => {
         const matchesTab = activeTab === "all" || note.category === activeTab;
         const textBlob = (note.title + " " + note.body + " " + note.category).toLowerCase();
         const matchesSearch = !search || textBlob.includes(search);
@@ -1412,30 +1479,94 @@
           <div class="note-body-preview">${note.body}</div>
           <div class="note-footer-row">
             <span data-meta="words">${note.words} words</span>
-            <button class="note-share-btn">
+            <span>${note.pinned ? "Pinned · WOD Notepad" : "WOD Notepad"}</span>
+          </div>
+          <div class="note-actions-row">
+            <button class="note-action-btn" data-action="edit">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 20h4l10-10-4-4L4 16v4z" />
+              </svg>
+              <span>Edit</span>
+            </button>
+            <button class="note-action-btn" data-action="delete" style="color:#fecaca;border-color:#fecaca;">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 7h16" />
+                <path d="M10 11v6" />
+                <path d="M14 11v6" />
+                <path d="M6 7l1-3h10l1 3" />
+                <path d="M6 7v12a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7" />
+              </svg>
+              <span>Delete</span>
+            </button>
+            <button class="note-action-btn" data-action="copy">
+              <svg viewBox="0 0 24 24">
+                <path d="M9 9h11v11H9z" />
+                <path d="M5 5h11v11H5z" />
+              </svg>
+              <span>Copy</span>
+            </button>
+            <button class="note-action-btn" data-action="share">
               <svg viewBox="0 0 24 24">
                 <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7" />
                 <path d="M16 6l-4-4-4 4" />
                 <path d="M12 2v14" />
               </svg>
-              <span>Share link</span>
+              <span>Share</span>
+            </button>
+            <button class="note-action-btn" data-action="export">
+              <svg viewBox="0 0 24 24">
+                <path d="M6 2h9l5 5v15H6z" />
+                <path d="M14 2v5h5" />
+              </svg>
+              <span>Export</span>
             </button>
           </div>
         `;
 
-        const shareBtn = card.querySelector(".note-share-btn");
-        shareBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          const url = "https://aether-notes.local/note/" + note.id;
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(url).then(() => {
-              showToast("Sharable link copied");
-            }).catch(() => {
-              showToast("Sharable link: " + url);
-            });
-          } else {
-            showToast("Sharable link: " + url);
-          }
+        const actions = card.querySelectorAll(".note-action-btn");
+        actions.forEach(btn => {
+          btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const action = btn.dataset.action;
+            if (action === "edit") {
+              openEditor(note);
+            }
+            if (action === "delete") {
+              notes = notes.filter(n => n.id !== note.id);
+              renderNotes();
+              showToast("Note deleted");
+            }
+            if (action === "copy") {
+              const text = note.title + "\\n\\n" + note.body;
+              if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                  showToast("Note copied");
+                }).catch(() => {
+                  showToast("Copy failed");
+                });
+              } else {
+                showToast("Copy not supported");
+              }
+            }
+            if (action === "share") {
+              const url = "https://wod-notepad.local/note/" + note.id;
+              if (navigator.share) {
+                navigator.share({ title: note.title, text: note.body, url }).catch(() => {});
+              } else if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(() => {
+                  showToast("Sharable link copied");
+                }).catch(() => {
+                  showToast("Sharable link: " + url);
+                });
+              } else {
+                showToast("Sharable link: " + url);
+              }
+            }
+            if (action === "export") {
+              exportNoteAsFile(note);
+              showToast("Exported as .txt");
+            }
+          });
         });
 
         card.addEventListener("click", () => openViewer(note));
@@ -1473,7 +1604,7 @@
     }
 
     function saveNote() {
-      const title = noteTitleInput.value.trim() || "Untitled";
+      const title = noteTitleInput.value.trim() || "Untitled WOD Note";
       const category = noteCategorySelect.value || "personal";
       const pinned = notePinnedCheckbox.checked;
       const body = noteBodyTextarea.value.trim();
@@ -1555,11 +1686,11 @@
     });
     btnLogin.addEventListener("click", () => {
       appRoot.classList.add("auth-hidden");
-      showToast("Welcome back to Aether");
+      showToast("Welcome back to WOD Notepad");
     });
     btnSignup.addEventListener("click", () => {
       appRoot.classList.add("auth-hidden");
-      showToast("Vault created. Welcome to Aether");
+      showToast("Vault created. Welcome to WOD Notepad");
     });
 
     themeToggle.addEventListener("click", () => {
@@ -1568,6 +1699,9 @@
 
     settingsBtn.addEventListener("click", () => {
       settingsPanel.classList.toggle("active");
+    });
+    settingsBack.addEventListener("click", () => {
+      settingsPanel.classList.remove("active");
     });
 
     settingsPills.forEach(pill => {
@@ -1638,13 +1772,20 @@
 
     notes.push({
       id: "demo-1",
-      title: "WOD Funny Intro",
+      title: "WOD Notepad · Funny Intro",
       category: "personal",
-      pinned: false,
+      pinned: true,
       body:
-        "WOD Notepad\nWelcome to WOD — the only place where your ideas stop running away from you.\n\nHere, every thought you type is grabbed, locked, and stored in your cloud before it even tries to escape.\nNo disappearing notes. No “I swear I wrote it.” No heartbreak.\n\nThis is your creative battlefield.\nYour mental gym.\nYour idea refrigerator — because nothing spoils here.\n\nWrite boldly.\nThink wildly.\nDiscover dangerously.\n\nYour genius starts now.",
+        "Welcome to WOD Notepad — the only place where your ideas stop running away from you.\\n\\n" +
+        "Here, every thought you type is grabbed, locked, and stored in your glass vault before it even tries to escape.\\n" +
+        "No disappearing notes. No “I swear I wrote it.” No heartbreak.\\n\\n" +
+        "This is your creative battlefield.\\n" +
+        "Your mental gym.\\n" +
+        "Your idea refrigerator — because nothing spoils here.\\n\\n" +
+        "Write boldly.\\nThink wildly.\\nDiscover dangerously.\\n\\n" +
+        "WOD Notepad. Your genius starts now.",
       date: todayString(),
-      words: 73
+      words: 90
     });
 
     renderNotes();
