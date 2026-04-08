@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>WOD Notepad</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
   <!-- Firebase v8 -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -28,31 +28,6 @@
       --font-size-title: 16px;
     }
 
-    [data-theme="light"] {
-      --bg: #f3f4f6;
-      --bg-card: #ffffff;
-      --bg-soft: #e5e7eb;
-      --text-main: #111827;
-      --text-muted: #6b7280;
-      --border: #d1d5db;
-      --accent: #f97316;
-      --accent-soft: rgba(249, 115, 22, 0.12);
-      --shadow-soft: 0 10px 24px rgba(15, 23, 42, 0.12);
-    }
-
-    [data-font="small"] {
-      --font-size-body: 13px;
-      --font-size-title: 15px;
-    }
-    [data-font="medium"] {
-      --font-size-body: 14px;
-      --font-size-title: 16px;
-    }
-    [data-font="large"] {
-      --font-size-body: 16px;
-      --font-size-title: 18px;
-    }
-
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
@@ -62,14 +37,14 @@
       padding: 0;
       height: 100%;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      background: #000;
     }
     body {
       display: flex;
       justify-content: center;
       align-items: stretch;
-      background: radial-gradient(circle at top, #111827 0, #020617 55%);
-      color: var(--text-main);
     }
+
     .app-root {
       width: 100%;
       max-width: 480px;
@@ -78,6 +53,7 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      color: var(--text-main);
     }
 
     .screen {
@@ -116,8 +92,7 @@
       color: var(--text-muted);
     }
     .field input,
-    .field textarea,
-    .field select {
+    .field textarea {
       border-radius: var(--radius-md);
       border: 1px solid var(--border);
       background: var(--bg-soft);
@@ -295,51 +270,15 @@
       transform: translateX(-50%) translateY(-4px);
     }
 
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-    .tag-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: var(--accent);
-    }
-
-    .theme-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 6px;
-    }
-    .color-dot {
-      width: 20px;
-      height: 20px;
-      border-radius: 999px;
-      border: 2px solid transparent;
-      cursor: pointer;
-    }
-    .color-dot.active {
-      border-color: #ffffff;
-      box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.7);
-    }
-
     .link-text {
       font-size: 12px;
       color: var(--text-muted);
       word-break: break-all;
       margin-top: 4px;
     }
-
-    body {
-      font-size: var(--font-size-body);
-    }
   </style>
 </head>
-<body data-theme="dark" data-font="medium">
+<body>
   <div class="app-root">
     <!-- LOGIN -->
     <div id="screen-login" class="screen active">
@@ -449,9 +388,8 @@
       </div>
 
       <div class="card">
-        <div class="tag">
-          <span class="tag-dot"></span>
-          <span>Sharable link</span>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px;">
+          Sharable link
         </div>
         <button class="btn secondary" id="shareLinkBtn">
           <svg viewBox="0 0 24 24">
@@ -520,33 +458,8 @@
             Back
           </button>
         </div>
-
-        <div class="field">
-          <label>Theme</label>
-          <div class="theme-row">
-            <button class="btn secondary" data-theme-btn="dark">Dark</button>
-            <button class="btn secondary" data-theme-btn="light">Light</button>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Font size</label>
-          <div class="theme-row">
-            <button class="btn secondary" data-font-btn="small">Small</button>
-            <button class="btn secondary" data-font-btn="medium">Medium</button>
-            <button class="btn secondary" data-font-btn="large">Large</button>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Accent color</label>
-          <div class="theme-row" id="accentRow">
-            <div class="color-dot" data-accent="#facc15" style="background:#facc15;"></div>
-            <div class="color-dot" data-accent="#f97316" style="background:#f97316;"></div>
-            <div class="color-dot" data-accent="#22c55e" style="background:#22c55e;"></div>
-            <div class="color-dot" data-accent="#3b82f6" style="background:#3b82f6;"></div>
-            <div class="color-dot" data-accent="#ec4899" style="background:#ec4899;"></div>
-          </div>
+        <div style="font-size:13px;color:var(--text-muted);">
+          (Reserved for future options)
         </div>
       </div>
     </div>
@@ -555,7 +468,7 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    // --- Firebase config (your config) ---
+    // --- Firebase config ---
     const firebaseConfig = {
       apiKey: "AIzaSyBMKrFDt5uvRDjTDDeaRKQQHXNrwc0SAEo",
       authDomain: "let-s-talk-e57c6.firebaseapp.com",
@@ -571,13 +484,11 @@
     const auth = firebase.auth();
     const db = firebase.database();
 
-    // --- State ---
     let currentUID = null;
     let notes = [];
     let editingNoteId = null;
     let notesRef = null;
 
-    // --- Screens ---
     const screens = {
       login: document.getElementById("screen-login"),
       signup: document.getElementById("screen-signup"),
@@ -593,7 +504,6 @@
       currentScreen = name;
     }
 
-    // --- Toast ---
     const toastEl = document.getElementById("toast");
     function showToast(msg) {
       toastEl.textContent = msg;
@@ -601,7 +511,6 @@
       setTimeout(() => toastEl.classList.remove("show"), 1800);
     }
 
-    // --- Elements ---
     const loginEmailEl = document.getElementById("loginEmail");
     const loginPasswordEl = document.getElementById("loginPassword");
     const loginBtnEl = document.getElementById("loginBtn");
@@ -635,18 +544,10 @@
 
     const settingsBackBtnEl = document.getElementById("settingsBackBtn");
 
-    // Theme controls
-    const themeButtons = document.querySelectorAll("[data-theme-btn]");
-    const fontButtons = document.querySelectorAll("[data-font-btn]");
-    const accentRow = document.getElementById("accentRow");
-    const rootBody = document.body;
-
-    // --- Paths ---
     function userNotesPath() {
       return `users/${currentUID}/notes`;
     }
 
-    // --- Notes logic ---
     function wordCount(text) {
       if (!text) return 0;
       return text.trim().split(/\s+/).filter(Boolean).length;
@@ -778,7 +679,6 @@
       }
     }
 
-    // --- Auth handlers ---
     loginBtnEl.addEventListener("click", async () => {
       const email = loginEmailEl.value.trim();
       const password = loginPasswordEl.value.trim();
@@ -835,7 +735,6 @@
       }
     });
 
-    // --- Home / editor / settings events ---
     newNoteBtnEl.addEventListener("click", () => openEditor(null));
     editorSaveBtnEl.addEventListener("click", saveNote);
     editorDeleteBtnEl.addEventListener("click", deleteNote);
@@ -846,7 +745,6 @@
     });
     settingsBackBtnEl.addEventListener("click", () => showScreen("home"));
 
-    // --- Sharable link ---
     shareLinkBtnEl.addEventListener("click", () => {
       const link = window.location.href;
       shareLinkTextEl.textContent = link;
@@ -860,32 +758,6 @@
       }
     });
 
-    // --- Theme / font / accent ---
-    themeButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const theme = btn.getAttribute("data-theme-btn");
-        rootBody.setAttribute("data-theme", theme);
-      });
-    });
-
-    fontButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const font = btn.getAttribute("data-font-btn");
-        rootBody.setAttribute("data-font", font);
-      });
-    });
-
-    accentRow.addEventListener("click", (e) => {
-      const dot = e.target.closest(".color-dot");
-      if (!dot) return;
-      const color = dot.getAttribute("data-accent");
-      document.documentElement.style.setProperty("--accent", color);
-      document.documentElement.style.setProperty("--accent-soft", color + "33");
-      document.querySelectorAll(".color-dot").forEach((d) => d.classList.remove("active"));
-      dot.classList.add("active");
-    });
-
-    // --- Auth state listener ---
     auth.onAuthStateChanged((user) => {
       if (user) {
         currentUID = user.uid;
@@ -900,8 +772,7 @@
       }
     });
 
-    // Initial accent dot active
-    document.querySelector('.color-dot[data-accent="#facc15"]').classList.add("active");
+    showScreen("login");
   </script>
 </body>
 </html>
