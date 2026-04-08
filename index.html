@@ -19,7 +19,7 @@
       --radius-md: 12px;
       --radius-sm: 8px;
       --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.6);
-      --transition-fast: 0.2s ease-out;
+      --transition-fast: 0.25s ease-out;
       --font-main: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
         "Segoe UI", sans-serif;
     }
@@ -38,39 +38,35 @@
       overflow: hidden;
     }
 
-    .screen {
+    .app-root {
       position: fixed;
       inset: 0;
-      width: 100%;
-      height: 100%;
       max-width: 480px;
       margin: 0 auto;
+      background: radial-gradient(circle at top, #151827 0, #050608 55%);
+      overflow: hidden;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
       display: flex;
       flex-direction: column;
       background: radial-gradient(circle at top, #151827 0, #050608 55%);
-      transform: translateX(0);
-      transition: transform 0.25s ease-out;
+      transform: translateY(100%);
+      opacity: 0;
+      transition: transform var(--transition-fast), opacity var(--transition-fast);
+      z-index: 0;
     }
 
-    #homeScreen {
-      z-index: 1;
-    }
-
-    #editorScreen {
+    .screen.active {
+      transform: translateY(0);
+      opacity: 1;
       z-index: 2;
-      transform: translateX(100%);
     }
 
-    .screen.show {
-      transform: translateX(0);
-    }
-
-    .screen.hide-left {
-      transform: translateX(-100%);
-    }
-
-    .screen.hide-right {
-      transform: translateX(100%);
+    .screen.below {
+      z-index: 1;
     }
 
     .app-shell {
@@ -496,7 +492,7 @@
     }
 
     .fab {
-      position: fixed;
+      position: absolute;
       right: 18px;
       bottom: 24px;
       width: 56px;
@@ -513,7 +509,7 @@
       font-weight: 600;
       box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
       cursor: pointer;
-      z-index: 20;
+      z-index: 5;
     }
 
     .fab:active {
@@ -657,89 +653,62 @@
       transform: translateX(-50%) translateY(-4px);
     }
 
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      display: none;
-      align-items: flex-end;
-      justify-content: center;
-      z-index: 40;
-    }
-
-    .overlay.show {
+    .settings-shell,
+    .trash-shell,
+    .about-shell {
+      flex: 1;
+      padding: 14px 14px 24px;
       display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    .sheet {
-      width: 100%;
-      max-width: 480px;
-      background: radial-gradient(circle at top, #111827 0, #020617 70%);
-      border-radius: 18px 18px 0 0;
-      border-top: 1px solid var(--border);
-      box-shadow: 0 -18px 40px rgba(0, 0, 0, 0.9);
-      padding: 14px 16px 18px;
-      animation: sheetUp 0.22s ease-out;
-    }
-
-    @keyframes sheetUp {
-      from {
-        transform: translateY(100%);
-      }
-      to {
-        transform: translateY(0);
-      }
-    }
-
-    .sheet-header {
+    .screen-title-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 8px;
+      padding: 4px 2px 8px;
     }
 
-    .sheet-title {
+    .screen-title {
       font-size: 12px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--text-muted);
     }
 
-    .sheet-close {
-      font-size: 18px;
-      cursor: pointer;
-      color: var(--text-muted);
+    .settings-section {
+      margin-top: 8px;
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top, #111827 0, #020617 70%);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      padding: 10px 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
-    .sheet-section {
-      margin-top: 10px;
-      font-size: 12px;
-      color: var(--text-main);
-    }
-
-    .sheet-section-title {
+    .settings-section-title {
       font-size: 11px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--text-muted);
-      margin-bottom: 4px;
     }
 
-    .sheet-row {
+    .settings-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 6px;
       gap: 8px;
+      font-size: 12px;
     }
 
-    .sheet-label {
-      font-size: 12px;
+    .settings-label {
       color: var(--text-main);
     }
 
-    .sheet-select,
-    .sheet-input {
+    .settings-select {
       border-radius: 999px;
       border: 1px solid var(--border);
       background: #020617;
@@ -749,24 +718,72 @@
       outline: none;
     }
 
-    .sheet-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+    .settings-note {
       font-size: 11px;
       color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    .sheet-badge span {
-      font-size: 13px;
     }
 
     .about-text {
       font-size: 11px;
       color: var(--text-muted);
       line-height: 1.5;
+    }
+
+    .trash-list {
+      flex: 1;
+      margin-top: 8px;
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top, #111827 0, #020617 70%);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      padding: 10px 8px 16px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .trash-items {
       margin-top: 4px;
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .trash-card {
+      border-radius: var(--radius-md);
+      padding: 8px 10px;
+      background: linear-gradient(145deg, #0b0d14, #050608);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 11px;
+    }
+
+    .trash-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .trash-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 10px;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+
+    .trash-btn.danger {
+      border-color: rgba(248, 113, 113, 0.9);
+      color: #fecaca;
     }
 
     @media (max-width: 360px) {
@@ -782,194 +799,261 @@
   </style>
 </head>
 <body>
-  <div id="homeScreen" class="screen show">
-    <div class="app-shell">
-      <div class="top-bar">
-        <div class="brand-block">
-          <div class="brand-title">
-            <span class="brand-dot"></span>
-            <span>WOD Notepad</span>
+  <div class="app-root">
+    <!-- HOME SCREEN -->
+    <div id="screen-home" class="screen active">
+      <div class="app-shell">
+        <div class="top-bar">
+          <div class="brand-block">
+            <div class="brand-title">
+              <span class="brand-dot"></span>
+              <span>WOD Notepad</span>
+            </div>
+            <div class="brand-subtitle">WORLD OF DISCOVERIES</div>
           </div>
-          <div class="brand-subtitle">WORLD OF DISCOVERIES</div>
-        </div>
-        <div class="top-actions">
-          <button class="icon-btn" id="viewToggleBtn">▦</button>
-          <button class="icon-btn" id="trashViewBtn">🗑</button>
-          <button class="icon-btn" id="settingsBtn">⚙</button>
-          <button class="icon-btn" id="clockBtn">⏱</button>
-        </div>
-      </div>
-
-      <div class="search-row">
-        <div class="search-box">
-          <div class="search-icon">⌕</div>
-          <input id="searchInput" class="search-input" type="text" placeholder="Search notes..." />
-        </div>
-      </div>
-
-      <div class="stats-row">
-        <div class="stat-pill">
-          <div class="stat-label">Notes</div>
-          <div class="stat-value" id="statNotes">0</div>
-        </div>
-        <div class="stat-pill">
-          <div class="stat-label">Pinned</div>
-          <div class="stat-value" id="statPinned">0</div>
-        </div>
-        <div class="stat-pill">
-          <div class="stat-label">Words</div>
-          <div class="stat-value" id="statWords">0</div>
-        </div>
-        <div class="stat-pill">
-          <div class="stat-label">Today</div>
-          <div class="stat-value" id="statToday">0</div>
-        </div>
-      </div>
-
-      <div class="tabs-row">
-        <div class="tabs">
-          <button class="tab-chip active" data-tab="all">All</button>
-          <button class="tab-chip" data-tab="Personal">Personal</button>
-          <button class="tab-chip" data-tab="Work">Work</button>
-          <button class="tab-chip" data-tab="Ideas">Ideas</button>
-          <button class="tab-chip" data-tab="To-Do">To-Do</button>
-        </div>
-        <div class="smart-label">SMART</div>
-      </div>
-
-      <div class="smart-row">
-        <div class="smart-item">
-          <div class="smart-text">
-            <div class="smart-title">Auto Correct</div>
-            <div class="smart-sub">Use device spellcheck while typing</div>
-          </div>
-          <div class="toggle on" id="toggleAutoCorrect">
-            <div class="toggle-knob"></div>
+          <div class="top-actions">
+            <button class="icon-btn" id="viewToggleBtn">▦</button>
+            <button class="icon-btn" id="trashViewBtn">🗑</button>
+            <button class="icon-btn" id="settingsBtn">⚙</button>
+            <button class="icon-btn" id="clockBtn">⏱</button>
           </div>
         </div>
-        <div class="smart-item">
-          <div class="smart-text">
-            <div class="smart-title">Auto Highlight</div>
-            <div class="smart-sub">Highlight search matches in notes</div>
+
+        <div class="search-row">
+          <div class="search-box">
+            <div class="search-icon">⌕</div>
+            <input id="searchInput" class="search-input" type="text" placeholder="Search notes..." />
           </div>
-          <div class="toggle" id="toggleAutoHighlight">
-            <div class="toggle-knob"></div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-pill">
+            <div class="stat-label">Notes</div>
+            <div class="stat-value" id="statNotes">0</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-label">Pinned</div>
+            <div class="stat-value" id="statPinned">0</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-label">Words</div>
+            <div class="stat-value" id="statWords">0</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-label">Today</div>
+            <div class="stat-value" id="statToday">0</div>
+          </div>
+        </div>
+
+        <div class="tabs-row">
+          <div class="tabs">
+            <button class="tab-chip active" data-tab="all">All</button>
+            <button class="tab-chip" data-tab="Personal">Personal</button>
+            <button class="tab-chip" data-tab="Work">Work</button>
+            <button class="tab-chip" data-tab="Ideas">Ideas</button>
+            <button class="tab-chip" data-tab="To-Do">To-Do</button>
+          </div>
+          <div class="smart-label">SMART</div>
+        </div>
+
+        <div class="smart-row">
+          <div class="smart-item">
+            <div class="smart-text">
+              <div class="smart-title">Auto Correct</div>
+              <div class="smart-sub">Use device spellcheck while typing</div>
+            </div>
+            <div class="toggle on" id="toggleAutoCorrect">
+              <div class="toggle-knob"></div>
+            </div>
+          </div>
+          <div class="smart-item">
+            <div class="smart-text">
+              <div class="smart-title">Auto Highlight</div>
+              <div class="smart-sub">Highlight search matches in notes</div>
+            </div>
+            <div class="toggle" id="toggleAutoHighlight">
+              <div class="toggle-knob"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notes-panel">
+          <div class="notes-header-row">
+            <div class="notes-header-title">NOTES</div>
+            <div class="notes-header-filter" id="notesHeaderFilter">All notes</div>
+          </div>
+          <div class="notes-list" id="notesList">
+            <div class="center-state" id="centerState">
+              <div class="loader-ring"></div>
+              <div class="center-title" id="centerTitle">Loading notes...</div>
+              <div class="center-sub" id="centerSub">Syncing with WOD Notepad cloud</div>
+            </div>
           </div>
         </div>
       </div>
+      <button class="fab" id="fab">+</button>
+    </div>
 
-      <div class="notes-panel">
-        <div class="notes-header-row">
-          <div class="notes-header-title">NOTES</div>
-          <div class="notes-header-filter" id="notesHeaderFilter">All notes</div>
+    <!-- EDITOR SCREEN -->
+    <div id="screen-editor" class="screen">
+      <div class="editor-shell">
+        <div class="editor-top">
+          <div class="back-btn" data-back="home">
+            <span>←</span>
+            <span>Back</span>
+          </div>
+          <div class="editor-title-label" id="editorTitleLabel">NEW NOTE</div>
+          <button class="pill-btn primary" id="editorSaveBtn">Save</button>
         </div>
-        <div class="notes-list" id="notesList">
-          <div class="center-state" id="centerState">
-            <div class="loader-ring"></div>
-            <div class="center-title" id="centerTitle">Loading notes...</div>
-            <div class="center-sub" id="centerSub">Syncing with WOD Notepad cloud</div>
+
+        <div class="editor-field">
+          <label class="editor-label" for="noteTitleInput">Title</label>
+          <input id="noteTitleInput" class="editor-input" type="text" placeholder="Give your note a title..." />
+        </div>
+
+        <div class="editor-field">
+          <label class="editor-label" for="noteCategorySelect">Category</label>
+          <select id="noteCategorySelect" class="editor-select">
+            <option value="Personal">Personal</option>
+            <option value="Work">Work</option>
+            <option value="Ideas">Ideas</option>
+            <option value="To-Do">To-Do</option>
+          </select>
+        </div>
+
+        <div class="editor-field">
+          <label class="editor-label" for="noteBodyInput">Note</label>
+          <textarea id="noteBodyInput" class="editor-textarea" placeholder="Type your note here..."></textarea>
+        </div>
+
+        <div class="editor-footer">
+          <span>
+            <span class="dot"></span>
+            <span id="editorWordCount">0 words</span>
+          </span>
+          <span id="editorStatus">Ready</span>
+        </div>
+
+        <div class="editor-footer" style="margin-top:10px;">
+          <button class="pill-btn danger" id="editorDeleteBtn">Delete</button>
+          <button class="pill-btn" id="editorPinBtn">📌 Pin</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS SCREEN -->
+    <div id="screen-settings" class="screen">
+      <div class="settings-shell">
+        <div class="screen-title-row">
+          <div class="back-btn" data-back="home">
+            <span>←</span>
+            <span>Back</span>
+          </div>
+          <div class="screen-title">SETTINGS</div>
+          <div style="width:40px;"></div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-section-title">Appearance</div>
+          <div class="settings-row">
+            <div class="settings-label">Theme</div>
+            <select id="themeSelect" class="settings-select">
+              <option value="dark">Dark (WOD)</option>
+              <option value="midnight">Midnight Gold</option>
+              <option value="ink">Deep Ink</option>
+            </select>
+          </div>
+          <div class="settings-row">
+            <div class="settings-label">Font size</div>
+            <select id="fontSizeSelect" class="settings-select">
+              <option value="normal">Normal</option>
+              <option value="large">Large</option>
+              <option value="huge">Huge</option>
+            </select>
+          </div>
+          <div class="settings-row">
+            <div class="settings-label">Card shape</div>
+            <select id="cardShapeSelect" class="settings-select">
+              <option value="rounded">Rounded</option>
+              <option value="pill">Pill</option>
+              <option value="square">Square</option>
+            </select>
+          </div>
+          <div class="settings-note">
+            Visual changes are saved on this device and applied instantly.
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-section-title">About WOD</div>
+          <div class="about-text">
+            WOD Notepad (World of Discoveries) is a focused note space crafted for ideas,
+            plans, lyrics, code, and everything you don’t want to lose. Notes are stored
+            in your WOD cloud using Firebase Realtime Database.
+          </div>
+          <div class="about-text" style="margin-top:6px;">
+            Built for mobile first. Designed to feel like a studio, a notebook, and a
+            control room in your pocket.
           </div>
         </div>
       </div>
     </div>
-    <button class="fab" id="fab">+</button>
-  </div>
 
-  <div id="editorScreen" class="screen hide-right">
-    <div class="editor-shell">
-      <div class="editor-top">
-        <div class="back-btn" id="backBtn">
-          <span>←</span>
-          <span>Back</span>
+    <!-- TRASH SCREEN -->
+    <div id="screen-trash" class="screen">
+      <div class="trash-shell">
+        <div class="screen-title-row">
+          <div class="back-btn" data-back="home">
+            <span>←</span>
+            <span>Back</span>
+          </div>
+          <div class="screen-title">TRASH</div>
+          <div style="width:40px;"></div>
         </div>
-        <div class="editor-title-label" id="editorTitleLabel">NEW NOTE</div>
-        <button class="pill-btn primary" id="editorSaveBtn">Save</button>
-      </div>
 
-      <div class="editor-field">
-        <label class="editor-label" for="noteTitleInput">Title</label>
-        <input id="noteTitleInput" class="editor-input" type="text" placeholder="Give your note a title..." />
-      </div>
-
-      <div class="editor-field">
-        <label class="editor-label" for="noteCategorySelect">Category</label>
-        <select id="noteCategorySelect" class="editor-select">
-          <option value="Personal">Personal</option>
-          <option value="Work">Work</option>
-          <option value="Ideas">Ideas</option>
-          <option value="To-Do">To-Do</option>
-        </select>
-      </div>
-
-      <div class="editor-field">
-        <label class="editor-label" for="noteBodyInput">Note</label>
-        <textarea id="noteBodyInput" class="editor-textarea" placeholder="Type your note here..."></textarea>
-      </div>
-
-      <div class="editor-footer">
-        <span>
-          <span class="dot"></span>
-          <span id="editorWordCount">0 words</span>
-        </span>
-        <span id="editorStatus">Ready</span>
-      </div>
-
-      <div class="editor-footer" style="margin-top:10px;">
-        <button class="pill-btn danger" id="editorDeleteBtn">Delete</button>
-        <button class="pill-btn" id="editorPinBtn">📌 Pin</button>
+        <div class="trash-list">
+          <div class="notes-header-row">
+            <div class="notes-header-title">DELETED NOTES</div>
+          </div>
+          <div class="trash-items" id="trashItems">
+            <div class="center-state" id="trashEmptyState">
+              <div class="center-title">Trash is empty</div>
+              <div class="center-sub">Deleted notes will appear here</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="overlay" id="settingsOverlay">
-    <div class="sheet">
-      <div class="sheet-header">
-        <div class="sheet-title">SETTINGS</div>
-        <div class="sheet-close" id="settingsCloseBtn">×</div>
-      </div>
+    <!-- ABOUT SCREEN (extra info) -->
+    <div id="screen-about" class="screen">
+      <div class="about-shell">
+        <div class="screen-title-row">
+          <div class="back-btn" data-back="home">
+            <span>←</span>
+            <span>Back</span>
+          </div>
+          <div class="screen-title">ABOUT WOD</div>
+          <div style="width:40px;"></div>
+        </div>
 
-      <div class="sheet-section">
-        <div class="sheet-section-title">Appearance</div>
-        <div class="sheet-row">
-          <div class="sheet-label">Theme</div>
-          <select id="themeSelect" class="sheet-select">
-            <option value="dark">Dark (WOD)</option>
-            <option value="midnight">Midnight Gold</option>
-            <option value="ink">Deep Ink</option>
-          </select>
-        </div>
-        <div class="sheet-row">
-          <div class="sheet-label">Font size</div>
-          <select id="fontSizeSelect" class="sheet-select">
-            <option value="normal">Normal</option>
-            <option value="large">Large</option>
-            <option value="huge">Huge</option>
-          </select>
-        </div>
-        <div class="sheet-row">
-          <div class="sheet-label">Card shape</div>
-          <select id="cardShapeSelect" class="sheet-select">
-            <option value="rounded">Rounded</option>
-            <option value="pill">Pill</option>
-            <option value="square">Square</option>
-          </select>
-        </div>
-        <div class="sheet-badge">
-          <span>●</span>
-          <span>Changes are saved instantly on this device</span>
-        </div>
-      </div>
-
-      <div class="sheet-section">
-        <div class="sheet-section-title">About WOD</div>
-        <div class="about-text">
-          WOD Notepad (World of Discoveries) is a focused note space crafted for ideas,
-          plans, lyrics, code, and everything you don’t want to lose. Notes are stored
-          in your WOD cloud using Firebase Realtime Database.
-        </div>
-        <div class="about-text" style="margin-top:6px;">
-          Built for mobile first. Designed to feel like a studio, a notebook, and a
-          control room in your pocket.
+        <div class="settings-section">
+          <div class="settings-section-title">World of Discoveries</div>
+          <div class="about-text">
+            WOD Notepad is part of the World of Discoveries ecosystem — a space for
+            capturing thoughts, building systems, and keeping your creative flow alive.
+          </div>
+          <div class="about-text" style="margin-top:6px;">
+            Notes are synced to:
+            <br />
+            <span style="color:#e5e7eb;font-size:10px;">
+              https://let-s-talk-e57c6-default-rtdb.firebaseio.com/
+            </span>
+          </div>
+          <div class="about-text" style="margin-top:6px;">
+            Designed for phones. No desktop required. Just open, type, and your words
+            stay in the WOD cloud.
+          </div>
         </div>
       </div>
     </div>
@@ -988,6 +1072,36 @@
     let editingNoteId = null;
     let editingPinned = false;
 
+    const screenHome = document.getElementById("screen-home");
+    const screenEditor = document.getElementById("screen-editor");
+    const screenSettings = document.getElementById("screen-settings");
+    const screenTrash = document.getElementById("screen-trash");
+    const screenAbout = document.getElementById("screen-about");
+
+    const screens = {
+      home: screenHome,
+      editor: screenEditor,
+      settings: screenSettings,
+      trash: screenTrash,
+      about: screenAbout,
+    };
+
+    let currentScreen = "home";
+
+    function showScreen(name) {
+      if (name === currentScreen) return;
+      const prev = screens[currentScreen];
+      const next = screens[name];
+
+      Object.values(screens).forEach((s) => {
+        s.classList.remove("active", "below");
+      });
+
+      prev.classList.add("below");
+      next.classList.add("active");
+      currentScreen = name;
+    }
+
     const notesListEl = document.getElementById("notesList");
     const centerStateEl = document.getElementById("centerState");
     const centerTitleEl = document.getElementById("centerTitle");
@@ -1002,9 +1116,6 @@
     const toggleAutoCorrectEl = document.getElementById("toggleAutoCorrect");
     const toggleAutoHighlightEl = document.getElementById("toggleAutoHighlight");
     const fabEl = document.getElementById("fab");
-    const homeScreenEl = document.getElementById("homeScreen");
-    const editorScreenEl = document.getElementById("editorScreen");
-    const backBtnEl = document.getElementById("backBtn");
     const editorSaveBtn = document.getElementById("editorSaveBtn");
     const editorDeleteBtn = document.getElementById("editorDeleteBtn");
     const editorPinBtn = document.getElementById("editorPinBtn");
@@ -1016,15 +1127,15 @@
     const editorTitleLabelEl = document.getElementById("editorTitleLabel");
     const toastEl = document.getElementById("toast");
 
-    const settingsOverlayEl = document.getElementById("settingsOverlay");
     const settingsBtnEl = document.getElementById("settingsBtn");
-    const settingsCloseBtnEl = document.getElementById("settingsCloseBtn");
     const themeSelectEl = document.getElementById("themeSelect");
     const fontSizeSelectEl = document.getElementById("fontSizeSelect");
     const cardShapeSelectEl = document.getElementById("cardShapeSelect");
     const viewToggleBtnEl = document.getElementById("viewToggleBtn");
     const trashViewBtnEl = document.getElementById("trashViewBtn");
     const clockBtnEl = document.getElementById("clockBtn");
+    const trashItemsEl = document.getElementById("trashItems");
+    const trashEmptyStateEl = document.getElementById("trashEmptyState");
 
     function showToast(message) {
       toastEl.textContent = message;
@@ -1113,6 +1224,7 @@
           return b.createdAt - a.createdAt;
         });
         renderNotes();
+        renderTrash();
       } catch (err) {
         setCenterState(true, "Offline?", "Could not reach WOD Notepad cloud");
       }
@@ -1157,6 +1269,7 @@
           return b.createdAt - a.createdAt;
         });
         renderNotes();
+        renderTrash();
       }
     }
 
@@ -1171,7 +1284,33 @@
       if (idx !== -1) {
         notes[idx].deleted = true;
         renderNotes();
+        renderTrash();
       }
+    }
+
+    async function restoreNote(id) {
+      const res = await fetch(DB_BASE + "/" + id + ".json", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deleted: false }),
+      });
+      if (!res.ok) throw new Error("Failed to restore note");
+      const idx = notes.findIndex((n) => n.id === id);
+      if (idx !== -1) {
+        notes[idx].deleted = false;
+        renderNotes();
+        renderTrash();
+      }
+    }
+
+    async function hardDeleteNote(id) {
+      const res = await fetch(DB_BASE + "/" + id + ".json", {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Failed to remove note");
+      notes = notes.filter((n) => n.id !== id);
+      renderNotes();
+      renderTrash();
     }
 
     function renderStats() {
@@ -1289,6 +1428,71 @@
       });
     }
 
+    function renderTrash() {
+      const trashed = notes.filter((n) => n.deleted);
+      trashItemsEl.innerHTML = "";
+      if (!trashed.length) {
+        trashItemsEl.appendChild(trashEmptyStateEl);
+        trashEmptyStateEl.style.display = "flex";
+        return;
+      }
+      trashEmptyStateEl.style.display = "none";
+      trashed.forEach((note) => {
+        const card = document.createElement("div");
+        card.className = "trash-card";
+
+        const title = document.createElement("div");
+        title.style.fontWeight = "600";
+        title.textContent = note.title || "Untitled";
+
+        const meta = document.createElement("div");
+        meta.style.fontSize = "10px";
+        meta.style.color = "#9ca3af";
+        meta.textContent =
+          note.category + " • " + formatDateShort(note.createdAt);
+
+        const body = document.createElement("div");
+        body.textContent = (note.body || "").slice(0, 120);
+
+        const actions = document.createElement("div");
+        actions.className = "trash-actions";
+
+        const restoreBtn = document.createElement("button");
+        restoreBtn.className = "trash-btn";
+        restoreBtn.textContent = "Restore";
+        restoreBtn.addEventListener("click", async () => {
+          try {
+            await restoreNote(note.id);
+            showToast("Note restored");
+          } catch {
+            showToast("Error restoring");
+          }
+        });
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "trash-btn danger";
+        deleteBtn.textContent = "Delete";
+        deleteBtn.addEventListener("click", async () => {
+          try {
+            await hardDeleteNote(note.id);
+            showToast("Note removed");
+          } catch {
+            showToast("Error removing");
+          }
+        });
+
+        actions.appendChild(restoreBtn);
+        actions.appendChild(deleteBtn);
+
+        card.appendChild(title);
+        card.appendChild(meta);
+        card.appendChild(body);
+        card.appendChild(actions);
+
+        trashItemsEl.appendChild(card);
+      });
+    }
+
     function openEditor(note) {
       editingNoteId = note ? note.id : null;
       editingPinned = note ? !!note.pinned : false;
@@ -1300,27 +1504,16 @@
       editorStatusEl.textContent = "Ready";
       noteBodyInputEl.spellcheck = autoCorrect;
       editorPinBtn.textContent = editingPinned ? "📌 Unpin" : "📌 Pin";
-
-      homeScreenEl.classList.remove("show", "hide-left", "hide-right");
-      editorScreenEl.classList.remove("show", "hide-left", "hide-right");
-
-      homeScreenEl.classList.add("hide-left");
-      editorScreenEl.classList.add("show");
-
+      showScreen("editor");
       setTimeout(() => {
         noteTitleInputEl.focus();
       }, 80);
     }
 
     function closeEditor() {
-      editorScreenEl.classList.remove("show", "hide-left", "hide-right");
-      homeScreenEl.classList.remove("show", "hide-left", "hide-right");
-
-      editorScreenEl.classList.add("hide-right");
-      homeScreenEl.classList.add("show");
-
       editingNoteId = null;
       editingPinned = false;
+      showScreen("home");
     }
 
     async function saveEditor() {
@@ -1414,7 +1607,6 @@
     });
 
     fabEl.addEventListener("click", () => openEditor(null));
-    backBtnEl.addEventListener("click", closeEditor);
     editorSaveBtn.addEventListener("click", saveEditor);
     editorDeleteBtn.addEventListener("click", deleteEditorNote);
     editorPinBtn.addEventListener("click", togglePinEditorNote);
@@ -1428,8 +1620,7 @@
     });
 
     trashViewBtnEl.addEventListener("click", () => {
-      const trashed = notes.filter((n) => n.deleted).length;
-      showToast(trashed ? trashed + " notes in trash" : "Trash is empty");
+      showScreen("trash");
     });
 
     clockBtnEl.addEventListener("click", () => {
@@ -1442,17 +1633,16 @@
     });
 
     settingsBtnEl.addEventListener("click", () => {
-      settingsOverlayEl.classList.add("show");
+      showScreen("settings");
     });
 
-    settingsCloseBtnEl.addEventListener("click", () => {
-      settingsOverlayEl.classList.remove("show");
-    });
-
-    settingsOverlayEl.addEventListener("click", (e) => {
-      if (e.target === settingsOverlayEl) {
-        settingsOverlayEl.classList.remove("show");
-      }
+    document.querySelectorAll(".back-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const target = btn.getAttribute("data-back");
+        if (target && screens[target]) {
+          showScreen(target);
+        }
+      });
     });
 
     function applyTheme(theme) {
@@ -1480,9 +1670,7 @@
     }
 
     function applyFontSize(size) {
-      const root = document.documentElement;
       if (size === "large") {
-        root.style.setProperty("--font-main", 'system-ui, -apple-system, "Segoe UI", sans-serif');
         document.body.style.fontSize = "15px";
       } else if (size === "huge") {
         document.body.style.fontSize = "17px";
