@@ -2,31 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>WOD NOTEPAD – World of Discoveries</title>
+  <title>AETHER NOTES – WOD Notepad</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
   <style>
     :root {
-      --bg-main: radial-gradient(circle at top, #050816 0, #020308 45%, #000000 100%);
-      --bg-main-aurora: radial-gradient(circle at top, #e5f0ff 0, #c7d2fe 40%, #0f172a 100%);
+      --bg-void: radial-gradient(circle at top, #020617 0, #02010a 40%, #000000 100%);
+      --bg-aurora: radial-gradient(circle at top, #e5f0ff 0, #c7d2fe 40%, #0f172a 100%);
+
+      --glass-dark: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7));
+      --glass-light: linear-gradient(145deg, rgba(248,250,252,0.96), rgba(226,232,240,0.9));
+
       --accent-gold: #facc15;
-      --accent-gold-soft: rgba(250, 204, 21, 0.7);
-      --accent-blue: #38bdf8;
-      --accent-blue-soft: rgba(56, 189, 248, 0.7);
-      --accent-purple: #a855f7;
-      --accent-purple-soft: rgba(168, 85, 247, 0.7);
-      --card-bg-dark: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7));
-      --card-bg-light: linear-gradient(145deg, rgba(248,250,252,0.96), rgba(226,232,240,0.9));
+      --accent-gold-soft: rgba(250,204,21,0.7);
+      --accent-silver: #e5e7eb;
+      --accent-silver-soft: rgba(229,231,235,0.7);
+      --accent-diamond: #38bdf8;
+      --accent-diamond-soft: rgba(56,189,248,0.7);
+
+      --shadow-strong: 0 30px 80px rgba(0,0,0,1);
+      --shadow-soft: 0 18px 50px rgba(0,0,0,0.9);
+      --glass-blur: 26px;
+      --glass-glow: 0.45;
+
+      --radius-card: 22px;
+      --radius-pill: 999px;
+
       --font-main: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
       --font-serif: "Georgia", "Times New Roman", serif;
-      --font-mono: "SF Mono", "JetBrains Mono", "Consolas", monospace;
+      --font-mono: "JetBrains Mono", "SF Mono", "Consolas", monospace;
+
       --note-font-size: 13px;
-      --title-font-size: 14px;
-      --radius-card: 18px;
-      --shadow-strong: 0 26px 70px rgba(0, 0, 0, 0.98);
-      --shadow-soft: 0 16px 40px rgba(0, 0, 0, 0.85);
-      --glass-blur: 26px;
-      --glow-intensity: 0.4;
+      --title-font-size: 15px;
     }
 
     * {
@@ -38,7 +45,7 @@
       padding: 0;
       height: 100%;
       font-family: var(--font-main);
-      background: var(--bg-main);
+      background: var(--bg-void);
       color: #f9fafb;
       overflow: hidden;
     }
@@ -48,7 +55,7 @@
       align-items: stretch;
     }
 
-    .app {
+    .app-shell {
       width: 100%;
       max-width: 480px;
       height: 100vh;
@@ -57,15 +64,31 @@
       overflow: hidden;
     }
 
-    .bg-glow {
+    .bg-orbit {
       position: absolute;
-      inset: -60px;
+      inset: -80px;
       background:
         radial-gradient(circle at 10% 0%, rgba(255,255,255,0.18), transparent 55%),
         radial-gradient(circle at 90% 10%, rgba(250,204,21,0.25), transparent 55%),
         radial-gradient(circle at 50% 100%, rgba(56,189,248,0.22), transparent 55%);
       filter: blur(40px);
       opacity: 0.9;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .glass-orb {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 999px;
+      top: -60px;
+      right: -40px;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255,255,255,0.9), transparent 40%),
+        radial-gradient(circle at 80% 100%, rgba(250,204,21,0.9), #b45309 50%, #020617 100%);
+      opacity: 0.18;
+      filter: blur(2px);
       pointer-events: none;
       z-index: 0;
     }
@@ -78,40 +101,54 @@
       flex-direction: column;
     }
 
+    /* TOP BAR */
     .top-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 10px;
     }
-
     .brand-left {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
-
-    .brand-orb {
-      width: 42px;
-      height: 42px;
-      border-radius: 999px;
+    .brand-crystal {
+      width: 46px;
+      height: 46px;
+      border-radius: 18px;
       background:
-        radial-gradient(circle at 20% 0%, #ffffff 0, rgba(255,255,255,0.2) 18%, transparent 40%),
-        radial-gradient(circle at 80% 100%, #facc15 0, #b45309 40%, #020617 100%);
+        linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.1)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.9), transparent 45%),
+        radial-gradient(circle at 100% 100%, rgba(250,204,21,0.9), #b45309 50%, #020617 100%);
       box-shadow:
-        0 0 0 1px rgba(148, 163, 184, 0.5),
-        0 22px 60px rgba(0, 0, 0, 1);
+        0 0 0 1px rgba(148,163,184,0.7),
+        0 26px 70px rgba(0,0,0,1);
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
+      overflow: hidden;
     }
-    .brand-orb span {
+    .brand-crystal::after {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.6), transparent 60%),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.7), transparent 55%);
+      mix-blend-mode: screen;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+    .brand-crystal span {
       font-weight: 800;
-      font-size: 18px;
-      letter-spacing: 0.08em;
+      font-size: 20px;
+      letter-spacing: 0.12em;
       color: #020617;
+      position: relative;
+      z-index: 1;
     }
-
     .brand-text {
       display: flex;
       flex-direction: column;
@@ -135,13 +172,14 @@
       gap: 8px;
       align-items: center;
     }
-
     .icon-btn {
       width: 32px;
       height: 32px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), rgba(15,23,42,0.95));
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148,163,184,0.7);
+      background:
+        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       display: flex;
@@ -149,8 +187,8 @@
       justify-content: center;
       cursor: pointer;
       box-shadow:
-        0 16px 40px rgba(0, 0, 0, 1),
-        0 0 0 1px rgba(15, 23, 42, 0.9);
+        0 18px 50px rgba(0,0,0,1),
+        0 0 0 1px rgba(15,23,42,0.9);
     }
     .icon-btn svg {
       width: 16px;
@@ -160,20 +198,151 @@
       stroke-width: 1.8;
     }
 
-    .search-card,
-    .tabs-card {
-      border-radius: 20px;
-      padding: 10px 12px;
-      margin-bottom: 10px;
+    /* AUTH SCREENS */
+    .auth-shell {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+    }
+    .auth-card {
+      border-radius: 26px;
+      padding: 16px 14px 14px;
       background:
-        var(--card-bg-dark),
+        var(--glass-dark),
         radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
       backdrop-filter: blur(var(--glass-blur));
       -webkit-backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid rgba(148, 163, 184, 0.7);
+      border: 1px solid rgba(148,163,184,0.7);
       box-shadow:
         var(--shadow-strong),
-        0 0 0 1px rgba(15, 23, 42, 0.9);
+        0 0 0 1px rgba(15,23,42,0.9);
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,var(--glass-glow)), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(56,189,248,var(--glass-glow)), transparent 55%);
+      mix-blend-mode: screen;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .auth-inner {
+      position: relative;
+      z-index: 1;
+    }
+    .auth-title {
+      font-size: 16px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+      margin-bottom: 4px;
+    }
+    .auth-tagline {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 12px;
+    }
+    .auth-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .field label {
+      font-size: 11px;
+      color: #cbd5f5;
+    }
+    .field input {
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,0.7);
+      background:
+        linear-gradient(135deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%);
+      color: #f9fafb;
+      padding: 8px 10px;
+      font-size: 13px;
+      outline: none;
+      box-shadow:
+        inset 0 0 0 1px rgba(15,23,42,0.9),
+        0 16px 40px rgba(0,0,0,0.9);
+    }
+    .auth-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .btn-primary {
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--accent-gold-soft);
+      background:
+        radial-gradient(circle at 20% 0%, #ffffff 0, rgba(255,255,255,0.2) 18%, transparent 40%),
+        radial-gradient(circle at 80% 100%, var(--accent-gold) 0, #b45309 40%, #020617 100%);
+      color: #020617;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 9px 12px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow:
+        0 26px 70px rgba(0,0,0,1),
+        0 0 0 1px rgba(15,23,42,0.9);
+    }
+    .btn-ghost {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148,163,184,0.7);
+      background:
+        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%);
+      color: #e5e7eb;
+      font-size: 12px;
+      padding: 7px 10px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow:
+        0 18px 50px rgba(0,0,0,1),
+        0 0 0 1px rgba(15,23,42,0.9);
+    }
+    .auth-footnote {
+      font-size: 11px;
+      color: #9ca3af;
+      text-align: center;
+    }
+
+    /* MAIN APP */
+    .main-shell {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+    }
+    .main-shell.active {
+      display: flex;
+    }
+
+    .search-card,
+    .tabs-card {
+      border-radius: 22px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      background:
+        var(--glass-dark),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid rgba(148,163,184,0.7);
+      box-shadow:
+        var(--shadow-strong),
+        0 0 0 1px rgba(15,23,42,0.9);
       position: relative;
       overflow: hidden;
     }
@@ -183,22 +352,16 @@
       position: absolute;
       inset: -40%;
       background:
-        radial-gradient(circle at 0% 0%, rgba(250, 250, 250, var(--glow-intensity)), transparent 55%),
-        radial-gradient(circle at 100% 100%, rgba(56, 189, 248, var(--glow-intensity)), transparent 55%);
-      opacity: 0.4;
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,var(--glass-glow)), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(56,189,248,var(--glass-glow)), transparent 55%);
       mix-blend-mode: screen;
+      opacity: 0.5;
       pointer-events: none;
     }
-    .search-card-inner,
-    .tabs-card-inner {
+    .search-inner,
+    .tabs-inner {
       position: relative;
       z-index: 1;
-    }
-
-    .tagline {
-      font-size: 12px;
-      color: #9ca3af;
-      margin-bottom: 8px;
     }
 
     .search-row {
@@ -207,22 +370,22 @@
       gap: 8px;
       margin-bottom: 8px;
     }
-
     .search-input {
       flex: 1;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(15,23,42,0.7));
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148,163,184,0.7);
+      background:
+        linear-gradient(135deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%);
       color: #f9fafb;
       padding: 7px 11px;
       font-size: 13px;
-      outline: none;
       display: flex;
       align-items: center;
       gap: 6px;
       box-shadow:
-        inset 0 0 0 1px rgba(15, 23, 42, 0.9),
-        0 14px 40px rgba(0, 0, 0, 0.9);
+        inset 0 0 0 1px rgba(15,23,42,0.9),
+        0 16px 40px rgba(0,0,0,0.9);
     }
     .search-input input {
       flex: 1;
@@ -246,17 +409,19 @@
       gap: 6px;
     }
     .stat-pill {
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       padding: 6px 8px;
       font-size: 9px;
       text-transform: uppercase;
       letter-spacing: 0.16em;
       color: #9ca3af;
-      background: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7));
-      border: 1px solid rgba(148, 163, 184, 0.7);
+      background:
+        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%);
+      border: 1px solid rgba(148,163,184,0.7);
       box-shadow:
         var(--shadow-soft),
-        0 0 0 1px rgba(15, 23, 42, 0.9);
+        0 0 0 1px rgba(15,23,42,0.9);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -275,22 +440,24 @@
       flex-wrap: wrap;
     }
     .tab-pill {
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       padding: 6px 10px;
       font-size: 11px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
+      border: 1px solid rgba(148,163,184,0.7);
       color: #9ca3af;
-      background: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7));
+      background:
+        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%);
       cursor: pointer;
       box-shadow:
-        0 12px 30px rgba(0, 0, 0, 0.9),
-        0 0 0 1px rgba(15, 23, 42, 0.9);
+        0 18px 50px rgba(0,0,0,0.9),
+        0 0 0 1px rgba(15,23,42,0.9);
     }
     .tab-pill.active {
       border-color: var(--accent-gold-soft);
       color: var(--accent-gold);
       box-shadow:
-        0 18px 40px rgba(0, 0, 0, 1),
+        0 26px 70px rgba(0,0,0,1),
         0 0 0 1px var(--accent-gold-soft);
     }
 
@@ -311,9 +478,8 @@
       flex: 1;
       overflow-y: auto;
       padding-right: 4px;
-      padding-bottom: 70px;
+      padding-bottom: 80px;
     }
-
     .note-list {
       display: flex;
       flex-direction: column;
@@ -325,14 +491,14 @@
       border-radius: var(--radius-card);
       padding: 10px 11px;
       background:
-        var(--card-bg-dark),
+        var(--glass-dark),
         radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
       backdrop-filter: blur(var(--glass-blur));
       -webkit-backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid rgba(148, 163, 184, 0.7);
+      border: 1px solid rgba(148,163,184,0.7);
       box-shadow:
         var(--shadow-strong),
-        0 0 0 1px rgba(15, 23, 42, 0.9);
+        0 0 0 1px rgba(15,23,42,0.9);
       cursor: pointer;
       overflow: hidden;
       transform: translateZ(0);
@@ -343,23 +509,19 @@
       position: absolute;
       inset: -40%;
       background:
-        radial-gradient(circle at 0% 0%, rgba(250, 250, 250, var(--glow-intensity)), transparent 55%),
-        radial-gradient(circle at 100% 100%, rgba(56, 189, 248, var(--glow-intensity)), transparent 55%);
-      opacity: 0.4;
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,var(--glass-glow)), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(56,189,248,var(--glass-glow)), transparent 55%);
       mix-blend-mode: screen;
+      opacity: 0.5;
       pointer-events: none;
     }
     .note-card:hover {
       transform: translateY(-3px);
       box-shadow:
-        0 30px 80px rgba(0, 0, 0, 1),
+        0 34px 90px rgba(0,0,0,1),
         0 0 0 1px var(--accent-gold-soft);
       border-color: var(--accent-gold-soft);
     }
-    .note-card:active {
-      transform: translateY(-1px) scale(0.99);
-    }
-
     .note-meta-row {
       display: flex;
       align-items: center;
@@ -382,9 +544,8 @@
       height: 7px;
       border-radius: 999px;
       background: linear-gradient(135deg, #facc15, #f97316);
-      box-shadow: 0 0 8px rgba(250, 204, 21, 0.8);
+      box-shadow: 0 0 8px rgba(250,204,21,0.8);
     }
-
     .note-title {
       font-size: var(--title-font-size);
       font-weight: 600;
@@ -418,9 +579,11 @@
       gap: 4px;
     }
     .note-share-btn {
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      background: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7));
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148,163,184,0.7);
+      background:
+        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%);
       color: #e5e7eb;
       font-size: 10px;
       padding: 3px 8px;
@@ -437,20 +600,21 @@
       stroke-width: 1.6;
     }
 
+    /* FAB */
     .fab {
       position: absolute;
       right: 18px;
       bottom: 18px;
-      width: 58px;
-      height: 58px;
-      border-radius: 999px;
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-pill);
       border: 1px solid var(--accent-gold-soft);
       background:
         radial-gradient(circle at 20% 0%, #ffffff 0, rgba(255,255,255,0.2) 18%, transparent 40%),
         radial-gradient(circle at 80% 100%, var(--accent-gold) 0, #b45309 40%, #020617 100%);
       box-shadow:
-        0 30px 80px rgba(0, 0, 0, 1),
-        0 0 0 1px rgba(15, 23, 42, 0.9);
+        0 34px 90px rgba(0,0,0,1),
+        0 0 0 1px rgba(15,23,42,0.9);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -465,30 +629,27 @@
       fill: none;
       stroke-width: 2;
     }
-
     @keyframes fabPulse {
-      0%, 100% {
-        transform: translateY(0) scale(1);
-      }
-      50% {
-        transform: translateY(-2px) scale(1.03);
-      }
+      0%,100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-2px) scale(1.03); }
     }
 
+    /* TOAST */
     .toast {
       position: absolute;
       left: 50%;
       bottom: 10px;
       transform: translateX(-50%);
-      background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), rgba(15,23,42,0.96));
+      background:
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), rgba(15,23,42,0.96));
       color: #f9fafb;
       padding: 7px 14px;
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       font-size: 12px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
+      border: 1px solid rgba(148,163,184,0.7);
       box-shadow:
-        0 18px 40px rgba(0, 0, 0, 1),
-        0 0 0 1px rgba(15, 23, 42, 0.9);
+        0 18px 40px rgba(0,0,0,1),
+        0 0 0 1px rgba(15,23,42,0.9);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.2s ease-out, transform 0.2s ease-out;
@@ -499,8 +660,8 @@
       transform: translateX(-50%) translateY(-4px);
     }
 
-    /* Editor overlay */
-    .editor-overlay {
+    /* EDITOR + VIEWER OVERLAY */
+    .overlay {
       position: absolute;
       inset: 0;
       background: radial-gradient(circle at top, rgba(15,23,42,0.98), rgba(0,0,0,0.98));
@@ -509,46 +670,67 @@
       padding: 14px;
       z-index: 5;
     }
-    .editor-overlay.active {
+    .overlay.active {
       display: flex;
     }
-    .editor-card {
-      border-radius: 20px;
+    .overlay-card {
+      border-radius: 24px;
       padding: 12px;
       background:
-        var(--card-bg-dark),
+        var(--glass-dark),
         radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
       backdrop-filter: blur(var(--glass-blur));
       -webkit-backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid rgba(148, 163, 184, 0.7);
+      border: 1px solid rgba(148,163,184,0.7);
       box-shadow:
         var(--shadow-strong),
-        0 0 0 1px rgba(15, 23, 42, 0.9);
+        0 0 0 1px rgba(15,23,42,0.9);
       flex: 1;
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      position: relative;
     }
-    .editor-header {
+    .overlay-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,var(--glass-glow)), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(56,189,248,var(--glass-glow)), transparent 55%);
+      mix-blend-mode: screen;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .overlay-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .overlay-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 8px;
     }
-    .editor-title {
+    .overlay-title {
       font-size: 14px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: #9ca3af;
     }
-    .editor-actions {
+    .overlay-actions {
       display: flex;
       gap: 6px;
     }
-    .editor-btn {
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      background: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7));
+    .overlay-btn {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148,163,184,0.7);
+      background:
+        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%);
       color: #e5e7eb;
       font-size: 11px;
       padding: 4px 10px;
@@ -557,62 +739,64 @@
       gap: 4px;
       cursor: pointer;
     }
-    .editor-btn.primary {
+    .overlay-btn.primary {
       border-color: var(--accent-gold-soft);
       color: var(--accent-gold);
     }
-    .editor-body {
+    .overlay-body {
       flex: 1;
       overflow-y: auto;
       padding-right: 4px;
     }
-    .field {
+    .overlay-field {
       display: flex;
       flex-direction: column;
       margin-bottom: 8px;
     }
-    .field label {
+    .overlay-field label {
       font-size: 11px;
       color: #cbd5f5;
       margin-bottom: 3px;
     }
-    .field input,
-    .field select,
-    .field textarea {
-      border-radius: 10px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(15,23,42,0.7));
+    .overlay-field input,
+    .overlay-field select,
+    .overlay-field textarea {
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,0.7);
+      background:
+        linear-gradient(135deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%);
       color: #f9fafb;
       padding: 7px 9px;
       font-size: 13px;
       outline: none;
       box-shadow:
-        inset 0 0 0 1px rgba(15, 23, 42, 0.9),
-        0 10px 30px rgba(0, 0, 0, 0.9);
+        inset 0 0 0 1px rgba(15,23,42,0.9),
+        0 16px 40px rgba(0,0,0,0.9);
       resize: none;
     }
-    .field textarea {
-      min-height: 120px;
+    .overlay-field textarea {
+      min-height: 140px;
     }
 
-    /* Settings panel */
+    /* SETTINGS PANEL */
     .settings-panel {
       position: absolute;
       top: 52px;
       right: 10px;
       width: 260px;
       max-height: 70vh;
-      border-radius: 18px;
+      border-radius: 20px;
       padding: 10px;
       background:
-        var(--card-bg-dark),
+        var(--glass-dark),
         radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
       backdrop-filter: blur(var(--glass-blur));
       -webkit-backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid rgba(148, 163, 184, 0.7);
+      border: 1px solid rgba(148,163,184,0.7);
       box-shadow:
         var(--shadow-strong),
-        0 0 0 1px rgba(15, 23, 42, 0.9);
+        0 0 0 1px rgba(15,23,42,0.9);
       z-index: 4;
       overflow-y: auto;
       display: none;
@@ -643,9 +827,11 @@
       gap: 4px;
     }
     .settings-pill {
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      background: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7));
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148,163,184,0.7);
+      background:
+        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%);
       color: #e5e7eb;
       font-size: 10px;
       padding: 3px 8px;
@@ -668,129 +854,141 @@
       height: 14px;
     }
 
-    /* Theme variations */
-    .theme-aurora body,
+    /* THEME VARIANTS */
     .theme-aurora {
-      background: var(--bg-main-aurora);
+      background: var(--bg-aurora);
       color: #020617;
     }
     .theme-aurora .search-card,
     .theme-aurora .tabs-card,
     .theme-aurora .note-card,
-    .theme-aurora .editor-card,
-    .theme-aurora .settings-panel {
+    .theme-aurora .overlay-card,
+    .theme-aurora .settings-panel,
+    .theme-aurora .auth-card {
       background:
-        var(--card-bg-light),
+        var(--glass-light),
         radial-gradient(circle at 0% 0%, rgba(255,255,255,0.9), transparent 55%);
       color: #020617;
     }
     .theme-aurora .note-body-preview,
-    .theme-aurora .tagline {
+    .theme-aurora .auth-tagline {
       color: #111827;
     }
 
-    .accent-blue .note-tag-dot {
-      background: linear-gradient(135deg, var(--accent-blue), #0ea5e9);
-      box-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+    .accent-gold .note-tag-dot {
+      background: linear-gradient(135deg, var(--accent-gold), #f97316);
+      box-shadow: 0 0 8px rgba(250,204,21,0.8);
     }
-    .accent-blue .stat-value,
-    .accent-blue .tab-pill.active,
-    .accent-blue .editor-btn.primary {
-      color: var(--accent-blue);
-      border-color: var(--accent-blue-soft);
+    .accent-gold .stat-value,
+    .accent-gold .tab-pill.active,
+    .accent-gold .overlay-btn.primary,
+    .accent-gold .settings-pill.active {
+      color: var(--accent-gold);
+      border-color: var(--accent-gold-soft);
     }
-    .accent-blue .fab {
-      border-color: var(--accent-blue-soft);
+    .accent-gold .fab {
+      border-color: var(--accent-gold-soft);
       background:
         radial-gradient(circle at 20% 0%, #ffffff 0, rgba(255,255,255,0.2) 18%, transparent 40%),
-        radial-gradient(circle at 80% 100%, var(--accent-blue) 0, #0369a1 40%, #020617 100%);
+        radial-gradient(circle at 80% 100%, var(--accent-gold) 0, #b45309 40%, #020617 100%);
     }
 
-    .accent-purple .note-tag-dot {
-      background: linear-gradient(135deg, var(--accent-purple), #ec4899);
-      box-shadow: 0 0 8px rgba(168, 85, 247, 0.8);
+    .accent-silver .note-tag-dot {
+      background: linear-gradient(135deg, var(--accent-silver), #9ca3af);
+      box-shadow: 0 0 8px rgba(209,213,219,0.8);
     }
-    .accent-purple .stat-value,
-    .accent-purple .tab-pill.active,
-    .accent-purple .editor-btn.primary {
-      color: var(--accent-purple);
-      border-color: var(--accent-purple-soft);
+    .accent-silver .stat-value,
+    .accent-silver .tab-pill.active,
+    .accent-silver .overlay-btn.primary,
+    .accent-silver .settings-pill.active {
+      color: var(--accent-silver);
+      border-color: var(--accent-silver-soft);
     }
-    .accent-purple .fab {
-      border-color: var(--accent-purple-soft);
+    .accent-silver .fab {
+      border-color: var(--accent-silver-soft);
       background:
         radial-gradient(circle at 20% 0%, #ffffff 0, rgba(255,255,255,0.2) 18%, transparent 40%),
-        radial-gradient(circle at 80% 100%, var(--accent-purple) 0, #7e22ce 40%, #020617 100%);
+        radial-gradient(circle at 80% 100%, var(--accent-silver) 0, #4b5563 40%, #020617 100%);
     }
 
-    .font-serif {
-      font-family: var(--font-serif);
+    .accent-diamond .note-tag-dot {
+      background: linear-gradient(135deg, var(--accent-diamond), #0ea5e9);
+      box-shadow: 0 0 8px rgba(56,189,248,0.8);
     }
-    .font-mono {
-      font-family: var(--font-mono);
+    .accent-diamond .stat-value,
+    .accent-diamond .tab-pill.active,
+    .accent-diamond .overlay-btn.primary,
+    .accent-diamond .settings-pill.active {
+      color: var(--accent-diamond);
+      border-color: var(--accent-diamond-soft);
     }
+    .accent-diamond .fab {
+      border-color: var(--accent-diamond-soft);
+      background:
+        radial-gradient(circle at 20% 0%, #ffffff 0, rgba(255,255,255,0.2) 18%, transparent 40%),
+        radial-gradient(circle at 80% 100%, var(--accent-diamond) 0, #0369a1 40%, #020617 100%);
+    }
+
+    .font-serif { font-family: var(--font-serif); }
+    .font-mono { font-family: var(--font-mono); }
 
     .size-notes-small { --note-font-size: 12px; }
     .size-notes-large { --note-font-size: 15px; }
     .size-title-small { --title-font-size: 13px; }
-    .size-title-large { --title-font-size: 16px; }
+    .size-title-large { --title-font-size: 17px; }
 
-    .radius-soft { --radius-card: 14px; }
-    .radius-sharp { --radius-card: 8px; }
+    .radius-soft { --radius-card: 16px; }
+    .radius-sharp { --radius-card: 10px; }
 
     .shadow-soft-mode { --shadow-strong: 0 18px 50px rgba(0,0,0,0.85); }
-    .shadow-ultra-mode { --shadow-strong: 0 34px 90px rgba(0,0,0,1); }
+    .shadow-ultra-mode { --shadow-strong: 0 40px 110px rgba(0,0,0,1); }
 
     .glass-low { --glass-blur: 16px; }
     .glass-high { --glass-blur: 32px; }
 
-    .glow-low { --glow-intensity: 0.25; }
-    .glow-high { --glow-intensity: 0.7; }
+    .glow-low { --glass-glow: 0.25; }
+    .glow-high { --glass-glow: 0.7; }
 
-    .compact-on .note-card {
-      padding: 8px 9px;
-    }
-    .compact-on .note-body-preview {
-      max-height: 32px;
-    }
+    .compact-on .note-card { padding: 8px 9px; }
+    .compact-on .note-body-preview { max-height: 32px; }
 
-    .headings-lower .section-title,
-    .headings-lower .brand-title {
+    .headings-soft .section-title,
+    .headings-soft .brand-title {
       text-transform: none;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
     }
 
-    .hide-words .note-footer-row span[data-meta="words"] {
-      display: none;
-    }
-    .hide-today .note-meta-row span[data-meta="date"] {
-      display: none;
-    }
+    .hide-words .note-footer-row span[data-meta="words"] { display: none; }
+    .hide-today .note-meta-row span[data-meta="date"] { display: none; }
+    .tabs-hidden .tabs-card { display: none; }
+    .fab-off .fab { display: none; }
 
-    .tabs-hidden .tabs-card {
-      display: none;
-    }
-
-    .fab-off .fab {
-      display: none;
-    }
+    .auth-hidden .auth-shell { display: none; }
+    .auth-hidden .main-shell { display: flex; }
   </style>
 </head>
 <body>
-  <div class="app theme-void accent-gold" id="appRoot">
-    <div class="bg-glow"></div>
+  <div class="app-shell theme-void accent-gold" id="appRoot">
+    <div class="bg-orbit"></div>
+    <div class="glass-orb"></div>
 
     <div class="content">
+      <!-- TOP BAR -->
       <div class="top-bar">
         <div class="brand-left">
-          <div class="brand-orb"><span>W</span></div>
+          <div class="brand-crystal"><span>W</span></div>
           <div class="brand-text">
-            <div class="brand-title">WOD NOTEPAD</div>
+            <div class="brand-title">AETHER NOTES</div>
             <div class="brand-subtitle">WORLD OF DISCOVERIES</div>
           </div>
         </div>
         <div class="top-actions">
-          <button class="icon-btn" id="settingsBtn" title="Settings">
+          <button class="icon-btn" id="themeToggle" title="Toggle Void / Aurora">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3a9 9 0 0 0 0 18 7 7 0 0 1 0-18z" />
+            </svg>
+          </button>
+          <button class="icon-btn" id="settingsBtn" title="Glass Settings">
             <svg viewBox="0 0 24 24">
               <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
               <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
@@ -799,103 +997,197 @@
         </div>
       </div>
 
-      <div class="search-card">
-        <div class="search-card-inner">
-          <div class="search-row">
-            <div class="search-input">
-              <svg viewBox="0 0 24 24">
-                <path d="M11 5a6 6 0 1 1 0 12 6 6 0 0 1 0-12z" />
-                <path d="M16.5 16.5 20 20" />
-              </svg>
-              <input id="searchInput" type="text" placeholder="Search notes..." />
+      <!-- AUTH SHELL -->
+      <div class="auth-shell" id="authShell">
+        <div class="auth-card">
+          <div class="auth-inner">
+            <div class="auth-title">SIGN IN</div>
+            <div class="auth-tagline">Enter the glass vault where your ideas become crystal.</div>
+            <div class="auth-fields">
+              <div class="field">
+                <label>Email</label>
+                <input type="email" id="authEmail" placeholder="you@aether.world" />
+              </div>
+              <div class="field">
+                <label>Password</label>
+                <input type="password" id="authPassword" placeholder="••••••••" />
+              </div>
             </div>
-          </div>
-          <div class="stats-row">
-            <div class="stat-pill">
-              <span>NOTES</span>
-              <span class="stat-value" id="statNotes">1</span>
-            </div>
-            <div class="stat-pill">
-              <span>PINNED</span>
-              <span class="stat-value" id="statPinned">0</span>
-            </div>
-            <div class="stat-pill">
-              <span>WORDS</span>
-              <span class="stat-value" id="statWords">0</span>
-            </div>
-            <div class="stat-pill">
-              <span>TODAY</span>
-              <span class="stat-value" id="statToday">0</span>
+            <div class="auth-actions">
+              <div class="btn-primary" id="btnLogin">Enter Aether</div>
+              <div class="btn-ghost" id="btnShowSignup">Create Aether Account</div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="tabs-card">
-        <div class="tabs-card-inner">
-          <div class="tabs-row">
-            <button class="tab-pill active" data-tab="all">All</button>
-            <button class="tab-pill" data-tab="personal">Personal</button>
-            <button class="tab-pill" data-tab="work">Work</button>
-            <button class="tab-pill" data-tab="ideas">Ideas</button>
-            <button class="tab-pill" data-tab="todo">To-DoWOD</button>
+        <div class="auth-card" id="signupCard" style="margin-top:10px; display:none;">
+          <div class="auth-inner">
+            <div class="auth-title">SIGN UP</div>
+            <div class="auth-tagline">Forge your crystal identity and claim your vault.</div>
+            <div class="auth-fields">
+              <div class="field">
+                <label>Name</label>
+                <input type="text" id="signupName" placeholder="Aether Explorer" />
+              </div>
+              <div class="field">
+                <label>Email</label>
+                <input type="email" id="signupEmail" placeholder="you@aether.world" />
+              </div>
+              <div class="field">
+                <label>Password</label>
+                <input type="password" id="signupPassword" placeholder="Create a strong key" />
+              </div>
+            </div>
+            <div class="auth-actions">
+              <div class="btn-primary" id="btnSignup">Create Vault</div>
+              <div class="btn-ghost" id="btnBackLogin">Back to Sign In</div>
+            </div>
           </div>
-          <div class="section-header">
-            <div class="section-title">NOTES</div>
-          </div>
+        </div>
+
+        <div class="auth-footnote">
+          100% glass. 0% lost ideas. Your thoughts land here and never escape.
         </div>
       </div>
 
-      <div class="notes-scroll">
-        <div class="note-list" id="noteList"></div>
+      <!-- MAIN SHELL -->
+      <div class="main-shell" id="mainShell">
+        <div class="search-card">
+          <div class="search-inner">
+            <div class="search-row">
+              <div class="search-input">
+                <svg viewBox="0 0 24 24">
+                  <path d="M11 5a6 6 0 1 1 0 12 6 6 0 0 1 0-12z" />
+                  <path d="M16.5 16.5 20 20" />
+                </svg>
+                <input id="searchInput" type="text" placeholder="Search crystal notes..." />
+              </div>
+            </div>
+            <div class="stats-row">
+              <div class="stat-pill">
+                <span>NOTES</span>
+                <span class="stat-value" id="statNotes">0</span>
+              </div>
+              <div class="stat-pill">
+                <span>PINNED</span>
+                <span class="stat-value" id="statPinned">0</span>
+              </div>
+              <div class="stat-pill">
+                <span>WORDS</span>
+                <span class="stat-value" id="statWords">0</span>
+              </div>
+              <div class="stat-pill">
+                <span>TODAY</span>
+                <span class="stat-value" id="statToday">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tabs-card">
+          <div class="tabs-inner">
+            <div class="tabs-row">
+              <button class="tab-pill active" data-tab="all">All</button>
+              <button class="tab-pill" data-tab="personal">Personal</button>
+              <button class="tab-pill" data-tab="work">Work</button>
+              <button class="tab-pill" data-tab="ideas">Ideas</button>
+              <button class="tab-pill" data-tab="todo">To-Do</button>
+            </div>
+            <div class="section-header">
+              <div class="section-title">NOTES</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notes-scroll">
+          <div class="note-list" id="noteList"></div>
+        </div>
+
+        <button class="fab" id="fabNew" title="Add note">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 5v14" />
+            <path d="M5 12h14" />
+          </svg>
+        </button>
       </div>
 
-      <button class="fab" id="fabNew" title="Add note">
-        <svg viewBox="0 0 24 24">
-          <path d="M12 5v14" />
-          <path d="M5 12h14" />
-        </svg>
-      </button>
-
+      <!-- TOAST -->
       <div class="toast" id="toast"></div>
 
-      <div class="editor-overlay" id="editorOverlay">
-        <div class="editor-card">
-          <div class="editor-header">
-            <div class="editor-title">NEW NOTE</div>
-            <div class="editor-actions">
-              <button class="editor-btn" id="editorCancel">Cancel</button>
-              <button class="editor-btn primary" id="editorSave">Save</button>
+      <!-- EDITOR OVERLAY -->
+      <div class="overlay" id="editorOverlay">
+        <div class="overlay-card">
+          <div class="overlay-inner">
+            <div class="overlay-header">
+              <div class="overlay-title" id="editorTitle">NEW NOTE</div>
+              <div class="overlay-actions">
+                <button class="overlay-btn" id="editorCancel">Close</button>
+                <button class="overlay-btn primary" id="editorSave">Save</button>
+              </div>
             </div>
-          </div>
-          <div class="editor-body">
-            <div class="field">
-              <label for="noteTitle">Title</label>
-              <input id="noteTitle" type="text" placeholder="Note title..." />
-            </div>
-            <div class="field">
-              <label for="noteCategory">Category</label>
-              <select id="noteCategory">
-                <option value="personal">Personal</option>
-                <option value="work">Work</option>
-                <option value="ideas">Ideas</option>
-                <option value="todo">To-DoWOD</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="notePinned">
-                <input type="checkbox" id="notePinned" />
-                Pin this note
-              </label>
-            </div>
-            <div class="field">
-              <label for="noteBody">Note</label>
-              <textarea id="noteBody" placeholder="Write boldly. Think wildly. Discover dangerously."></textarea>
+            <div class="overlay-body">
+              <div class="overlay-field">
+                <label>Title</label>
+                <input id="noteTitle" type="text" placeholder="Crystal thought title..." />
+              </div>
+              <div class="overlay-field">
+                <label>Category</label>
+                <select id="noteCategory">
+                  <option value="personal">Personal</option>
+                  <option value="work">Work</option>
+                  <option value="ideas">Ideas</option>
+                  <option value="todo">To-Do</option>
+                </select>
+              </div>
+              <div class="overlay-field">
+                <label>
+                  <input type="checkbox" id="notePinned" style="width:14px;height:14px;margin-right:6px;" />
+                  Pin this note
+                </label>
+              </div>
+              <div class="overlay-field">
+                <label>Note</label>
+                <textarea id="noteBody" placeholder="Write boldly. Think wildly. Discover dangerously."></textarea>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- VIEWER OVERLAY -->
+      <div class="overlay" id="viewerOverlay">
+        <div class="overlay-card">
+          <div class="overlay-inner">
+            <div class="overlay-header">
+              <div class="overlay-title" id="viewerTitle">NOTE</div>
+              <div class="overlay-actions">
+                <button class="overlay-btn" id="viewerClose">Close</button>
+                <button class="overlay-btn primary" id="viewerEdit">Edit</button>
+              </div>
+            </div>
+            <div class="overlay-body">
+              <div class="overlay-field">
+                <label>Category</label>
+                <div id="viewerCategory" style="font-size:13px;color:#facc15;"></div>
+              </div>
+              <div class="overlay-field">
+                <label>Date</label>
+                <div id="viewerDate" style="font-size:13px;color:#9ca3af;"></div>
+              </div>
+              <div class="overlay-field">
+                <label>Words</label>
+                <div id="viewerWords" style="font-size:13px;color:#9ca3af;"></div>
+              </div>
+              <div class="overlay-field">
+                <label>Note</label>
+                <div id="viewerBody" style="white-space:pre-wrap;font-size:14px;line-height:1.45;color:#e5e7eb;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS PANEL -->
       <div class="settings-panel" id="settingsPanel">
         <div class="settings-title">AETHER GLASS SETTINGS</div>
 
@@ -911,8 +1203,8 @@
           <div class="settings-label">2. Accent</div>
           <div class="settings-row">
             <button class="settings-pill active" data-setting="accent" data-value="gold">Gold</button>
-            <button class="settings-pill" data-setting="accent" data-value="blue">Blue</button>
-            <button class="settings-pill" data-setting="accent" data-value="purple">Purple</button>
+            <button class="settings-pill" data-setting="accent" data-value="silver">Silver</button>
+            <button class="settings-pill" data-setting="accent" data-value="diamond">Diamond</button>
           </div>
         </div>
 
@@ -989,7 +1281,7 @@
         <div class="settings-group">
           <div class="settings-label">11. Headings Style</div>
           <div class="settings-toggle">
-            <input type="checkbox" data-toggle="headingsLower" />
+            <input type="checkbox" data-toggle="headingsSoft" />
             <span>Use softer headings</span>
           </div>
         </div>
@@ -1031,29 +1323,55 @@
 
   <script>
     const appRoot = document.getElementById("appRoot");
-    const noteListEl = document.getElementById("noteList");
+
+    const authShell = document.getElementById("authShell");
+    const mainShell = document.getElementById("mainShell");
+    const signupCard = document.getElementById("signupCard");
+    const btnLogin = document.getElementById("btnLogin");
+    const btnShowSignup = document.getElementById("btnShowSignup");
+    const btnSignup = document.getElementById("btnSignup");
+    const btnBackLogin = document.getElementById("btnBackLogin");
+
     const searchInput = document.getElementById("searchInput");
+    const noteListEl = document.getElementById("noteList");
     const tabButtons = document.querySelectorAll(".tab-pill");
+
     const statNotes = document.getElementById("statNotes");
     const statPinned = document.getElementById("statPinned");
     const statWords = document.getElementById("statWords");
     const statToday = document.getElementById("statToday");
+
     const fabNew = document.getElementById("fabNew");
     const toast = document.getElementById("toast");
+
     const editorOverlay = document.getElementById("editorOverlay");
+    const editorTitle = document.getElementById("editorTitle");
     const editorCancel = document.getElementById("editorCancel");
     const editorSave = document.getElementById("editorSave");
     const noteTitleInput = document.getElementById("noteTitle");
     const noteCategorySelect = document.getElementById("noteCategory");
     const notePinnedCheckbox = document.getElementById("notePinned");
     const noteBodyTextarea = document.getElementById("noteBody");
+
+    const viewerOverlay = document.getElementById("viewerOverlay");
+    const viewerTitle = document.getElementById("viewerTitle");
+    const viewerCategory = document.getElementById("viewerCategory");
+    const viewerDate = document.getElementById("viewerDate");
+    const viewerWords = document.getElementById("viewerWords");
+    const viewerBody = document.getElementById("viewerBody");
+    const viewerClose = document.getElementById("viewerClose");
+    const viewerEdit = document.getElementById("viewerEdit");
+
     const settingsBtn = document.getElementById("settingsBtn");
     const settingsPanel = document.getElementById("settingsPanel");
     const settingsPills = document.querySelectorAll(".settings-pill");
     const settingsToggles = document.querySelectorAll(".settings-toggle input");
+    const themeToggle = document.getElementById("themeToggle");
 
     let notes = [];
     let activeTab = "all";
+    let editingNote = null;
+    let viewingNote = null;
 
     function todayString() {
       const d = new Date();
@@ -1090,7 +1408,7 @@
 
         const card = document.createElement("div");
         card.className = "note-card";
-        card.dataset.category = note.category;
+        card.dataset.id = note.id;
 
         const metaRow = document.createElement("div");
         metaRow.className = "note-meta-row";
@@ -1106,7 +1424,9 @@
 
         const dateSpan = document.createElement("span");
         dateSpan.setAttribute("data-meta", "date");
-        dateSpan.textContent = note.date === todayString() ? "Today · " + note.words + " words" : note.date + " · " + note.words + " words";
+        dateSpan.textContent = note.date === todayString()
+          ? "Today · " + note.words + " words"
+          : note.date + " · " + note.words + " words";
 
         metaRow.appendChild(tag);
         metaRow.appendChild(dateSpan);
@@ -1138,7 +1458,7 @@
         `;
         shareBtn.addEventListener("click", (e) => {
           e.stopPropagation();
-          const url = "https://wod-notepad.local/note/" + note.id;
+          const url = "https://aether-notes.local/note/" + note.id;
           if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(url).then(() => {
               showToast("Sharable link copied");
@@ -1158,6 +1478,8 @@
         card.appendChild(bodyEl);
         card.appendChild(footerRow);
 
+        card.addEventListener("click", () => openViewer(note));
+
         noteListEl.appendChild(card);
       });
 
@@ -1167,11 +1489,22 @@
       statToday.textContent = todayCount;
     }
 
-    function openEditor() {
-      noteTitleInput.value = "";
-      noteCategorySelect.value = "personal";
-      notePinnedCheckbox.checked = false;
-      noteBodyTextarea.value = "";
+    function openEditor(note) {
+      if (note) {
+        editingNote = note;
+        editorTitle.textContent = "EDIT NOTE";
+        noteTitleInput.value = note.title;
+        noteCategorySelect.value = note.category;
+        notePinnedCheckbox.checked = note.pinned;
+        noteBodyTextarea.value = note.body;
+      } else {
+        editingNote = null;
+        editorTitle.textContent = "NEW NOTE";
+        noteTitleInput.value = "";
+        noteCategorySelect.value = "personal";
+        notePinnedCheckbox.checked = false;
+        noteBodyTextarea.value = "";
+      }
       editorOverlay.classList.add("active");
     }
 
@@ -1185,36 +1518,58 @@
       const pinned = notePinnedCheckbox.checked;
       const body = noteBodyTextarea.value.trim();
       const words = wordCount(body);
-      const note = {
-        id: Date.now().toString(36),
-        title,
-        category,
-        pinned,
-        body,
-        date: todayString(),
-        words
-      };
-      notes.unshift(note);
+      const date = todayString();
+
+      if (editingNote) {
+        editingNote.title = title;
+        editingNote.category = category;
+        editingNote.pinned = pinned;
+        editingNote.body = body;
+        editingNote.words = words;
+        editingNote.date = date;
+        showToast("Note updated");
+      } else {
+        const note = {
+          id: Date.now().toString(36),
+          title,
+          category,
+          pinned,
+          body,
+          date,
+          words
+        };
+        notes.unshift(note);
+        showToast("Note added");
+      }
       closeEditor();
       renderNotes();
-      showToast("Note added");
     }
 
-    fabNew.addEventListener("click", () => {
-      openEditor();
+    function openViewer(note) {
+      viewingNote = note;
+      viewerTitle.textContent = note.title;
+      viewerCategory.textContent = note.category.toUpperCase();
+      viewerDate.textContent = note.date === todayString() ? "Today" : note.date;
+      viewerWords.textContent = note.words + " words";
+      viewerBody.textContent = note.body;
+      viewerOverlay.classList.add("active");
+    }
+
+    function closeViewer() {
+      viewerOverlay.classList.remove("active");
+    }
+
+    viewerClose.addEventListener("click", closeViewer);
+    viewerEdit.addEventListener("click", () => {
+      closeViewer();
+      openEditor(viewingNote);
     });
 
-    editorCancel.addEventListener("click", () => {
-      closeEditor();
-    });
+    fabNew.addEventListener("click", () => openEditor(null));
+    editorCancel.addEventListener("click", closeEditor);
+    editorSave.addEventListener("click", saveNote);
 
-    editorSave.addEventListener("click", () => {
-      saveNote();
-    });
-
-    searchInput.addEventListener("input", () => {
-      renderNotes();
-    });
+    searchInput.addEventListener("input", renderNotes);
 
     tabButtons.forEach(btn => {
       btn.addEventListener("click", () => {
@@ -1223,6 +1578,29 @@
         activeTab = btn.dataset.tab || "all";
         renderNotes();
       });
+    });
+
+    btnShowSignup.addEventListener("click", () => {
+      signupCard.style.display = "block";
+    });
+    btnBackLogin.addEventListener("click", () => {
+      signupCard.style.display = "none";
+    });
+    btnLogin.addEventListener("click", () => {
+      appRoot.classList.add("auth-hidden");
+      showToast("Welcome back to Aether");
+    });
+    btnSignup.addEventListener("click", () => {
+      appRoot.classList.add("auth-hidden");
+      showToast("Vault created. Welcome to Aether");
+    });
+
+    themeToggle.addEventListener("click", () => {
+      if (appRoot.classList.contains("theme-aurora")) {
+        appRoot.classList.remove("theme-aurora");
+      } else {
+        appRoot.classList.add("theme-aurora");
+      }
     });
 
     settingsBtn.addEventListener("click", () => {
@@ -1238,14 +1616,11 @@
         pill.classList.add("active");
 
         if (setting === "theme") {
-          if (value === "void") {
-            appRoot.classList.remove("theme-aurora");
-          } else {
-            appRoot.classList.add("theme-aurora");
-          }
+          if (value === "void") appRoot.classList.remove("theme-aurora");
+          if (value === "aurora") appRoot.classList.add("theme-aurora");
         }
         if (setting === "accent") {
-          appRoot.classList.remove("accent-gold", "accent-blue", "accent-purple");
+          appRoot.classList.remove("accent-gold", "accent-silver", "accent-diamond");
           appRoot.classList.add("accent-" + value);
         }
         if (setting === "font") {
@@ -1289,24 +1664,12 @@
       toggle.addEventListener("change", () => {
         const key = toggle.dataset.toggle;
         const on = toggle.checked;
-        if (key === "compact") {
-          appRoot.classList.toggle("compact-on", on);
-        }
-        if (key === "headingsLower") {
-          appRoot.classList.toggle("headings-lower", on);
-        }
-        if (key === "hideWords") {
-          appRoot.classList.toggle("hide-words", on);
-        }
-        if (key === "hideToday") {
-          appRoot.classList.toggle("hide-today", on);
-        }
-        if (key === "tabsHidden") {
-          appRoot.classList.toggle("tabs-hidden", on);
-        }
-        if (key === "fabOff") {
-          appRoot.classList.toggle("fab-off", on);
-        }
+        if (key === "compact") appRoot.classList.toggle("compact-on", on);
+        if (key === "headingsSoft") appRoot.classList.toggle("headings-soft", on);
+        if (key === "hideWords") appRoot.classList.toggle("hide-words", on);
+        if (key === "hideToday") appRoot.classList.toggle("hide-today", on);
+        if (key === "tabsHidden") appRoot.classList.toggle("tabs-hidden", on);
+        if (key === "fabOff") appRoot.classList.toggle("fab-off", on);
       });
     });
 
@@ -1315,7 +1678,8 @@
       title: "WOD Funny Intro",
       category: "personal",
       pinned: false,
-      body: "WOD Notepad\nWelcome to WOD — the only place where your ideas stop running away from you.\n\nHere, every thought you type is grabbed, locked, and stored in your cloud before it even tries to escape.\nNo disappearing notes. No “I swear I wrote it.” No heartbreak.\n\nThis is your creative battlefield.\nYour mental gym.\nYour idea refrigerator — because nothing spoils here.\n\nWrite boldly.\nThink wildly.\nDiscover dangerously.\n\nYour genius starts now.",
+      body:
+        "WOD Notepad\nWelcome to WOD — the only place where your ideas stop running away from you.\n\nHere, every thought you type is grabbed, locked, and stored in your cloud before it even tries to escape.\nNo disappearing notes. No “I swear I wrote it.” No heartbreak.\n\nThis is your creative battlefield.\nYour mental gym.\nYour idea refrigerator — because nothing spoils here.\n\nWrite boldly.\nThink wildly.\nDiscover dangerously.\n\nYour genius starts now.",
       date: todayString(),
       words: 73
     });
