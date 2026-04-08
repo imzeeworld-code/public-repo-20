@@ -6,19 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
-      --bg: #050608;
-      --bg-alt: #101218;
-      --card: #151822;
+      --bg: #020204;
+      --bg-alt: #050509;
+      --card: #0b0c10;
       --accent: #f5c451;
       --accent-soft: rgba(245, 196, 81, 0.15);
-      --text-main: #f7f7f7;
+      --text-main: #f9fafb;
       --text-muted: #9ca3af;
       --danger: #f97373;
       --border: #262938;
       --radius-lg: 18px;
-      --radius-md: 12px;
-      --radius-sm: 8px;
-      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.6);
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.7);
       --transition-fast: 0.25s ease-out;
       --font-main: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
         "Segoe UI", sans-serif;
@@ -29,39 +29,43 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    body {
+    html, body {
       margin: 0;
       padding: 0;
+      height: 100%;
+    }
+
+    body {
       font-family: var(--font-main);
-      background: radial-gradient(circle at top, #151827 0, #050608 55%);
+      background: radial-gradient(circle at top, #111827 0, #020204 55%);
       color: var(--text-main);
-      overflow-y: auto;
-      overflow-x: hidden;
+      overflow: hidden;
     }
 
     .app-root {
       position: relative;
-      min-height: 100vh;
+      height: 100vh;
       width: 100%;
       margin: 0 auto;
-      background: radial-gradient(circle at top, #151827 0, #050608 55%);
+      background: radial-gradient(circle at top, #111827 0, #020204 55%);
       overflow: hidden;
     }
 
+    /* SCREENS */
     .screen {
       position: absolute;
       inset: 0;
       display: flex;
       flex-direction: column;
-      background: radial-gradient(circle at top, #151827 0, #050608 55%);
-      transform: translateY(100%);
+      background: radial-gradient(circle at top, #111827 0, #020204 55%);
+      transform: translateX(100%);
       opacity: 0;
       transition: transform var(--transition-fast), opacity var(--transition-fast);
       z-index: 0;
     }
 
     .screen.active {
-      transform: translateY(0);
+      transform: translateX(0);
       opacity: 1;
       z-index: 2;
     }
@@ -70,15 +74,18 @@
       z-index: 1;
     }
 
-    .app-shell {
+    .app-shell,
+    .editor-shell {
       flex: 1;
       padding: 14px 14px 24px;
       display: flex;
       flex-direction: column;
       gap: 12px;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
+    /* TOP BAR */
     .top-bar {
       display: flex;
       align-items: center;
@@ -138,6 +145,7 @@
       cursor: pointer;
     }
 
+    /* SEARCH */
     .search-row {
       padding: 4px 2px 0;
     }
@@ -179,6 +187,7 @@
       color: var(--text-muted);
     }
 
+    /* STATS */
     .stats-row {
       display: flex;
       gap: 8px;
@@ -211,6 +220,7 @@
       color: var(--accent);
     }
 
+    /* TABS */
     .tabs-row {
       display: flex;
       align-items: center;
@@ -251,79 +261,13 @@
       color: var(--text-muted);
     }
 
-    .smart-row {
-      margin-top: 8px;
-      padding: 0 2px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .smart-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 10px;
-      border-radius: var(--radius-md);
-      background: linear-gradient(135deg, #050608, #0b0d14);
-      border: 1px solid var(--border);
-    }
-
-    .smart-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .smart-title {
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .smart-sub {
-      font-size: 10px;
-      color: var(--text-muted);
-    }
-
-    .toggle {
-      width: 40px;
-      height: 22px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: #020617;
-      padding: 2px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      transition: background var(--transition-fast), border-color var(--transition-fast);
-    }
-
-    .toggle-knob {
-      width: 16px;
-      height: 16px;
-      border-radius: 999px;
-      background: #6b7280;
-      transition: transform var(--transition-fast), background var(--transition-fast),
-        box-shadow var(--transition-fast);
-    }
-
-    .toggle.on {
-      background: radial-gradient(circle at top, var(--accent) 0, #7c5b1a 70%);
-      border-color: rgba(245, 196, 81, 0.9);
-    }
-
-    .toggle.on .toggle-knob {
-      transform: translateX(16px);
-      background: #020617;
-      box-shadow: 0 0 10px rgba(245, 196, 81, 0.9);
-    }
-
+    /* NOTES PANEL */
     .notes-panel {
       margin-top: 10px;
       flex: 1;
       border-radius: var(--radius-lg);
-      background: radial-gradient(circle at top, #111827 0, #020617 70%);
-      border: 1px solid var(--border);
+      background: radial-gradient(circle at top, #050509 0, #020204 70%);
+      border: 1px solid rgba(31, 41, 55, 0.9);
       box-shadow: var(--shadow-soft);
       padding: 10px 8px 16px;
       display: flex;
@@ -358,6 +302,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
+      -webkit-overflow-scrolling: touch;
     }
 
     .notes-list::-webkit-scrollbar {
@@ -369,21 +314,38 @@
       border-radius: 999px;
     }
 
+    /* NOTE CARD – WOD LEVEL */
     .note-card {
-      border-radius: var(--radius-md);
-      padding: 10px 10px 8px;
-      background: linear-gradient(145deg, #0b0d14, #050608);
+      border-radius: 18px;
+      padding: 12px 12px 10px;
+      background: radial-gradient(circle at top left, #111827 0, #020617 70%);
       border: 1px solid rgba(55, 65, 81, 0.9);
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.8);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.9);
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
       cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .note-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(245, 196, 81, 0.08), transparent 55%);
+      opacity: 0;
+      transition: opacity 0.2s ease-out;
+      pointer-events: none;
+    }
+
+    .note-card:active::before {
+      opacity: 1;
     }
 
     .note-card.pinned {
       border-color: rgba(245, 196, 81, 0.9);
-      box-shadow: 0 14px 30px rgba(245, 196, 81, 0.25);
+      box-shadow: 0 18px 40px rgba(245, 196, 81, 0.25);
     }
 
     .note-title-row {
@@ -394,7 +356,7 @@
     }
 
     .note-title {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
@@ -410,7 +372,7 @@
     }
 
     .note-category {
-      padding: 2px 6px;
+      padding: 2px 7px;
       border-radius: 999px;
       border: 1px solid rgba(75, 85, 99, 0.9);
       font-size: 9px;
@@ -433,7 +395,7 @@
       bottom: 0;
       width: 40%;
       height: 16px;
-      background: linear-gradient(90deg, transparent, #050608);
+      background: linear-gradient(90deg, transparent, #020204);
     }
 
     .note-footer-row {
@@ -495,6 +457,7 @@
       font-size: 11px;
     }
 
+    /* FAB */
     .fab {
       position: absolute;
       right: 18px;
@@ -521,17 +484,9 @@
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.9);
     }
 
-    .editor-shell,
-    .viewer-shell,
-    .settings-shell,
-    .trash-shell,
-    .about-shell {
-      flex: 1;
-      padding: 14px 14px 24px;
-      display: flex;
-      flex-direction: column;
+    /* EDITOR */
+    .editor-shell {
       gap: 10px;
-      overflow-y: auto;
     }
 
     .editor-top {
@@ -549,8 +504,10 @@
       cursor: pointer;
     }
 
-    .back-btn span {
-      font-size: 18px;
+    .back-btn span.icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .editor-title-label {
@@ -614,6 +571,8 @@
       border-radius: 999px;
       background: var(--accent);
       box-shadow: 0 0 10px rgba(245, 196, 81, 0.9);
+      display: inline-block;
+      margin-right: 4px;
     }
 
     .pill-btn {
@@ -639,6 +598,110 @@
       color: #fecaca;
     }
 
+    /* FULLSCREEN VIEWER – DARK, WIDE, NO DISTRACTIONS */
+    #screen-viewer {
+      background: #000000;
+    }
+
+    .viewer-shell {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #000000;
+      color: #f9fafb;
+      padding: 10px 0 0;
+      overflow: hidden;
+    }
+
+    .viewer-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px 6px;
+      border-bottom: 1px solid rgba(31, 41, 55, 0.6);
+      background: linear-gradient(to bottom, #020617, #000000);
+    }
+
+    .viewer-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .viewer-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--accent);
+      word-break: break-word;
+    }
+
+    .viewer-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .viewer-body-wrap {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 16px 16px 80px;
+      background: radial-gradient(circle at top, #020617 0, #000000 70%);
+    }
+
+    .viewer-body {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #e5e7eb;
+      white-space: pre-wrap;
+      padding-bottom: 40px;
+    }
+
+    /* subtle slow scroll feel is natural on mobile; no extra animation needed */
+
+    .viewer-footer-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 60px;
+      background: linear-gradient(to top, #020617, rgba(0, 0, 0, 0.9));
+      border-top: 1px solid rgba(31, 41, 55, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 10px;
+    }
+
+    .viewer-action-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      font-size: 10px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .viewer-action-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: #e5e7eb;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .viewer-action-btn.active svg {
+      stroke: var(--accent);
+    }
+
+    .viewer-action-btn.active span {
+      color: var(--accent);
+    }
+
     .toast {
       position: fixed;
       left: 50%;
@@ -660,194 +723,6 @@
     .toast.show {
       opacity: 1;
       transform: translateX(-50%) translateY(-4px);
-    }
-
-    .screen-title-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 4px 2px 8px;
-    }
-
-    .screen-title {
-      font-size: 12px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    .settings-section {
-      margin-top: 8px;
-      border-radius: var(--radius-lg);
-      background: radial-gradient(circle at top, #111827 0, #020617 70%);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-      padding: 10px 10px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .settings-section-title {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    .settings-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      font-size: 12px;
-    }
-
-    .settings-label {
-      color: var(--text-main);
-    }
-
-    .settings-select {
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: #020617;
-      color: var(--text-main);
-      font-size: 12px;
-      padding: 6px 10px;
-      outline: none;
-    }
-
-    .settings-note {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .about-text {
-      font-size: 11px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    .trash-list {
-      flex: 1;
-      margin-top: 8px;
-      border-radius: var(--radius-lg);
-      background: radial-gradient(circle at top, #111827 0, #020617 70%);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-      padding: 10px 8px 16px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .trash-items {
-      margin-top: 4px;
-      flex: 1;
-      overflow-y: auto;
-      padding-right: 4px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .trash-card {
-      border-radius: var(--radius-md);
-      padding: 8px 10px;
-      background: linear-gradient(145deg, #0b0d14, #050608);
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.8);
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      font-size: 11px;
-    }
-
-    .trash-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 6px;
-      margin-top: 4px;
-    }
-
-    .trash-btn {
-      border-radius: 999px;
-      border: 1px solid rgba(75, 85, 99, 0.9);
-      background: transparent;
-      color: var(--text-muted);
-      font-size: 10px;
-      padding: 4px 8px;
-      cursor: pointer;
-    }
-
-    .trash-btn.danger {
-      border-color: rgba(248, 113, 113, 0.9);
-      color: #fecaca;
-    }
-
-    .viewer-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 4px 2px 8px;
-      flex-wrap: wrap;
-    }
-
-    .viewer-title-block {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      flex: 1;
-      min-width: 0;
-    }
-
-    .viewer-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--accent);
-      word-break: break-word;
-    }
-
-    .viewer-meta {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .viewer-actions {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .viewer-body-wrap {
-      margin-top: 8px;
-      flex: 1;
-      border-radius: var(--radius-lg);
-      background: radial-gradient(circle at top, #111827 0, #020617 70%);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-      padding: 12px 12px 16px;
-      overflow-y: auto;
-    }
-
-    .viewer-body {
-      font-size: 15px;
-      line-height: 1.7;
-      color: #e5e7eb;
-      white-space: pre-wrap;
-    }
-
-    .viewer-footer {
-      margin-top: 8px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 11px;
-      color: var(--text-muted);
-      flex-wrap: wrap;
-      gap: 4px;
     }
 
     @media (max-width: 360px) {
@@ -876,10 +751,7 @@
             <div class="brand-subtitle">WORLD OF DISCOVERIES</div>
           </div>
           <div class="top-actions">
-            <button class="icon-btn" id="viewToggleBtn">▦</button>
             <button class="icon-btn" id="trashViewBtn">🗑</button>
-            <button class="icon-btn" id="settingsBtn">⚙</button>
-            <button class="icon-btn" id="aboutBtn">ℹ</button>
           </div>
         </div>
 
@@ -917,28 +789,7 @@
             <button class="tab-chip" data-tab="Ideas">Ideas</button>
             <button class="tab-chip" data-tab="To-Do">To-Do</button>
           </div>
-          <div class="smart-label">SMART</div>
-        </div>
-
-        <div class="smart-row">
-          <div class="smart-item">
-            <div class="smart-text">
-              <div class="smart-title">Auto Correct</div>
-              <div class="smart-sub">Use device spellcheck while typing</div>
-            </div>
-            <div class="toggle on" id="toggleAutoCorrect">
-              <div class="toggle-knob"></div>
-            </div>
-          </div>
-          <div class="smart-item">
-            <div class="smart-text">
-              <div class="smart-title">Auto Highlight</div>
-              <div class="smart-sub">Highlight search matches in notes</div>
-            </div>
-            <div class="toggle" id="toggleAutoHighlight">
-              <div class="toggle-knob"></div>
-            </div>
-          </div>
+          <div class="smart-label">WOD</div>
         </div>
 
         <div class="notes-panel">
@@ -950,7 +801,7 @@
             <div class="center-state" id="centerState">
               <div class="loader-ring"></div>
               <div class="center-title" id="centerTitle">Loading notes...</div>
-              <div class="center-sub" id="centerSub">Syncing with WOD Notepad cloud</div>
+              <div class="center-sub" id="centerSub">Syncing with WOD cloud</div>
             </div>
           </div>
         </div>
@@ -963,7 +814,11 @@
       <div class="editor-shell">
         <div class="editor-top">
           <div class="back-btn" data-back="home">
-            <span>←</span>
+            <span class="icon">
+              <svg width="18" height="18" viewBox="0 0 24 24">
+                <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
             <span>Back</span>
           </div>
           <div class="editor-title-label" id="editorTitleLabel">NEW NOTE</div>
@@ -1005,12 +860,16 @@
       </div>
     </div>
 
-    <!-- VIEWER SCREEN (FULL DOCUMENT STYLE) -->
+    <!-- FULLSCREEN VIEWER -->
     <div id="screen-viewer" class="screen">
       <div class="viewer-shell">
         <div class="viewer-header">
           <div class="back-btn" data-back="home">
-            <span>←</span>
+            <span class="icon">
+              <svg width="18" height="18" viewBox="0 0 24 24">
+                <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
             <span>Back</span>
           </div>
           <div class="viewer-title-block">
@@ -1021,143 +880,55 @@
               <span id="viewerWords">0 words</span>
             </div>
           </div>
-          <div class="viewer-actions">
-            <button class="pill-btn" id="viewerPinBtn">📌 Pin</button>
-            <button class="pill-btn" id="viewerEditBtn">Edit</button>
-            <button class="pill-btn danger" id="viewerDeleteBtn">Delete</button>
-          </div>
         </div>
 
         <div class="viewer-body-wrap">
           <div class="viewer-body" id="viewerBody"></div>
         </div>
 
-        <div class="viewer-footer">
-          <span>WOD Notepad • World of Discoveries</span>
-          <span id="viewerStatus">Ready</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- SETTINGS SCREEN -->
-    <div id="screen-settings" class="screen">
-      <div class="settings-shell">
-        <div class="screen-title-row">
-          <div class="back-btn" data-back="home">
-            <span>←</span>
-            <span>Back</span>
+        <div class="viewer-footer-bar">
+          <!-- PIN -->
+          <div class="viewer-action-btn" id="viewerPinBtn">
+            <svg viewBox="0 0 24 24">
+              <path d="M16 3l5 5-4 4 1 4-2 2-4-1-4 4-1-5 4-4-6-6 3-3 6 6z"/>
+            </svg>
+            <span>Pin</span>
           </div>
-          <div class="screen-title">SETTINGS</div>
-          <div style="width:40px;"></div>
-        </div>
-
-        <div class="settings-section">
-          <div class="settings-section-title">Appearance</div>
-          <div class="settings-row">
-            <div class="settings-label">Theme</div>
-            <select id="themeSelect" class="settings-select">
-              <option value="dark">Dark (WOD)</option>
-              <option value="midnight">Midnight Gold</option>
-              <option value="ink">Deep Ink</option>
-            </select>
+          <!-- EDIT -->
+          <div class="viewer-action-btn" id="viewerEditBtn">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 20h4l10-10-4-4L4 16v4z"/>
+              <path d="M14 6l4 4"/>
+            </svg>
+            <span>Edit</span>
           </div>
-          <div class="settings-row">
-            <div class="settings-label">Font size</div>
-            <select id="fontSizeSelect" class="settings-select">
-              <option value="normal">Normal</option>
-              <option value="large">Large</option>
-              <option value="huge">Huge</option>
-            </select>
+          <!-- DELETE -->
+          <div class="viewer-action-btn" id="viewerDeleteBtn">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 7h16"/>
+              <path d="M10 11v6"/>
+              <path d="M14 11v6"/>
+              <path d="M6 7l1 12h10l1-12"/>
+              <path d="M9 7V4h6v3"/>
+            </svg>
+            <span>Delete</span>
           </div>
-          <div class="settings-row">
-            <div class="settings-label">Card shape</div>
-            <select id="cardShapeSelect" class="settings-select">
-              <option value="rounded">Rounded</option>
-              <option value="pill">Pill</option>
-              <option value="square">Square</option>
-            </select>
+          <!-- COPY -->
+          <div class="viewer-action-btn" id="viewerCopyBtn">
+            <svg viewBox="0 0 24 24">
+              <path d="M9 9h11v11H9z"/>
+              <path d="M5 5h11v4"/>
+            </svg>
+            <span>Copy</span>
           </div>
-          <div class="settings-note">
-            Visual changes are saved on this device and applied instantly.
-          </div>
-        </div>
-
-        <div class="settings-section">
-          <div class="settings-section-title">About WOD</div>
-          <div class="about-text">
-            WOD Notepad (World of Discoveries) is a focused note space crafted for ideas,
-            plans, lyrics, code, and everything you don’t want to lose. Notes are stored
-            in your WOD cloud using Firebase Realtime Database.
-          </div>
-          <div class="about-text" style="margin-top:6px;">
-            Notes are synced to:
-            <br />
-            <span style="color:#e5e7eb;font-size:10px;">
-              https://let-s-talk-e57c6-default-rtdb.firebaseio.com/
-            </span>
-          </div>
-          <div class="about-text" style="margin-top:6px;">
-            Designed for phones. No desktop required. Just open, type, and your words
-            stay in the WOD cloud.
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TRASH SCREEN -->
-    <div id="screen-trash" class="screen">
-      <div class="trash-shell">
-        <div class="screen-title-row">
-          <div class="back-btn" data-back="home">
-            <span>←</span>
-            <span>Back</span>
-          </div>
-          <div class="screen-title">TRASH</div>
-          <div style="width:40px;"></div>
-        </div>
-
-        <div class="trash-list">
-          <div class="notes-header-row">
-            <div class="notes-header-title">DELETED NOTES</div>
-          </div>
-          <div class="trash-items" id="trashItems">
-            <div class="center-state" id="trashEmptyState">
-              <div class="center-title">Trash is empty</div>
-              <div class="center-sub">Deleted notes will appear here</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ABOUT SCREEN -->
-    <div id="screen-about" class="screen">
-      <div class="about-shell">
-        <div class="screen-title-row">
-          <div class="back-btn" data-back="home">
-            <span>←</span>
-            <span>Back</span>
-          </div>
-          <div class="screen-title">ABOUT WOD</div>
-          <div style="width:40px;"></div>
-        </div>
-
-        <div class="settings-section">
-          <div class="settings-section-title">World of Discoveries</div>
-          <div class="about-text">
-            WOD Notepad is part of the World of Discoveries ecosystem — a space for
-            capturing thoughts, building systems, and keeping your creative flow alive.
-          </div>
-          <div class="about-text" style="margin-top:6px;">
-            Your notes live in your personal vault:
-            <br />
-            <span style="color:#e5e7eb;font-size:10px;">
-              https://let-s-talk-e57c6-default-rtdb.firebaseio.com/
-            </span>
-          </div>
-          <div class="about-text" style="margin-top:6px;">
-            Built for mobile first. Designed to feel like a studio, a notebook, and a
-            control room in your pocket.
+          <!-- SHARE -->
+          <div class="viewer-action-btn" id="viewerShareBtn">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 12v7h16v-7"/>
+              <path d="M12 3v13"/>
+              <path d="M8 7l4-4 4 4"/>
+            </svg>
+            <span>Share</span>
           </div>
         </div>
       </div>
@@ -1172,8 +943,6 @@
     let notes = [];
     let currentFilterTab = "all";
     let searchQuery = "";
-    let autoHighlight = false;
-    let autoCorrect = true;
     let editingNoteId = null;
     let editingPinned = false;
     let viewingNoteId = null;
@@ -1181,17 +950,11 @@
     const screenHome = document.getElementById("screen-home");
     const screenEditor = document.getElementById("screen-editor");
     const screenViewer = document.getElementById("screen-viewer");
-    const screenSettings = document.getElementById("screen-settings");
-    const screenTrash = document.getElementById("screen-trash");
-    const screenAbout = document.getElementById("screen-about");
 
     const screens = {
       home: screenHome,
       editor: screenEditor,
       viewer: screenViewer,
-      settings: screenSettings,
-      trash: screenTrash,
-      about: screenAbout,
     };
 
     let currentScreen = "home";
@@ -1221,8 +984,6 @@
     const notesHeaderFilterEl = document.getElementById("notesHeaderFilter");
     const searchInputEl = document.getElementById("searchInput");
     const tabChips = document.querySelectorAll(".tab-chip");
-    const toggleAutoCorrectEl = document.getElementById("toggleAutoCorrect");
-    const toggleAutoHighlightEl = document.getElementById("toggleAutoHighlight");
     const fabEl = document.getElementById("fab");
     const editorSaveBtn = document.getElementById("editorSaveBtn");
     const editorDeleteBtn = document.getElementById("editorDeleteBtn");
@@ -1234,26 +995,18 @@
     const editorStatusEl = document.getElementById("editorStatus");
     const editorTitleLabelEl = document.getElementById("editorTitleLabel");
     const toastEl = document.getElementById("toast");
-
-    const settingsBtnEl = document.getElementById("settingsBtn");
-    const aboutBtnEl = document.getElementById("aboutBtn");
-    const themeSelectEl = document.getElementById("themeSelect");
-    const fontSizeSelectEl = document.getElementById("fontSizeSelect");
-    const cardShapeSelectEl = document.getElementById("cardShapeSelect");
-    const viewToggleBtnEl = document.getElementById("viewToggleBtn");
     const trashViewBtnEl = document.getElementById("trashViewBtn");
-    const trashItemsEl = document.getElementById("trashItems");
-    const trashEmptyStateEl = document.getElementById("trashEmptyState");
 
     const viewerTitleEl = document.getElementById("viewerTitle");
     const viewerCategoryEl = document.getElementById("viewerCategory");
     const viewerDateEl = document.getElementById("viewerDate");
     const viewerWordsEl = document.getElementById("viewerWords");
     const viewerBodyEl = document.getElementById("viewerBody");
-    const viewerStatusEl = document.getElementById("viewerStatus");
     const viewerPinBtn = document.getElementById("viewerPinBtn");
     const viewerEditBtn = document.getElementById("viewerEditBtn");
     const viewerDeleteBtn = document.getElementById("viewerDeleteBtn");
+    const viewerCopyBtn = document.getElementById("viewerCopyBtn");
+    const viewerShareBtn = document.getElementById("viewerShareBtn");
 
     function showToast(message) {
       toastEl.textContent = message;
@@ -1296,27 +1049,9 @@
       );
     }
 
-    function escapeHtml(str) {
-      return str
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-    }
-
-    function highlightText(text, query) {
-      if (!autoHighlight || !query) return escapeHtml(text);
-      const q = query.trim();
-      if (!q) return escapeHtml(text);
-      const regex = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "ig");
-      return escapeHtml(text).replace(
-        regex,
-        '<mark style="background:rgba(245,196,81,0.25);color:#f9fafb;border-radius:4px;padding:0 1px;">$1</mark>'
-      );
-    }
-
     async function fetchNotes() {
       try {
-        setCenterState(true, "Loading notes...", "Syncing with WOD Notepad cloud");
+        setCenterState(true, "Loading notes...", "Syncing with WOD cloud");
         const res = await fetch(DB_BASE + ".json");
         if (!res.ok) throw new Error("Failed to load");
         const data = await res.json();
@@ -1342,9 +1077,8 @@
           return b.createdAt - a.createdAt;
         });
         renderNotes();
-        renderTrash();
       } catch (err) {
-        setCenterState(true, "Offline?", "Could not reach WOD Notepad cloud");
+        setCenterState(true, "Offline?", "Could not reach WOD cloud");
       }
     }
 
@@ -1387,7 +1121,6 @@
           return b.createdAt - a.createdAt;
         });
         renderNotes();
-        renderTrash();
       }
     }
 
@@ -1402,33 +1135,7 @@
       if (idx !== -1) {
         notes[idx].deleted = true;
         renderNotes();
-        renderTrash();
       }
-    }
-
-    async function restoreNote(id) {
-      const res = await fetch(DB_BASE + "/" + id + ".json", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ deleted: false }),
-      });
-      if (!res.ok) throw new Error("Failed to restore note");
-      const idx = notes.findIndex((n) => n.id === id);
-      if (idx !== -1) {
-        notes[idx].deleted = false;
-        renderNotes();
-        renderTrash();
-      }
-    }
-
-    async function hardDeleteNote(id) {
-      const res = await fetch(DB_BASE + "/" + id + ".json", {
-        method: "DELETE",
-      });
-      if (!res.ok) throw new Error("Failed to remove note");
-      notes = notes.filter((n) => n.id !== id);
-      renderNotes();
-      renderTrash();
     }
 
     function renderStats() {
@@ -1525,7 +1232,7 @@
 
         const bodyEl = document.createElement("div");
         bodyEl.className = "note-body";
-        bodyEl.innerHTML = highlightText(note.body || "", searchQuery);
+        bodyEl.textContent = note.body || "";
 
         const footerRow = document.createElement("div");
         footerRow.className = "note-footer-row";
@@ -1546,71 +1253,6 @@
       });
     }
 
-    function renderTrash() {
-      const trashed = notes.filter((n) => n.deleted);
-      trashItemsEl.innerHTML = "";
-      if (!trashed.length) {
-        trashItemsEl.appendChild(trashEmptyStateEl);
-        trashEmptyStateEl.style.display = "flex";
-        return;
-      }
-      trashEmptyStateEl.style.display = "none";
-      trashed.forEach((note) => {
-        const card = document.createElement("div");
-        card.className = "trash-card";
-
-        const title = document.createElement("div");
-        title.style.fontWeight = "600";
-        title.textContent = note.title || "Untitled";
-
-        const meta = document.createElement("div");
-        meta.style.fontSize = "10px";
-        meta.style.color = "#9ca3af";
-        meta.textContent =
-          note.category + " • " + formatDateShort(note.createdAt);
-
-        const body = document.createElement("div");
-        body.textContent = (note.body || "").slice(0, 120);
-
-        const actions = document.createElement("div");
-        actions.className = "trash-actions";
-
-        const restoreBtn = document.createElement("button");
-        restoreBtn.className = "trash-btn";
-        restoreBtn.textContent = "Restore";
-        restoreBtn.addEventListener("click", async () => {
-          try {
-            await restoreNote(note.id);
-            showToast("Note restored");
-          } catch {
-            showToast("Error restoring");
-          }
-        });
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.className = "trash-btn danger";
-        deleteBtn.textContent = "Delete";
-        deleteBtn.addEventListener("click", async () => {
-          try {
-            await hardDeleteNote(note.id);
-            showToast("Note removed");
-          } catch {
-            showToast("Error removing");
-          }
-        });
-
-        actions.appendChild(restoreBtn);
-        actions.appendChild(deleteBtn);
-
-        card.appendChild(title);
-        card.appendChild(meta);
-        card.appendChild(body);
-        card.appendChild(actions);
-
-        trashItemsEl.appendChild(card);
-      });
-    }
-
     function openViewer(note) {
       viewingNoteId = note.id;
       viewerTitleEl.textContent = note.title || "Untitled";
@@ -1618,8 +1260,7 @@
       viewerDateEl.textContent = formatDateShort(note.createdAt);
       viewerWordsEl.textContent = wordCount(note.body) + " words";
       viewerBodyEl.textContent = note.body || "";
-      viewerStatusEl.textContent = "Ready";
-      viewerPinBtn.textContent = note.pinned ? "📌 Unpin" : "📌 Pin";
+      viewerPinBtn.classList.toggle("active", !!note.pinned);
       showScreen("viewer");
     }
 
@@ -1641,7 +1282,6 @@
       }
       editorWordCountEl.textContent = wordCount(noteBodyInputEl.value) + " words";
       editorStatusEl.textContent = "Ready";
-      noteBodyInputEl.spellcheck = autoCorrect;
       editorPinBtn.textContent = editingPinned ? "📌 Unpin" : "📌 Pin";
       showScreen("editor");
       setTimeout(() => {
@@ -1685,7 +1325,7 @@
           });
         }
         editorStatusEl.textContent = "Saved";
-        showToast("Note saved to WOD cloud");
+        showToast("Note saved");
         setTimeout(closeEditor, 150);
       } catch (err) {
         editorStatusEl.textContent = "Error saving";
@@ -1729,7 +1369,7 @@
       const note = notes.find((n) => n.id === viewingNoteId);
       if (!note) return;
       const newPinned = !note.pinned;
-      viewerPinBtn.textContent = newPinned ? "📌 Unpin" : "📌 Pin";
+      viewerPinBtn.classList.toggle("active", newPinned);
       try {
         await updateNote(viewingNoteId, { pinned: newPinned });
         showToast(newPinned ? "Pinned" : "Unpinned");
@@ -1740,18 +1380,44 @@
 
     async function deleteViewerNote() {
       if (!viewingNoteId) return;
-      viewerStatusEl.textContent = "Deleting...";
       try {
         await deleteNote(viewingNoteId);
         showToast("Moved to trash");
         viewingNoteId = null;
         setTimeout(() => {
-          viewerStatusEl.textContent = "Ready";
           showScreen("home");
         }, 150);
       } catch (err) {
-        viewerStatusEl.textContent = "Error deleting";
         showToast("Error deleting note");
+      }
+    }
+
+    function copyViewerNote() {
+      if (!viewingNoteId) return;
+      const note = notes.find((n) => n.id === viewingNoteId);
+      if (!note) return;
+      const text = (note.title ? note.title + "\n\n" : "") + (note.body || "");
+      navigator.clipboard.writeText(text).then(
+        () => showToast("Copied"),
+        () => showToast("Copy failed")
+      );
+    }
+
+    function shareViewerNote() {
+      if (!viewingNoteId) return;
+      const note = notes.find((n) => n.id === viewingNoteId);
+      if (!note) return;
+      const text = (note.title ? note.title + "\n\n" : "") + (note.body || "");
+      if (navigator.share) {
+        navigator
+          .share({
+            title: note.title || "WOD Note",
+            text,
+          })
+          .catch(() => {});
+      } else {
+        copyViewerNote();
+        showToast("Share not supported, copied instead");
       }
     }
 
@@ -1769,20 +1435,6 @@
       });
     });
 
-    toggleAutoCorrectEl.addEventListener("click", () => {
-      autoCorrect = !autoCorrect;
-      toggleAutoCorrectEl.classList.toggle("on", autoCorrect);
-      noteBodyInputEl.spellcheck = autoCorrect;
-      showToast(autoCorrect ? "Auto correct on" : "Auto correct off");
-    });
-
-    toggleAutoHighlightEl.addEventListener("click", () => {
-      autoHighlight = !autoHighlight;
-      toggleAutoHighlightEl.classList.toggle("on", autoHighlight);
-      renderNotes();
-      showToast(autoHighlight ? "Highlight on" : "Highlight off");
-    });
-
     fabEl.addEventListener("click", () => {
       viewingNoteId = null;
       openEditor(null);
@@ -1795,22 +1447,6 @@
       editorWordCountEl.textContent = wordCount(noteBodyInputEl.value) + " words";
     });
 
-    viewToggleBtnEl.addEventListener("click", () => {
-      showToast("Grid/list view coming soon");
-    });
-
-    trashViewBtnEl.addEventListener("click", () => {
-      showScreen("trash");
-    });
-
-    settingsBtnEl.addEventListener("click", () => {
-      showScreen("settings");
-    });
-
-    aboutBtnEl.addEventListener("click", () => {
-      showScreen("about");
-    });
-
     viewerEditBtn.addEventListener("click", () => {
       if (!viewingNoteId) return;
       const note = notes.find((n) => n.id === viewingNoteId);
@@ -1820,6 +1456,8 @@
 
     viewerPinBtn.addEventListener("click", togglePinViewerNote);
     viewerDeleteBtn.addEventListener("click", deleteViewerNote);
+    viewerCopyBtn.addEventListener("click", copyViewerNote);
+    viewerShareBtn.addEventListener("click", shareViewerNote);
 
     document.querySelectorAll(".back-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -1830,83 +1468,10 @@
       });
     });
 
-    function applyTheme(theme) {
-      const root = document.documentElement;
-      if (theme === "midnight") {
-        root.style.setProperty("--bg", "#020617");
-        root.style.setProperty("--bg-alt", "#020617");
-        root.style.setProperty("--card", "#020617");
-        root.style.setProperty("--accent", "#facc15");
-        root.style.setProperty("--border", "#1f2937");
-      } else if (theme === "ink") {
-        root.style.setProperty("--bg", "#020617");
-        root.style.setProperty("--bg-alt", "#020617");
-        root.style.setProperty("--card", "#020617");
-        root.style.setProperty("--accent", "#38bdf8");
-        root.style.setProperty("--border", "#0f172a");
-      } else {
-        root.style.setProperty("--bg", "#050608");
-        root.style.setProperty("--bg-alt", "#101218");
-        root.style.setProperty("--card", "#151822");
-        root.style.setProperty("--accent", "#f5c451");
-        root.style.setProperty("--border", "#262938");
-      }
-      localStorage.setItem("wod_theme", theme);
-    }
-
-    function applyFontSize(size) {
-      if (size === "large") {
-        document.body.style.fontSize = "15px";
-      } else if (size === "huge") {
-        document.body.style.fontSize = "17px";
-      } else {
-        document.body.style.fontSize = "14px";
-      }
-      localStorage.setItem("wod_font_size", size);
-    }
-
-    function applyCardShape(shape) {
-      const root = document.documentElement;
-      if (shape === "pill") {
-        root.style.setProperty("--radius-md", "999px");
-        root.style.setProperty("--radius-lg", "999px");
-      } else if (shape === "square") {
-        root.style.setProperty("--radius-md", "6px");
-        root.style.setProperty("--radius-lg", "10px");
-      } else {
-        root.style.setProperty("--radius-md", "12px");
-        root.style.setProperty("--radius-lg", "18px");
-      }
-      localStorage.setItem("wod_card_shape", shape);
-    }
-
-    themeSelectEl.addEventListener("change", () => {
-      applyTheme(themeSelectEl.value);
+    trashViewBtnEl.addEventListener("click", () => {
+      showToast("Trash view coming next build");
     });
 
-    fontSizeSelectEl.addEventListener("change", () => {
-      applyFontSize(fontSizeSelectEl.value);
-    });
-
-    cardShapeSelectEl.addEventListener("change", () => {
-      applyCardShape(cardShapeSelectEl.value);
-    });
-
-    function loadPreferences() {
-      const theme = localStorage.getItem("wod_theme") || "dark";
-      const fontSize = localStorage.getItem("wod_font_size") || "normal";
-      const cardShape = localStorage.getItem("wod_card_shape") || "rounded";
-
-      themeSelectEl.value = theme;
-      fontSizeSelectEl.value = fontSize;
-      cardShapeSelectEl.value = cardShape;
-
-      applyTheme(theme);
-      applyFontSize(fontSize);
-      applyCardShape(cardShape);
-    }
-
-    loadPreferences();
     fetchNotes();
   </script>
 </body>
