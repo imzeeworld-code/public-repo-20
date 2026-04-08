@@ -101,7 +101,6 @@
       flex-direction: column;
     }
 
-    /* TOP BAR */
     .top-bar {
       display: flex;
       align-items: center;
@@ -198,7 +197,6 @@
       stroke-width: 1.8;
     }
 
-    /* AUTH SCREENS */
     .auth-shell {
       flex: 1;
       display: flex;
@@ -319,7 +317,6 @@
       text-align: center;
     }
 
-    /* MAIN APP */
     .main-shell {
       flex: 1;
       display: none;
@@ -600,7 +597,6 @@
       stroke-width: 1.6;
     }
 
-    /* FAB */
     .fab {
       position: absolute;
       right: 18px;
@@ -634,7 +630,6 @@
       50% { transform: translateY(-2px) scale(1.03); }
     }
 
-    /* TOAST */
     .toast {
       position: absolute;
       left: 50%;
@@ -660,7 +655,6 @@
       transform: translateX(-50%) translateY(-4px);
     }
 
-    /* EDITOR + VIEWER OVERLAY */
     .overlay {
       position: absolute;
       inset: 0;
@@ -724,6 +718,8 @@
     .overlay-actions {
       display: flex;
       gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
     .overlay-btn {
       border-radius: var(--radius-pill);
@@ -779,7 +775,6 @@
       min-height: 140px;
     }
 
-    /* SETTINGS PANEL */
     .settings-panel {
       position: absolute;
       top: 52px;
@@ -854,7 +849,6 @@
       height: 14px;
     }
 
-    /* THEME VARIANTS */
     .theme-aurora {
       background: var(--bg-aurora);
       color: #020617;
@@ -973,7 +967,6 @@
     <div class="glass-orb"></div>
 
     <div class="content">
-      <!-- TOP BAR -->
       <div class="top-bar">
         <div class="brand-left">
           <div class="brand-crystal"><span>W</span></div>
@@ -997,7 +990,6 @@
         </div>
       </div>
 
-      <!-- AUTH SHELL -->
       <div class="auth-shell" id="authShell">
         <div class="auth-card">
           <div class="auth-inner">
@@ -1050,7 +1042,6 @@
         </div>
       </div>
 
-      <!-- MAIN SHELL -->
       <div class="main-shell" id="mainShell">
         <div class="search-card">
           <div class="search-inner">
@@ -1111,10 +1102,8 @@
         </button>
       </div>
 
-      <!-- TOAST -->
       <div class="toast" id="toast"></div>
 
-      <!-- EDITOR OVERLAY -->
       <div class="overlay" id="editorOverlay">
         <div class="overlay-card">
           <div class="overlay-inner">
@@ -1154,15 +1143,15 @@
         </div>
       </div>
 
-      <!-- VIEWER OVERLAY -->
       <div class="overlay" id="viewerOverlay">
         <div class="overlay-card">
           <div class="overlay-inner">
             <div class="overlay-header">
               <div class="overlay-title" id="viewerTitle">NOTE</div>
               <div class="overlay-actions">
-                <button class="overlay-btn" id="viewerClose">Close</button>
+                <button class="overlay-btn" id="viewerBack">Back</button>
                 <button class="overlay-btn primary" id="viewerEdit">Edit</button>
+                <button class="overlay-btn" id="viewerDelete" style="color:#f87171;border-color:#f87171;">Delete</button>
               </div>
             </div>
             <div class="overlay-body">
@@ -1187,7 +1176,6 @@
         </div>
       </div>
 
-      <!-- SETTINGS PANEL -->
       <div class="settings-panel" id="settingsPanel">
         <div class="settings-title">AETHER GLASS SETTINGS</div>
 
@@ -1359,8 +1347,9 @@
     const viewerDate = document.getElementById("viewerDate");
     const viewerWords = document.getElementById("viewerWords");
     const viewerBody = document.getElementById("viewerBody");
-    const viewerClose = document.getElementById("viewerClose");
+    const viewerBack = document.getElementById("viewerBack");
     const viewerEdit = document.getElementById("viewerEdit");
+    const viewerDelete = document.getElementById("viewerDelete");
 
     const settingsBtn = document.getElementById("settingsBtn");
     const settingsPanel = document.getElementById("settingsPanel");
@@ -1408,54 +1397,33 @@
 
         const card = document.createElement("div");
         card.className = "note-card";
-        card.dataset.id = note.id;
 
-        const metaRow = document.createElement("div");
-        metaRow.className = "note-meta-row";
-
-        const tag = document.createElement("div");
-        tag.className = "note-tag";
-        const dot = document.createElement("span");
-        dot.className = "note-tag-dot";
-        const label = document.createElement("span");
-        label.textContent = note.category.toUpperCase();
-        tag.appendChild(dot);
-        tag.appendChild(label);
-
-        const dateSpan = document.createElement("span");
-        dateSpan.setAttribute("data-meta", "date");
-        dateSpan.textContent = note.date === todayString()
-          ? "Today · " + note.words + " words"
-          : note.date + " · " + note.words + " words";
-
-        metaRow.appendChild(tag);
-        metaRow.appendChild(dateSpan);
-
-        const titleEl = document.createElement("div");
-        titleEl.className = "note-title";
-        titleEl.textContent = note.title;
-
-        const bodyEl = document.createElement("div");
-        bodyEl.className = "note-body-preview";
-        bodyEl.textContent = note.body;
-
-        const footerRow = document.createElement("div");
-        footerRow.className = "note-footer-row";
-
-        const wordsMeta = document.createElement("span");
-        wordsMeta.setAttribute("data-meta", "words");
-        wordsMeta.textContent = note.words + " words";
-
-        const shareBtn = document.createElement("button");
-        shareBtn.className = "note-share-btn";
-        shareBtn.innerHTML = `
-          <svg viewBox="0 0 24 24">
-            <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7" />
-            <path d="M16 6l-4-4-4 4" />
-            <path d="M12 2v14" />
-          </svg>
-          <span>Share link</span>
+        card.innerHTML = `
+          <div class="note-meta-row">
+            <div class="note-tag">
+              <span class="note-tag-dot"></span>
+              <span>${note.category.toUpperCase()}</span>
+            </div>
+            <span data-meta="date">
+              ${note.date === todayString() ? "Today" : note.date} · ${note.words} words
+            </span>
+          </div>
+          <div class="note-title">${note.title}</div>
+          <div class="note-body-preview">${note.body}</div>
+          <div class="note-footer-row">
+            <span data-meta="words">${note.words} words</span>
+            <button class="note-share-btn">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7" />
+                <path d="M16 6l-4-4-4 4" />
+                <path d="M12 2v14" />
+              </svg>
+              <span>Share link</span>
+            </button>
+          </div>
         `;
+
+        const shareBtn = card.querySelector(".note-share-btn");
         shareBtn.addEventListener("click", (e) => {
           e.stopPropagation();
           const url = "https://aether-notes.local/note/" + note.id;
@@ -1469,14 +1437,6 @@
             showToast("Sharable link: " + url);
           }
         });
-
-        footerRow.appendChild(wordsMeta);
-        footerRow.appendChild(shareBtn);
-
-        card.appendChild(metaRow);
-        card.appendChild(titleEl);
-        card.appendChild(bodyEl);
-        card.appendChild(footerRow);
 
         card.addEventListener("click", () => openViewer(note));
 
@@ -1559,10 +1519,17 @@
       viewerOverlay.classList.remove("active");
     }
 
-    viewerClose.addEventListener("click", closeViewer);
+    viewerBack.addEventListener("click", closeViewer);
     viewerEdit.addEventListener("click", () => {
       closeViewer();
       openEditor(viewingNote);
+    });
+    viewerDelete.addEventListener("click", () => {
+      if (!viewingNote) return;
+      notes = notes.filter(n => n.id !== viewingNote.id);
+      closeViewer();
+      renderNotes();
+      showToast("Note deleted");
     });
 
     fabNew.addEventListener("click", () => openEditor(null));
@@ -1596,11 +1563,7 @@
     });
 
     themeToggle.addEventListener("click", () => {
-      if (appRoot.classList.contains("theme-aurora")) {
-        appRoot.classList.remove("theme-aurora");
-      } else {
-        appRoot.classList.add("theme-aurora");
-      }
+      appRoot.classList.toggle("theme-aurora");
     });
 
     settingsBtn.addEventListener("click", () => {
