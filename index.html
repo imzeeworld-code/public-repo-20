@@ -5,6 +5,10 @@
   <title>WOD Notepad – Real Glass Vault</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+
   <style>
     :root {
       --bg-void: radial-gradient(circle at top, #020617 0, #02010a 40%, #000000 100%);
@@ -1436,7 +1440,15 @@
     </div>
   </div>
 
+  <!-- APP LOGIC + FIREBASE -->
   <script>
+    // Firebase config – using your RTDB URL
+    const firebaseConfig = {
+      databaseURL: "https://let-s-talk-e57c6-default-rtdb.firebaseio.com/"
+    };
+    const appFB = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
     const appRoot = document.getElementById("appRoot");
 
     const authShell = document.getElementById("authShell");
@@ -1509,10 +1521,10 @@
     function exportNoteAsFile(note) {
       const blob = new Blob(
         [
-          "Title: " + note.title + "\\n",
-          "Category: " + note.category + "\\n",
-          "Date: " + note.date + "\\n",
-          "Words: " + note.words + "\\n\\n",
+          "Title: " + note.title + "\n",
+          "Category: " + note.category + "\n",
+          "Date: " + note.date + "\n",
+          "Words: " + note.words + "\n\n",
           note.body
         ],
         { type: "text/plain" }
@@ -1542,27 +1554,29 @@
         const matchesSearch = !search || textBlob.includes(search);
         if (!matchesTab || !matchesSearch) return;
 
-        totalWords += note.words;
+        totalWords += note.words || 0;
         if (note.pinned) pinnedCount++;
         if (note.date === todayString()) todayCount++;
 
         const card = document.createElement("div");
         card.className = "note-card";
 
+        const wordsDisplay = note.words || wordCount(note.body || "");
+
         card.innerHTML = `
           <div class="note-meta-row">
             <div class="note-tag">
               <span class="note-tag-dot"></span>
-              <span>${note.category.toUpperCase()}</span>
+              <span>${(note.category || "personal").toUpperCase()}</span>
             </div>
             <span data-meta="date">
-              ${note.date === todayString() ? "Today" : note.date} · ${note.words} words
+              ${(note.date === todayString() ? "Today" : (note.date || ""))} · ${wordsDisplay} words
             </span>
           </div>
-          <div class="note-title">${note.title}</div>
-          <div class="note-body-preview">${note.body}</div>
+          <div class="note-title">${note.title || "Untitled WOD Note"}</div>
+          <div class="note-body-preview">${(note.body || "").replace(/\n/g, "<br>")}</div>
           <div class="note-footer-row">
-            <span data-meta="words">${note.words} words</span>
+            <span data-meta="words">${wordsDisplay} words</span>
             <span>${note.pinned ? "Pinned · WOD Notepad" : "WOD Notepad"}</span>
           </div>
           <div class="note-actions-row">
@@ -1616,12 +1630,11 @@
               openEditor(note);
             }
             if (action === "delete") {
-              notes = notes.filter(n => n.id !== note.id);
-              renderNotes();
+              firebase.database().ref("notes/" + note.id).remove();
               showToast("Note deleted");
             }
             if (action === "copy") {
-              const text = note.title + "\\n\\n" + note.body;
+              const text = (note.title || "") + "\n\n" + (note.body || "");
               if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).then(() => {
                   showToast("Note copied");
@@ -1668,10 +1681,10 @@
       if (note) {
         editingNote = note;
         editorTitle.textContent = "EDIT NOTE";
-        noteTitleInput.value = note.title;
-        noteCategorySelect.value = note.category;
-        notePinnedCheckbox.checked = note.pinned;
-        noteBodyTextarea.value = note.body;
+        noteTitleInput.value = note.title || "";
+        noteCategorySelect.value = note.category || "personal";
+        notePinnedCheckbox.checked = !!note.pinned;
+        noteBodyTextarea.value = note.body || "";
       } else {
         editingNote = null;
         editorTitle.textContent = "NEW NOTE";
@@ -1695,16 +1708,20 @@
       const words = wordCount(body);
       const date = todayString();
 
-      if (editingNote) {
-        editingNote.title = title;
-        editingNote.category = category;
-        editingNote.pinned = pinned;
-        editingNote.body = body;
-        editingNote.words = words;
-        editingNote.date = date;
-        showToast("Note updated");
+      let note;
+
+      if (editingNote && editingNote.id) {
+        note = {
+          ...editingNote,
+          title,
+          category,
+          pinned,
+          body,
+          words,
+          date
+        };
       } else {
-        const note = {
+        note = {
           id: Date.now().toString(36),
           title,
           category,
@@ -1713,20 +1730,20 @@
           date,
           words
         };
-        notes.unshift(note);
-        showToast("Note added");
       }
+
+      firebase.database().ref("notes/" + note.id).set(note);
       closeEditor();
-      renderNotes();
+      showToast("Saved");
     }
 
     function openViewer(note) {
       viewingNote = note;
-      viewerTitle.textContent = note.title;
-      viewerCategory.textContent = note.category.toUpperCase();
-      viewerDate.textContent = note.date === todayString() ? "Today" : note.date;
-      viewerWords.textContent = note.words + " words";
-      viewerBody.textContent = note.body;
+      viewerTitle.textContent = note.title || "Untitled WOD Note";
+      viewerCategory.textContent = (note.category || "personal").toUpperCase();
+      viewerDate.textContent = note.date === todayString() ? "Today" : (note.date || "");
+      viewerWords.textContent = (note.words || wordCount(note.body || "")) + " words";
+      viewerBody.textContent = note.body || "";
       viewerOverlay.classList.add("active");
     }
 
@@ -1740,10 +1757,9 @@
       openEditor(viewingNote);
     });
     viewerDelete.addEventListener("click", () => {
-      if (!viewingNote) return;
-      notes = notes.filter(n => n.id !== viewingNote.id);
+      if (!viewingNote || !viewingNote.id) return;
+      firebase.database().ref("notes/" + viewingNote.id).remove();
       closeViewer();
-      renderNotes();
       showToast("Note deleted");
     });
 
@@ -1854,25 +1870,12 @@
       });
     });
 
-    notes.push({
-      id: "demo-1",
-      title: "WOD Notepad · Funny Intro",
-      category: "personal",
-      pinned: true,
-      body:
-        "Welcome to WOD Notepad — the only place where your ideas stop running away from you.\\n\\n" +
-        "Here, every thought you type is grabbed, locked, and stored in your glass vault before it even tries to escape.\\n" +
-        "No disappearing notes. No “I swear I wrote it.” No heartbreak.\\n\\n" +
-        "This is your creative battlefield.\\n" +
-        "Your mental gym.\\n" +
-        "Your idea refrigerator — because nothing spoils here.\\n\\n" +
-        "Write boldly.\\nThink wildly.\\nDiscover dangerously.\\n\\n" +
-        "WOD Notepad. Your genius starts now.",
-      date: todayString(),
-      words: 90
+    // LIVE SYNC WITH FIREBASE – notes stay permanently
+    firebase.database().ref("notes").on("value", snapshot => {
+      const data = snapshot.val() || {};
+      notes = Object.values(data);
+      renderNotes();
     });
-
-    renderNotes();
   </script>
 </body>
 </html>
