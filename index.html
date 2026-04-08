@@ -270,12 +270,35 @@ auth.onAuthStateChanged(user => {
 });
 
 function startApp() {
-  db.ref('users/'+APP.uid+'/notes').on('value', snap => {
+  // 1. Load instantly from local cache
+  loadLocal();
+  renderNotes();
+  
+  // 2. Sync with Firebase in background
+  const notesRef = db.ref('users/'+APP.uid+'/notes');
+  notesRef.on('value', snap => {
     APP.notes = snap.val() || {};
+    saveLocal();
     renderNotes();
     document.getElementById('loadingState').style.display = 'none';
+  }, err => {
+    console.error(err);
+    toast("Sync error. Working offline.");
+    document.getElementById('loadingState').style.display = 'none';
   });
+  
   showScreen('screenMain');
+}
+
+function saveLocal() {
+  if(APP.uid) localStorage.setItem('wod_cache_'+APP.uid, JSON.stringify(APP.notes));
+}
+
+function loadLocal() {
+  if(APP.uid) {
+    const data = localStorage.getItem('wod_cache_'+APP.uid);
+    if(data) APP.notes = JSON.parse(data);
+  }
 }
 
 var isSignup = false;
@@ -316,6 +339,7 @@ function renderNotes() {
     container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:50px;color:var(--tx3)">No discoveries yet. Tap + to start.</div>';
     return;
   }
+  arr.sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
   arr.forEach(n => {
     const el = document.createElement('div');
     el.className = 'ncard';
@@ -344,19 +368,32 @@ document.getElementById('editorSave').onclick = () => {
   const title = document.getElementById('edTitle').value;
   const content = document.getElementById('ea').innerHTML;
   if(!title && !content) return toast('Empty note discarded');
+  
   const id = APP.curId || db.ref('users/'+APP.uid+'/notes').push().key;
-  db.ref('users/'+APP.uid+'/notes/'+id).update({title, content, updatedAt: Date.now()}).then(() => {
+  const noteData = {title, content, updatedAt: Date.now()};
+  
+  // Optimistic update for instant feedback
+  APP.notes[id] = noteData;
+  saveLocal();
+  renderNotes();
+  showScreen('screenMain');
+  
+  db.ref('users/'+APP.uid+'/notes/'+id).update(noteData).then(() => {
     toast('Discovery saved!');
-    showScreen('screenMain');
+  }).catch(e => {
+    console.error(e);
+    toast("Saved locally (Sync pending)");
   });
 };
 
 document.getElementById('raDelete').onclick = () => {
   if(confirm('Delete this discovery?')) {
-    db.ref('users/'+APP.uid+'/notes/'+APP.curId).remove().then(() => {
-      toast('Deleted');
-      showScreen('screenMain');
-    });
+    const id = APP.curId;
+    delete APP.notes[id];
+    saveLocal();
+    renderNotes();
+    showScreen('screenMain');
+    db.ref('users/'+APP.uid+'/notes/'+id).remove().then(() => toast('Deleted')).catch(() => toast("Deleted locally"));
   }
 };
 
