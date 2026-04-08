@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>WOD Notepad – Aether Glass</title>
+  <title>WOD Notepad – Real Glass Vault</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
   <style>
@@ -20,10 +20,10 @@
       --accent-diamond: #38bdf8;
       --accent-diamond-soft: rgba(56,189,248,0.7);
 
-      --shadow-strong: 0 36px 110px rgba(0,0,0,1);
-      --shadow-soft: 0 22px 70px rgba(0,0,0,0.95);
-      --glass-blur: 28px;
-      --glass-glow: 0.55;
+      --shadow-strong: 0 40px 130px rgba(0,0,0,1);
+      --shadow-soft: 0 24px 80px rgba(0,0,0,0.95);
+      --glass-blur: 30px;
+      --glass-glow: 0.6;
 
       --radius-card: 26px;
       --radius-pill: 999px;
@@ -33,7 +33,7 @@
       --font-mono: "JetBrains Mono", "SF Mono", "Consolas", monospace;
 
       --note-font-size: 14px;
-      --title-font-size: 17px;
+      --title-font-size: 18px;
     }
 
     * {
@@ -66,7 +66,7 @@
 
     .bg-orbit {
       position: absolute;
-      inset: -80px;
+      inset: -90px;
       background:
         radial-gradient(circle at 10% 0%, rgba(255,255,255,0.22), transparent 55%),
         radial-gradient(circle at 90% 10%, rgba(250,204,21,0.32), transparent 55%),
@@ -93,12 +93,29 @@
       z-index: 0;
     }
 
+    .glass-orb-bottom {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 999px;
+      bottom: -80px;
+      left: -60px;
+      background:
+        radial-gradient(circle at 80% 0%, rgba(56,189,248,0.95), transparent 40%),
+        radial-gradient(circle at 0% 100%, rgba(15,23,42,1), #020617 70%);
+      opacity: 0.25;
+      filter: blur(4px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
     .content {
       position: relative;
       z-index: 1;
       height: 100%;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
 
     .top-bar {
@@ -113,23 +130,23 @@
       gap: 10px;
     }
     .brand-crystal {
-      width: 52px;
-      height: 52px;
-      border-radius: 20px;
+      width: 54px;
+      height: 54px;
+      border-radius: 22px;
       background:
-        linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.1)),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.95), transparent 45%),
+        linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.08)),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.95), transparent 55%),
         radial-gradient(circle at 100% 100%, rgba(250,204,21,0.95), #b45309 50%, #020617 100%);
       box-shadow:
         0 0 0 1px rgba(148,163,184,0.9),
-        0 32px 90px rgba(0,0,0,1);
+        0 34px 100px rgba(0,0,0,1);
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       overflow: hidden;
     }
-    .brand-crystal::after {
+    .brand-crystal::before {
       content: "";
       position: absolute;
       inset: -40%;
@@ -137,8 +154,18 @@
         linear-gradient(135deg, rgba(255,255,255,0.7), transparent 60%),
         radial-gradient(circle at 0% 0%, rgba(255,255,255,0.8), transparent 55%);
       mix-blend-mode: screen;
-      opacity: 0.8;
+      opacity: 0.9;
       pointer-events: none;
+    }
+    .brand-crystal::after {
+      content: "";
+      position: absolute;
+      width: 120%;
+      height: 120%;
+      border-radius: inherit;
+      border: 1px solid rgba(255,255,255,0.35);
+      mix-blend-mode: screen;
+      opacity: 0.7;
     }
     .brand-crystal span {
       font-weight: 900;
@@ -203,6 +230,7 @@
       flex-direction: column;
       justify-content: center;
       gap: 16px;
+      overflow: hidden;
     }
     .auth-card {
       border-radius: 28px;
@@ -322,6 +350,7 @@
       flex: 1;
       display: none;
       flex-direction: column;
+      overflow: hidden;
     }
     .main-shell.active {
       display: flex;
@@ -479,6 +508,7 @@
     .notes-scroll {
       flex: 1;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       padding-right: 4px;
       padding-bottom: 90px;
     }
@@ -491,10 +521,10 @@
     .note-card {
       position: relative;
       border-radius: var(--radius-card);
-      padding: 14px 14px 12px;
+      padding: 16px 16px 12px;
       background:
         var(--glass-dark),
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.22), transparent 55%);
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.24), transparent 55%);
       backdrop-filter: blur(var(--glass-blur));
       -webkit-backdrop-filter: blur(var(--glass-blur));
       border: 1px solid rgba(148,163,184,0.95);
@@ -514,13 +544,23 @@
         radial-gradient(circle at 0% 0%, rgba(255,255,255,var(--glass-glow)), transparent 55%),
         radial-gradient(circle at 100% 100%, rgba(56,189,248,var(--glass-glow)), transparent 55%);
       mix-blend-mode: screen;
-      opacity: 0.65;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+    .note-card::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: inherit;
+      border: 1px solid rgba(255,255,255,0.18);
+      mix-blend-mode: screen;
+      opacity: 0.7;
       pointer-events: none;
     }
     .note-card:hover {
       transform: translateY(-3px) scale(1.01);
       box-shadow:
-        0 40px 120px rgba(0,0,0,1),
+        0 44px 130px rgba(0,0,0,1),
         0 0 0 1px var(--accent-gold-soft);
       border-color: var(--accent-gold-soft);
     }
@@ -543,24 +583,24 @@
       font-weight: 600;
     }
     .note-tag-dot {
-      width: 8px;
-      height: 8px;
+      width: 9px;
+      height: 9px;
       border-radius: 999px;
       background: linear-gradient(135deg, #facc15, #f97316);
-      box-shadow: 0 0 10px rgba(250,204,21,0.9);
+      box-shadow: 0 0 12px rgba(250,204,21,0.9);
     }
     .note-title {
       font-size: var(--title-font-size);
-      font-weight: 800;
+      font-weight: 900;
       margin-bottom: 6px;
       position: relative;
       z-index: 1;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.03em;
     }
     .note-body-preview {
       font-size: var(--note-font-size);
       color: #e5e7eb;
-      max-height: 60px;
+      max-height: 70px;
       overflow: hidden;
       position: relative;
       z-index: 1;
@@ -716,6 +756,16 @@
       opacity: 0.7;
       pointer-events: none;
     }
+    .overlay-card::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: inherit;
+      border: 1px solid rgba(255,255,255,0.18);
+      mix-blend-mode: screen;
+      opacity: 0.7;
+      pointer-events: none;
+    }
     .overlay-inner {
       position: relative;
       z-index: 1;
@@ -765,6 +815,7 @@
     .overlay-body {
       flex: 1;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       padding-right: 4px;
     }
     .overlay-field {
@@ -817,12 +868,36 @@
         0 0 0 1px rgba(15,23,42,0.95);
       z-index: 4;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       display: none;
+    }
+    .settings-panel::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,var(--glass-glow)), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(56,189,248,var(--glass-glow)), transparent 55%);
+      mix-blend-mode: screen;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+    .settings-panel::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: inherit;
+      border: 1px solid rgba(255,255,255,0.18);
+      mix-blend-mode: screen;
+      opacity: 0.7;
+      pointer-events: none;
     }
     .settings-panel.active {
       display: block;
     }
     .settings-header-row {
+      position: relative;
+      z-index: 1;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -844,8 +919,13 @@
       font-size: 10px;
       padding: 3px 8px;
       cursor: pointer;
+      box-shadow:
+        0 18px 46px rgba(0,0,0,0.95),
+        0 0 0 1px rgba(15,23,42,0.95);
     }
     .settings-group {
+      position: relative;
+      z-index: 1;
       margin-bottom: 8px;
       border-bottom: 1px solid rgba(31,41,55,0.9);
       padding-bottom: 6px;
@@ -870,6 +950,9 @@
       font-size: 10px;
       padding: 3px 8px;
       cursor: pointer;
+      box-shadow:
+        0 18px 46px rgba(0,0,0,0.95),
+        0 0 0 1px rgba(15,23,42,0.95);
     }
     .settings-pill.active {
       border-color: var(--accent-gold-soft);
@@ -910,7 +993,7 @@
 
     .accent-gold .note-tag-dot {
       background: linear-gradient(135deg, var(--accent-gold), #f97316);
-      box-shadow: 0 0 10px rgba(250,204,21,0.9);
+      box-shadow: 0 0 12px rgba(250,204,21,0.9);
     }
     .accent-gold .stat-value,
     .accent-gold .tab-pill.active,
@@ -928,7 +1011,7 @@
 
     .accent-silver .note-tag-dot {
       background: linear-gradient(135deg, var(--accent-silver), #9ca3af);
-      box-shadow: 0 0 10px rgba(209,213,219,0.9);
+      box-shadow: 0 0 12px rgba(209,213,219,0.9);
     }
     .accent-silver .stat-value,
     .accent-silver .tab-pill.active,
@@ -946,7 +1029,7 @@
 
     .accent-diamond .note-tag-dot {
       background: linear-gradient(135deg, var(--accent-diamond), #0ea5e9);
-      box-shadow: 0 0 10px rgba(56,189,248,0.9);
+      box-shadow: 0 0 12px rgba(56,189,248,0.9);
     }
     .accent-diamond .stat-value,
     .accent-diamond .tab-pill.active,
@@ -967,22 +1050,22 @@
 
     .size-notes-small { --note-font-size: 12px; }
     .size-notes-large { --note-font-size: 16px; }
-    .size-title-small { --title-font-size: 15px; }
-    .size-title-large { --title-font-size: 19px; }
+    .size-title-small { --title-font-size: 16px; }
+    .size-title-large { --title-font-size: 20px; }
 
-    .radius-soft { --radius-card: 20px; }
-    .radius-sharp { --radius-card: 12px; }
+    .radius-soft { --radius-card: 22px; }
+    .radius-sharp { --radius-card: 14px; }
 
-    .shadow-soft-mode { --shadow-strong: 0 24px 80px rgba(0,0,0,0.9); }
-    .shadow-ultra-mode { --shadow-strong: 0 46px 140px rgba(0,0,0,1); }
+    .shadow-soft-mode { --shadow-strong: 0 28px 90px rgba(0,0,0,0.95); }
+    .shadow-ultra-mode { --shadow-strong: 0 50px 150px rgba(0,0,0,1); }
 
-    .glass-low { --glass-blur: 18px; }
-    .glass-high { --glass-blur: 34px; }
+    .glass-low { --glass-blur: 20px; }
+    .glass-high { --glass-blur: 36px; }
 
     .glow-low { --glass-glow: 0.3; }
-    .glow-high { --glass-glow: 0.75; }
+    .glow-high { --glass-glow: 0.8; }
 
-    .compact-on .note-card { padding: 10px 11px 9px; }
+    .compact-on .note-card { padding: 11px 12px 9px; }
     .compact-on .note-body-preview { max-height: 40px; }
 
     .headings-soft .section-title,
@@ -1004,6 +1087,7 @@
   <div class="app-shell theme-void accent-gold" id="appRoot">
     <div class="bg-orbit"></div>
     <div class="glass-orb"></div>
+    <div class="glass-orb-bottom"></div>
 
     <div class="content">
       <div class="top-bar">
@@ -1011,7 +1095,7 @@
           <div class="brand-crystal"><span>W</span></div>
           <div class="brand-text">
             <div class="brand-title">WOD NOTEPAD</div>
-            <div class="brand-subtitle">AETHER GLASS EDITION</div>
+            <div class="brand-subtitle">REAL GLASS VAULT</div>
           </div>
         </div>
         <div class="top-actions">
@@ -1150,7 +1234,7 @@
             <div class="overlay-header">
               <div class="overlay-title" id="editorTitle">NEW NOTE</div>
               <div class="overlay-actions">
-                <button class="overlay-btn" id="editorCancel">Close</button>
+                <button class="overlay-btn" id="editorBack">Back</button>
                 <button class="overlay-btn primary" id="editorSave">Save</button>
               </div>
             </div>
@@ -1377,7 +1461,7 @@
 
     const editorOverlay = document.getElementById("editorOverlay");
     const editorTitle = document.getElementById("editorTitle");
-    const editorCancel = document.getElementById("editorCancel");
+    const editorBack = document.getElementById("editorBack");
     const editorSave = document.getElementById("editorSave");
     const noteTitleInput = document.getElementById("noteTitle");
     const noteCategorySelect = document.getElementById("noteCategory");
@@ -1664,7 +1748,7 @@
     });
 
     fabNew.addEventListener("click", () => openEditor(null));
-    editorCancel.addEventListener("click", closeEditor);
+    editorBack.addEventListener("click", closeEditor);
     editorSave.addEventListener("click", saveNote);
 
     searchInput.addEventListener("input", renderNotes);
