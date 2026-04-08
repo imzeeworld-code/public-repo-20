@@ -2,10 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AETHER NOTES – Real Glass</title>
+  <title>WOD NOTEPAD – World of Discoveries</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
   <style>
+    :root {
+      --bg-main: radial-gradient(circle at top, #050816 0, #020308 45%, #000000 100%);
+      --bg-main-aurora: radial-gradient(circle at top, #e5f0ff 0, #c7d2fe 40%, #0f172a 100%);
+      --accent-gold: #facc15;
+      --accent-gold-soft: rgba(250, 204, 21, 0.7);
+      --accent-blue: #38bdf8;
+      --accent-blue-soft: rgba(56, 189, 248, 0.7);
+      --accent-purple: #a855f7;
+      --accent-purple-soft: rgba(168, 85, 247, 0.7);
+      --card-bg-dark: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7));
+      --card-bg-light: linear-gradient(145deg, rgba(248,250,252,0.96), rgba(226,232,240,0.9));
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      --font-serif: "Georgia", "Times New Roman", serif;
+      --font-mono: "SF Mono", "JetBrains Mono", "Consolas", monospace;
+      --note-font-size: 13px;
+      --title-font-size: 14px;
+      --radius-card: 18px;
+      --shadow-strong: 0 26px 70px rgba(0, 0, 0, 0.98);
+      --shadow-soft: 0 16px 40px rgba(0, 0, 0, 0.85);
+      --glass-blur: 26px;
+      --glow-intensity: 0.4;
+    }
+
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
@@ -14,8 +37,8 @@
       margin: 0;
       padding: 0;
       height: 100%;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #050816 0, #020308 45%, #000000 100%);
+      font-family: var(--font-main);
+      background: var(--bg-main);
       color: #f9fafb;
       overflow: hidden;
     }
@@ -55,20 +78,11 @@
       flex-direction: column;
     }
 
-    .screen {
-      flex: 1;
-      display: none;
-      flex-direction: column;
-    }
-    .screen.active {
-      display: flex;
-    }
-
     .top-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .brand-left {
@@ -146,181 +160,54 @@
       stroke-width: 1.8;
     }
 
-    .glass-card {
-      border-radius: 22px;
-      padding: 14px 14px;
-      margin-bottom: 12px;
+    .search-card,
+    .tabs-card {
+      border-radius: 20px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
       background:
-        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
+        var(--card-bg-dark),
         radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
-      backdrop-filter: blur(26px);
-      -webkit-backdrop-filter: blur(26px);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       border: 1px solid rgba(148, 163, 184, 0.7);
       box-shadow:
-        0 26px 70px rgba(0, 0, 0, 1),
+        var(--shadow-strong),
         0 0 0 1px rgba(15, 23, 42, 0.9);
       position: relative;
       overflow: hidden;
     }
-    .glass-card::before {
+    .search-card::before,
+    .tabs-card::before {
       content: "";
       position: absolute;
       inset: -40%;
       background:
-        radial-gradient(circle at 0% 0%, rgba(250, 250, 250, 0.18), transparent 55%),
-        radial-gradient(circle at 100% 100%, rgba(56, 189, 248, 0.18), transparent 55%);
+        radial-gradient(circle at 0% 0%, rgba(250, 250, 250, var(--glow-intensity)), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(56, 189, 248, var(--glow-intensity)), transparent 55%);
       opacity: 0.4;
       mix-blend-mode: screen;
       pointer-events: none;
     }
-
-    .glass-card-inner {
+    .search-card-inner,
+    .tabs-card-inner {
       position: relative;
       z-index: 1;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 10px;
-    }
-    .field label {
-      font-size: 12px;
-      color: #cbd5f5;
-      margin-bottom: 4px;
-    }
-    .field input {
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(15,23,42,0.7));
-      color: #f9fafb;
-      padding: 8px 12px;
-      font-size: 14px;
-      outline: none;
-      box-shadow:
-        inset 0 0 0 1px rgba(15, 23, 42, 0.9),
-        0 14px 40px rgba(0, 0, 0, 0.9);
-    }
-
-    .btn {
-      border-radius: 999px;
-      border: 1px solid rgba(250, 204, 21, 0.9);
-      background:
-        radial-gradient(circle at 20% 0%, #ffffff 0, rgba(255,255,255,0.2) 18%, transparent 40%),
-        radial-gradient(circle at 80% 100%, #facc15 0, #b45309 40%, #020617 100%);
-      color: #020617;
-      padding: 9px 16px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      box-shadow:
-        0 22px 60px rgba(0, 0, 0, 1),
-        0 0 0 1px rgba(15, 23, 42, 0.9);
-      width: 100%;
-      margin-bottom: 8px;
-    }
-    .btn.secondary {
-      background:
-        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7));
-      color: #e5e7eb;
-      border-color: rgba(148, 163, 184, 0.7);
-    }
-    .btn svg {
-      width: 18px;
-      height: 18px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 1.8;
-    }
-
-    .auth-title {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .auth-sub {
-      font-size: 12px;
-      color: #9ca3af;
-      margin-bottom: 12px;
-    }
-    .error {
-      font-size: 12px;
-      color: #fecaca;
-      min-height: 16px;
-      margin-bottom: 6px;
-    }
-
-    .theme-row {
-      display: flex;
-      gap: 6px;
-      margin-top: 6px;
-      flex-wrap: wrap;
-    }
-    .theme-pill {
-      border-radius: 999px;
-      padding: 5px 10px;
-      font-size: 11px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      background: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7));
-      color: #e5e7eb;
-      cursor: pointer;
-      box-shadow:
-        0 12px 30px rgba(0, 0, 0, 0.9),
-        0 0 0 1px rgba(15, 23, 42, 0.9);
-    }
-    .theme-pill.active {
-      border-color: rgba(250, 204, 21, 0.9);
-      color: #facc15;
-      box-shadow:
-        0 18px 40px rgba(0, 0, 0, 1),
-        0 0 0 1px rgba(250, 204, 21, 0.7);
     }
 
     .tagline {
       font-size: 12px;
       color: #9ca3af;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-      margin-top: 6px;
-    }
-    .stat-pill {
-      border-radius: 999px;
-      padding: 6px 8px;
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: #9ca3af;
-      background: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7));
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      box-shadow:
-        0 16px 40px rgba(0, 0, 0, 1),
-        0 0 0 1px rgba(15, 23, 42, 0.9);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .stat-value {
-      margin-top: 2px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #facc15;
-    }
-
-    .search-input-row {
+    .search-row {
       display: flex;
       align-items: center;
       gap: 8px;
       margin-bottom: 8px;
     }
+
     .search-input {
       flex: 1;
       border-radius: 999px;
@@ -353,10 +240,38 @@
       stroke-width: 1.8;
     }
 
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+    .stat-pill {
+      border-radius: 999px;
+      padding: 6px 8px;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #9ca3af;
+      background: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7));
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      box-shadow:
+        var(--shadow-soft),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .stat-value {
+      margin-top: 2px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent-gold);
+    }
+
     .tabs-row {
       display: flex;
       gap: 6px;
-      margin-top: 6px;
+      margin-bottom: 8px;
       flex-wrap: wrap;
     }
     .tab-pill {
@@ -372,19 +287,18 @@
         0 0 0 1px rgba(15, 23, 42, 0.9);
     }
     .tab-pill.active {
-      border-color: rgba(250, 204, 21, 0.9);
-      color: #facc15;
+      border-color: var(--accent-gold-soft);
+      color: var(--accent-gold);
       box-shadow:
         0 18px 40px rgba(0, 0, 0, 1),
-        0 0 0 1px rgba(250, 204, 21, 0.7);
+        0 0 0 1px var(--accent-gold-soft);
     }
 
     .section-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 10px;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
     .section-title {
       font-size: 11px;
@@ -408,16 +322,16 @@
 
     .note-card {
       position: relative;
-      border-radius: 18px;
+      border-radius: var(--radius-card);
       padding: 10px 11px;
       background:
-        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7)),
+        var(--card-bg-dark),
         radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
-      backdrop-filter: blur(26px);
-      -webkit-backdrop-filter: blur(26px);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       border: 1px solid rgba(148, 163, 184, 0.7);
       box-shadow:
-        0 26px 70px rgba(0, 0, 0, 1),
+        var(--shadow-strong),
         0 0 0 1px rgba(15, 23, 42, 0.9);
       cursor: pointer;
       overflow: hidden;
@@ -429,8 +343,8 @@
       position: absolute;
       inset: -40%;
       background:
-        radial-gradient(circle at 0% 0%, rgba(250, 250, 250, 0.18), transparent 55%),
-        radial-gradient(circle at 100% 100%, rgba(56, 189, 248, 0.18), transparent 55%);
+        radial-gradient(circle at 0% 0%, rgba(250, 250, 250, var(--glow-intensity)), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(56, 189, 248, var(--glow-intensity)), transparent 55%);
       opacity: 0.4;
       mix-blend-mode: screen;
       pointer-events: none;
@@ -439,8 +353,8 @@
       transform: translateY(-3px);
       box-shadow:
         0 30px 80px rgba(0, 0, 0, 1),
-        0 0 0 1px rgba(250, 204, 21, 0.6);
-      border-color: rgba(250, 204, 21, 0.8);
+        0 0 0 1px var(--accent-gold-soft);
+      border-color: var(--accent-gold-soft);
     }
     .note-card:active {
       transform: translateY(-1px) scale(0.99);
@@ -472,14 +386,14 @@
     }
 
     .note-title {
-      font-size: 14px;
+      font-size: var(--title-font-size);
       font-weight: 600;
       margin-bottom: 4px;
       position: relative;
       z-index: 1;
     }
     .note-body-preview {
-      font-size: 13px;
+      font-size: var(--note-font-size);
       color: #e5e7eb;
       max-height: 40px;
       overflow: hidden;
@@ -491,9 +405,36 @@
       font-size: 11px;
       color: #9ca3af;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
+      align-items: center;
       position: relative;
       z-index: 1;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .note-footer-row span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .note-share-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7));
+      color: #e5e7eb;
+      font-size: 10px;
+      padding: 3px 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .note-share-btn svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.6;
     }
 
     .fab {
@@ -503,10 +444,10 @@
       width: 58px;
       height: 58px;
       border-radius: 999px;
-      border: 1px solid rgba(250, 204, 21, 0.9);
+      border: 1px solid var(--accent-gold-soft);
       background:
         radial-gradient(circle at 20% 0%, #ffffff 0, rgba(255,255,255,0.2) 18%, transparent 40%),
-        radial-gradient(circle at 80% 100%, #facc15 0, #b45309 40%, #020617 100%);
+        radial-gradient(circle at 80% 100%, var(--accent-gold) 0, #b45309 40%, #020617 100%);
       box-shadow:
         0 30px 80px rgba(0, 0, 0, 1),
         0 0 0 1px rgba(15, 23, 42, 0.9);
@@ -558,260 +499,570 @@
       transform: translateX(-50%) translateY(-4px);
     }
 
-    /* THEMES: Gold / Silver / Diamond */
-    .theme-gold .bg-glow {
-      background:
-        radial-gradient(circle at 10% 0%, rgba(255,255,255,0.18), transparent 55%),
-        radial-gradient(circle at 90% 10%, rgba(250,204,21,0.35), transparent 55%),
-        radial-gradient(circle at 50% 100%, rgba(56,189,248,0.22), transparent 55%);
+    /* Editor overlay */
+    .editor-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(15,23,42,0.98), rgba(0,0,0,0.98));
+      display: none;
+      flex-direction: column;
+      padding: 14px;
+      z-index: 5;
     }
-    .theme-silver .bg-glow {
-      background:
-        radial-gradient(circle at 10% 0%, rgba(255,255,255,0.25), transparent 55%),
-        radial-gradient(circle at 90% 10%, rgba(148,163,184,0.4), transparent 55%),
-        radial-gradient(circle at 50% 100%, rgba(148,163,184,0.25), transparent 55%);
+    .editor-overlay.active {
+      display: flex;
     }
-    .theme-diamond .bg-glow {
+    .editor-card {
+      border-radius: 20px;
+      padding: 12px;
       background:
-        radial-gradient(circle at 10% 0%, rgba(255,255,255,0.3), transparent 55%),
-        radial-gradient(circle at 90% 10%, rgba(56,189,248,0.4), transparent 55%),
-        radial-gradient(circle at 50% 100%, rgba(129,140,248,0.35), transparent 55%);
+        var(--card-bg-dark),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      box-shadow:
+        var(--shadow-strong),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .editor-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .editor-title {
+      font-size: 14px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #9ca3af;
+    }
+    .editor-actions {
+      display: flex;
+      gap: 6px;
+    }
+    .editor-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7));
+      color: #e5e7eb;
+      font-size: 11px;
+      padding: 4px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .editor-btn.primary {
+      border-color: var(--accent-gold-soft);
+      color: var(--accent-gold);
+    }
+    .editor-body {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 8px;
+    }
+    .field label {
+      font-size: 11px;
+      color: #cbd5f5;
+      margin-bottom: 3px;
+    }
+    .field input,
+    .field select,
+    .field textarea {
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(15,23,42,0.7));
+      color: #f9fafb;
+      padding: 7px 9px;
+      font-size: 13px;
+      outline: none;
+      box-shadow:
+        inset 0 0 0 1px rgba(15, 23, 42, 0.9),
+        0 10px 30px rgba(0, 0, 0, 0.9);
+      resize: none;
+    }
+    .field textarea {
+      min-height: 120px;
+    }
+
+    /* Settings panel */
+    .settings-panel {
+      position: absolute;
+      top: 52px;
+      right: 10px;
+      width: 260px;
+      max-height: 70vh;
+      border-radius: 18px;
+      padding: 10px;
+      background:
+        var(--card-bg-dark),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.18), transparent 55%);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      box-shadow:
+        var(--shadow-strong),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
+      z-index: 4;
+      overflow-y: auto;
+      display: none;
+    }
+    .settings-panel.active {
+      display: block;
+    }
+    .settings-title {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      margin-bottom: 6px;
+    }
+    .settings-group {
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(31,41,55,0.8);
+      padding-bottom: 6px;
+    }
+    .settings-label {
+      font-size: 11px;
+      color: #e5e7eb;
+      margin-bottom: 3px;
+    }
+    .settings-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .settings-pill {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.7));
+      color: #e5e7eb;
+      font-size: 10px;
+      padding: 3px 8px;
+      cursor: pointer;
+    }
+    .settings-pill.active {
+      border-color: var(--accent-gold-soft);
+      color: var(--accent-gold);
+    }
+    .settings-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #e5e7eb;
+      margin-bottom: 3px;
+    }
+    .settings-toggle input {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Theme variations */
+    .theme-aurora body,
+    .theme-aurora {
+      background: var(--bg-main-aurora);
+      color: #020617;
+    }
+    .theme-aurora .search-card,
+    .theme-aurora .tabs-card,
+    .theme-aurora .note-card,
+    .theme-aurora .editor-card,
+    .theme-aurora .settings-panel {
+      background:
+        var(--card-bg-light),
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.9), transparent 55%);
+      color: #020617;
+    }
+    .theme-aurora .note-body-preview,
+    .theme-aurora .tagline {
+      color: #111827;
+    }
+
+    .accent-blue .note-tag-dot {
+      background: linear-gradient(135deg, var(--accent-blue), #0ea5e9);
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+    }
+    .accent-blue .stat-value,
+    .accent-blue .tab-pill.active,
+    .accent-blue .editor-btn.primary {
+      color: var(--accent-blue);
+      border-color: var(--accent-blue-soft);
+    }
+    .accent-blue .fab {
+      border-color: var(--accent-blue-soft);
+      background:
+        radial-gradient(circle at 20% 0%, #ffffff 0, rgba(255,255,255,0.2) 18%, transparent 40%),
+        radial-gradient(circle at 80% 100%, var(--accent-blue) 0, #0369a1 40%, #020617 100%);
+    }
+
+    .accent-purple .note-tag-dot {
+      background: linear-gradient(135deg, var(--accent-purple), #ec4899);
+      box-shadow: 0 0 8px rgba(168, 85, 247, 0.8);
+    }
+    .accent-purple .stat-value,
+    .accent-purple .tab-pill.active,
+    .accent-purple .editor-btn.primary {
+      color: var(--accent-purple);
+      border-color: var(--accent-purple-soft);
+    }
+    .accent-purple .fab {
+      border-color: var(--accent-purple-soft);
+      background:
+        radial-gradient(circle at 20% 0%, #ffffff 0, rgba(255,255,255,0.2) 18%, transparent 40%),
+        radial-gradient(circle at 80% 100%, var(--accent-purple) 0, #7e22ce 40%, #020617 100%);
+    }
+
+    .font-serif {
+      font-family: var(--font-serif);
+    }
+    .font-mono {
+      font-family: var(--font-mono);
+    }
+
+    .size-notes-small { --note-font-size: 12px; }
+    .size-notes-large { --note-font-size: 15px; }
+    .size-title-small { --title-font-size: 13px; }
+    .size-title-large { --title-font-size: 16px; }
+
+    .radius-soft { --radius-card: 14px; }
+    .radius-sharp { --radius-card: 8px; }
+
+    .shadow-soft-mode { --shadow-strong: 0 18px 50px rgba(0,0,0,0.85); }
+    .shadow-ultra-mode { --shadow-strong: 0 34px 90px rgba(0,0,0,1); }
+
+    .glass-low { --glass-blur: 16px; }
+    .glass-high { --glass-blur: 32px; }
+
+    .glow-low { --glow-intensity: 0.25; }
+    .glow-high { --glow-intensity: 0.7; }
+
+    .compact-on .note-card {
+      padding: 8px 9px;
+    }
+    .compact-on .note-body-preview {
+      max-height: 32px;
+    }
+
+    .headings-lower .section-title,
+    .headings-lower .brand-title {
+      text-transform: none;
+      letter-spacing: 0.06em;
+    }
+
+    .hide-words .note-footer-row span[data-meta="words"] {
+      display: none;
+    }
+    .hide-today .note-meta-row span[data-meta="date"] {
+      display: none;
+    }
+
+    .tabs-hidden .tabs-card {
+      display: none;
+    }
+
+    .fab-off .fab {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div class="app theme-gold" id="appRoot">
+  <div class="app theme-void accent-gold" id="appRoot">
     <div class="bg-glow"></div>
 
     <div class="content">
-      <!-- LOGIN / SIGNUP SCREEN -->
-      <div class="screen active" id="screen-auth">
-        <div class="top-bar">
-          <div class="brand-left">
-            <div class="brand-orb"><span>A</span></div>
-            <div class="brand-text">
-              <div class="brand-title">AETHER NOTES</div>
-              <div class="brand-subtitle">REAL GLASS ENTRY</div>
-            </div>
-          </div>
-          <div class="top-actions">
-            <button class="icon-btn" title="Theme">
-              <svg viewBox="0 0 24 24">
-                <path d="M12 3v18" />
-                <path d="M5 9h14" />
-                <path d="M5 15h14" />
-              </svg>
-            </button>
+      <div class="top-bar">
+        <div class="brand-left">
+          <div class="brand-orb"><span>W</span></div>
+          <div class="brand-text">
+            <div class="brand-title">WOD NOTEPAD</div>
+            <div class="brand-subtitle">WORLD OF DISCOVERIES</div>
           </div>
         </div>
+        <div class="top-actions">
+          <button class="icon-btn" id="settingsBtn" title="Settings">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+            </svg>
+          </button>
+        </div>
+      </div>
 
-        <div class="glass-card">
-          <div class="glass-card-inner">
-            <div class="auth-title">Welcome to the Glass Vault</div>
-            <div class="auth-sub">Sign in to your crystal archive of ideas.</div>
-
-            <div class="field">
-              <label for="authEmail">Email</label>
-              <input id="authEmail" type="email" placeholder="you@aether.com" />
-            </div>
-            <div class="field">
-              <label for="authPassword">Password</label>
-              <input id="authPassword" type="password" placeholder="••••••••" />
-            </div>
-
-            <div class="error" id="authError"></div>
-
-            <button class="btn" id="loginBtn">
+      <div class="search-card">
+        <div class="search-card-inner">
+          <div class="search-row">
+            <div class="search-input">
               <svg viewBox="0 0 24 24">
-                <path d="M5 12h9" />
-                <path d="M12 5l7 7-7 7" />
+                <path d="M11 5a6 6 0 1 1 0 12 6 6 0 0 1 0-12z" />
+                <path d="M16.5 16.5 20 20" />
               </svg>
-              Enter Aether
-            </button>
-            <button class="btn secondary" id="fakeSignupBtn">
-              <svg viewBox="0 0 24 24">
-                <path d="M12 5v14" />
-                <path d="M5 12h14" />
-              </svg>
-              Create Glass Account (UI only)
-            </button>
-
-            <div class="theme-row">
-              <button class="theme-pill active" data-theme="gold">Gold Glass</button>
-              <button class="theme-pill" data-theme="silver">Silver Glass</button>
-              <button class="theme-pill" data-theme="diamond">Diamond Glass</button>
+              <input id="searchInput" type="text" placeholder="Search notes..." />
+            </div>
+          </div>
+          <div class="stats-row">
+            <div class="stat-pill">
+              <span>NOTES</span>
+              <span class="stat-value" id="statNotes">1</span>
+            </div>
+            <div class="stat-pill">
+              <span>PINNED</span>
+              <span class="stat-value" id="statPinned">0</span>
+            </div>
+            <div class="stat-pill">
+              <span>WORDS</span>
+              <span class="stat-value" id="statWords">0</span>
+            </div>
+            <div class="stat-pill">
+              <span>TODAY</span>
+              <span class="stat-value" id="statToday">0</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- MAIN APP SCREEN -->
-      <div class="screen" id="screen-main">
-        <div class="top-bar">
-          <div class="brand-left">
-            <div class="brand-orb"><span>A</span></div>
-            <div class="brand-text">
-              <div class="brand-title">AETHER NOTES</div>
-              <div class="brand-subtitle">LEGENDARY GLASS CARDS</div>
-            </div>
+      <div class="tabs-card">
+        <div class="tabs-card-inner">
+          <div class="tabs-row">
+            <button class="tab-pill active" data-tab="all">All</button>
+            <button class="tab-pill" data-tab="personal">Personal</button>
+            <button class="tab-pill" data-tab="work">Work</button>
+            <button class="tab-pill" data-tab="ideas">Ideas</button>
+            <button class="tab-pill" data-tab="todo">To-DoWOD</button>
           </div>
-          <div class="top-actions">
-            <button class="icon-btn" id="themeMenuBtn" title="Themes">
-              <svg viewBox="0 0 24 24">
-                <path d="M12 3v18" />
-                <path d="M5 9h14" />
-                <path d="M5 15h14" />
-              </svg>
-            </button>
-            <button class="icon-btn" id="logoutBtn" title="Logout">
-              <svg viewBox="0 0 24 24">
-                <path d="M10 17l-5-5 5-5" />
-                <path d="M5 12h11" />
-                <path d="M15 5h4v14h-4" />
-              </svg>
-            </button>
+          <div class="section-header">
+            <div class="section-title">NOTES</div>
           </div>
         </div>
-
-        <div class="tagline">
-          Notes are not rectangles. They’re living crystal cards floating in your void of clarity.
-        </div>
-
-        <div class="glass-card">
-          <div class="glass-card-inner">
-            <div class="search-input-row">
-              <div class="search-input">
-                <svg viewBox="0 0 24 24">
-                  <path d="M11 5a6 6 0 1 1 0 12 6 6 0 0 1 0-12z" />
-                  <path d="M16.5 16.5 20 20" />
-                </svg>
-                <input id="searchInput" type="text" placeholder="Deep search across your glass cards..." />
-              </div>
-            </div>
-            <div class="stats-row">
-              <div class="stat-pill">
-                <span>NOTES</span>
-                <span class="stat-value" id="statNotes">3</span>
-              </div>
-              <div class="stat-pill">
-                <span>PINNED</span>
-                <span class="stat-value" id="statPinned">1</span>
-              </div>
-              <div class="stat-pill">
-                <span>WORDS</span>
-                <span class="stat-value" id="statWords">385</span>
-              </div>
-              <div class="stat-pill">
-                <span>TODAY</span>
-                <span class="stat-value" id="statToday">1</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="glass-card">
-          <div class="glass-card-inner">
-            <div class="tabs-row">
-              <button class="tab-pill active" data-tab="all">All</button>
-              <button class="tab-pill" data-tab="personal">Personal</button>
-              <button class="tab-pill" data-tab="work">Work</button>
-              <button class="tab-pill" data-tab="ideas">Ideas</button>
-              <button class="tab-pill" data-tab="todo">To-Do</button>
-            </div>
-            <div class="section-header">
-              <div class="section-title">CRYSTAL CARDS</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="notes-scroll">
-          <div class="note-list" id="noteList">
-            <div class="note-card" data-category="personal">
-              <div class="note-meta-row">
-                <div class="note-tag">
-                  <span class="note-tag-dot"></span>
-                  <span>PERSONAL</span>
-                </div>
-                <div>Today · 73 words</div>
-              </div>
-              <div class="note-title">WOD Funny Intro</div>
-              <div class="note-body-preview">
-                Welcome to Aether Notes — the only place where your ideas stop running away from you.
-                Every thought you type is grabbed, locked, and suspended in crystal before it even tries
-                to escape your mind...
-              </div>
-              <div class="note-footer-row">73 words</div>
-            </div>
-
-            <div class="note-card" data-category="work">
-              <div class="note-meta-row">
-                <div class="note-tag">
-                  <span class="note-tag-dot"></span>
-                  <span>WORK</span>
-                </div>
-                <div>Yesterday · 214 words</div>
-              </div>
-              <div class="note-title">Studio Session Blueprint</div>
-              <div class="note-body-preview">
-                Track list, hook ideas, punchline pockets, and energy levels mapped like a boxing round card.
-                Every bar has a purpose, every pause has a meaning...
-              </div>
-              <div class="note-footer-row">214 words</div>
-            </div>
-
-            <div class="note-card" data-category="ideas">
-              <div class="note-meta-row">
-                <div class="note-tag">
-                  <span class="note-tag-dot"></span>
-                  <span>IDEAS</span>
-                </div>
-                <div>2 days ago · 98 words</div>
-              </div>
-              <div class="note-title">Wise AI Persona Script</div>
-              <div class="note-body-preview">
-                A conversational engine that talks like the streets, thinks like a strategist, and remembers
-                your chaos like a loyal archive...
-              </div>
-              <div class="note-footer-row">98 words</div>
-            </div>
-          </div>
-        </div>
-
-        <button class="fab" id="fabNew">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 5v14" />
-            <path d="M5 12h14" />
-          </svg>
-        </button>
       </div>
+
+      <div class="notes-scroll">
+        <div class="note-list" id="noteList"></div>
+      </div>
+
+      <button class="fab" id="fabNew" title="Add note">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 5v14" />
+          <path d="M5 12h14" />
+        </svg>
+      </button>
 
       <div class="toast" id="toast"></div>
+
+      <div class="editor-overlay" id="editorOverlay">
+        <div class="editor-card">
+          <div class="editor-header">
+            <div class="editor-title">NEW NOTE</div>
+            <div class="editor-actions">
+              <button class="editor-btn" id="editorCancel">Cancel</button>
+              <button class="editor-btn primary" id="editorSave">Save</button>
+            </div>
+          </div>
+          <div class="editor-body">
+            <div class="field">
+              <label for="noteTitle">Title</label>
+              <input id="noteTitle" type="text" placeholder="Note title..." />
+            </div>
+            <div class="field">
+              <label for="noteCategory">Category</label>
+              <select id="noteCategory">
+                <option value="personal">Personal</option>
+                <option value="work">Work</option>
+                <option value="ideas">Ideas</option>
+                <option value="todo">To-DoWOD</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="notePinned">
+                <input type="checkbox" id="notePinned" />
+                Pin this note
+              </label>
+            </div>
+            <div class="field">
+              <label for="noteBody">Note</label>
+              <textarea id="noteBody" placeholder="Write boldly. Think wildly. Discover dangerously."></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-panel" id="settingsPanel">
+        <div class="settings-title">AETHER GLASS SETTINGS</div>
+
+        <div class="settings-group">
+          <div class="settings-label">1. Theme</div>
+          <div class="settings-row">
+            <button class="settings-pill active" data-setting="theme" data-value="void">Void</button>
+            <button class="settings-pill" data-setting="theme" data-value="aurora">Aurora</button>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-label">2. Accent</div>
+          <div class="settings-row">
+            <button class="settings-pill active" data-setting="accent" data-value="gold">Gold</button>
+            <button class="settings-pill" data-setting="accent" data-value="blue">Blue</button>
+            <button class="settings-pill" data-setting="accent" data-value="purple">Purple</button>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-label">3. Font Family</div>
+          <div class="settings-row">
+            <button class="settings-pill active" data-setting="font" data-value="system">System</button>
+            <button class="settings-pill" data-setting="font" data-value="serif">Serif</button>
+            <button class="settings-pill" data-setting="font" data-value="mono">Mono</button>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-label">4. Note Text Size</div>
+          <div class="settings-row">
+            <button class="settings-pill" data-setting="notesSize" data-value="small">Small</button>
+            <button class="settings-pill active" data-setting="notesSize" data-value="medium">Medium</button>
+            <button class="settings-pill" data-setting="notesSize" data-value="large">Large</button>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-label">5. Title Size</div>
+          <div class="settings-row">
+            <button class="settings-pill" data-setting="titleSize" data-value="small">Small</button>
+            <button class="settings-pill active" data-setting="titleSize" data-value="medium">Medium</button>
+            <button class="settings-pill" data-setting="titleSize" data-value="large">Large</button>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-label">6. Card Radius</div>
+          <div class="settings-row">
+            <button class="settings-pill" data-setting="radius" data-value="soft">Soft</button>
+            <button class="settings-pill active" data-setting="radius" data-value="medium">Medium</button>
+            <button class="settings-pill" data-setting="radius" data-value="sharp">Sharp</button>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-label">7. Shadow Strength</div>
+          <div class="settings-row">
+            <button class="settings-pill" data-setting="shadow" data-value="soft">Soft</button>
+            <button class="settings-pill active" data-setting="shadow" data-value="strong">Strong</button>
+            <button class="settings-pill" data-setting="shadow" data-value="ultra">Ultra</button>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-label">8. Glass Blur</div>
+          <div class="settings-row">
+            <button class="settings-pill" data-setting="blur" data-value="low">Low</button>
+            <button class="settings-pill active" data-setting="blur" data-value="high">High</button>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-label">9. Glow Intensity</div>
+          <div class="settings-row">
+            <button class="settings-pill" data-setting="glow" data-value="low">Low</button>
+            <button class="settings-pill active" data-setting="glow" data-value="medium">Medium</button>
+            <button class="settings-pill" data-setting="glow" data-value="high">High</button>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-label">10. Compact List</div>
+          <div class="settings-toggle">
+            <input type="checkbox" data-toggle="compact" />
+            <span>Enable compact note cards</span>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-label">11. Headings Style</div>
+          <div class="settings-toggle">
+            <input type="checkbox" data-toggle="headingsLower" />
+            <span>Use softer headings</span>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-label">12. Show Word Count</div>
+          <div class="settings-toggle">
+            <input type="checkbox" data-toggle="hideWords" />
+            <span>Hide word count meta</span>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-label">13. Show Today Meta</div>
+          <div class="settings-toggle">
+            <input type="checkbox" data-toggle="hideToday" />
+            <span>Hide “Today” meta</span>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-label">14. Tabs Visibility</div>
+          <div class="settings-toggle">
+            <input type="checkbox" data-toggle="tabsHidden" />
+            <span>Hide category tabs</span>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-label">15. Floating Add Button</div>
+          <div class="settings-toggle">
+            <input type="checkbox" data-toggle="fabOff" />
+            <span>Hide floating add button</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
-    const screenAuth = document.getElementById("screen-auth");
-    const screenMain = document.getElementById("screen-main");
-    const loginBtn = document.getElementById("loginBtn");
-    const fakeSignupBtn = document.getElementById("fakeSignupBtn");
-    const authError = document.getElementById("authError");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const toast = document.getElementById("toast");
-    const fabNew = document.getElementById("fabNew");
     const appRoot = document.getElementById("appRoot");
-    const themePills = document.querySelectorAll(".theme-pill");
-    const themeMenuBtn = document.getElementById("themeMenuBtn");
-    const tabButtons = document.querySelectorAll(".tab-pill");
-    const noteList = document.getElementById("noteList");
+    const noteListEl = document.getElementById("noteList");
     const searchInput = document.getElementById("searchInput");
+    const tabButtons = document.querySelectorAll(".tab-pill");
+    const statNotes = document.getElementById("statNotes");
+    const statPinned = document.getElementById("statPinned");
+    const statWords = document.getElementById("statWords");
+    const statToday = document.getElementById("statToday");
+    const fabNew = document.getElementById("fabNew");
+    const toast = document.getElementById("toast");
+    const editorOverlay = document.getElementById("editorOverlay");
+    const editorCancel = document.getElementById("editorCancel");
+    const editorSave = document.getElementById("editorSave");
+    const noteTitleInput = document.getElementById("noteTitle");
+    const noteCategorySelect = document.getElementById("noteCategory");
+    const notePinnedCheckbox = document.getElementById("notePinned");
+    const noteBodyTextarea = document.getElementById("noteBody");
+    const settingsBtn = document.getElementById("settingsBtn");
+    const settingsPanel = document.getElementById("settingsPanel");
+    const settingsPills = document.querySelectorAll(".settings-pill");
+    const settingsToggles = document.querySelectorAll(".settings-toggle input");
 
-    function showScreenAuth() {
-      screenAuth.classList.add("active");
-      screenMain.classList.remove("active");
+    let notes = [];
+    let activeTab = "all";
+
+    function todayString() {
+      const d = new Date();
+      return d.toISOString().slice(0, 10);
     }
-    function showScreenMain() {
-      screenMain.classList.add("active");
-      screenAuth.classList.remove("active");
+
+    function wordCount(text) {
+      if (!text) return 0;
+      return text.trim().split(/\s+/).filter(Boolean).length;
     }
 
     function showToast(msg) {
@@ -820,82 +1071,256 @@
       setTimeout(() => toast.classList.remove("show"), 1600);
     }
 
-    loginBtn.addEventListener("click", () => {
-      const email = document.getElementById("authEmail").value.trim();
-      const pass = document.getElementById("authPassword").value.trim();
-      if (!email || !pass) {
-        authError.textContent = "Enter email and password (UI only, no backend).";
-        return;
-      }
-      authError.textContent = "";
-      showScreenMain();
-      showToast("Glass vault unlocked.");
-    });
+    function renderNotes() {
+      const search = (searchInput.value || "").toLowerCase();
+      noteListEl.innerHTML = "";
+      let totalWords = 0;
+      let pinnedCount = 0;
+      let todayCount = 0;
 
-    fakeSignupBtn.addEventListener("click", () => {
-      showToast("Signup is visual only in this demo.");
-    });
+      notes.forEach(note => {
+        const matchesTab = activeTab === "all" || note.category === activeTab;
+        const textBlob = (note.title + " " + note.body + " " + note.category).toLowerCase();
+        const matchesSearch = !search || textBlob.includes(search);
+        if (!matchesTab || !matchesSearch) return;
 
-    logoutBtn.addEventListener("click", () => {
-      showScreenAuth();
-      showToast("Logged out of glass vault.");
-    });
+        totalWords += note.words;
+        if (note.pinned) pinnedCount++;
+        if (note.date === todayString()) todayCount++;
 
-    fabNew.addEventListener("click", () => {
-      showToast("New crystal card spawned (demo).");
-    });
+        const card = document.createElement("div");
+        card.className = "note-card";
+        card.dataset.category = note.category;
 
-    function setTheme(theme) {
-      appRoot.classList.remove("theme-gold", "theme-silver", "theme-diamond");
-      appRoot.classList.add("theme-" + theme);
-      themePills.forEach(p => {
-        p.classList.toggle("active", p.dataset.theme === theme);
+        const metaRow = document.createElement("div");
+        metaRow.className = "note-meta-row";
+
+        const tag = document.createElement("div");
+        tag.className = "note-tag";
+        const dot = document.createElement("span");
+        dot.className = "note-tag-dot";
+        const label = document.createElement("span");
+        label.textContent = note.category.toUpperCase();
+        tag.appendChild(dot);
+        tag.appendChild(label);
+
+        const dateSpan = document.createElement("span");
+        dateSpan.setAttribute("data-meta", "date");
+        dateSpan.textContent = note.date === todayString() ? "Today · " + note.words + " words" : note.date + " · " + note.words + " words";
+
+        metaRow.appendChild(tag);
+        metaRow.appendChild(dateSpan);
+
+        const titleEl = document.createElement("div");
+        titleEl.className = "note-title";
+        titleEl.textContent = note.title;
+
+        const bodyEl = document.createElement("div");
+        bodyEl.className = "note-body-preview";
+        bodyEl.textContent = note.body;
+
+        const footerRow = document.createElement("div");
+        footerRow.className = "note-footer-row";
+
+        const wordsMeta = document.createElement("span");
+        wordsMeta.setAttribute("data-meta", "words");
+        wordsMeta.textContent = note.words + " words";
+
+        const shareBtn = document.createElement("button");
+        shareBtn.className = "note-share-btn";
+        shareBtn.innerHTML = `
+          <svg viewBox="0 0 24 24">
+            <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7" />
+            <path d="M16 6l-4-4-4 4" />
+            <path d="M12 2v14" />
+          </svg>
+          <span>Share link</span>
+        `;
+        shareBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const url = "https://wod-notepad.local/note/" + note.id;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(() => {
+              showToast("Sharable link copied");
+            }).catch(() => {
+              showToast("Sharable link: " + url);
+            });
+          } else {
+            showToast("Sharable link: " + url);
+          }
+        });
+
+        footerRow.appendChild(wordsMeta);
+        footerRow.appendChild(shareBtn);
+
+        card.appendChild(metaRow);
+        card.appendChild(titleEl);
+        card.appendChild(bodyEl);
+        card.appendChild(footerRow);
+
+        noteListEl.appendChild(card);
       });
-      showToast(theme.charAt(0).toUpperCase() + theme.slice(1) + " glass theme");
+
+      statNotes.textContent = notes.length;
+      statPinned.textContent = pinnedCount;
+      statWords.textContent = totalWords;
+      statToday.textContent = todayCount;
     }
 
-    themePills.forEach(pill => {
-      pill.addEventListener("click", () => setTheme(pill.dataset.theme));
+    function openEditor() {
+      noteTitleInput.value = "";
+      noteCategorySelect.value = "personal";
+      notePinnedCheckbox.checked = false;
+      noteBodyTextarea.value = "";
+      editorOverlay.classList.add("active");
+    }
+
+    function closeEditor() {
+      editorOverlay.classList.remove("active");
+    }
+
+    function saveNote() {
+      const title = noteTitleInput.value.trim() || "Untitled";
+      const category = noteCategorySelect.value || "personal";
+      const pinned = notePinnedCheckbox.checked;
+      const body = noteBodyTextarea.value.trim();
+      const words = wordCount(body);
+      const note = {
+        id: Date.now().toString(36),
+        title,
+        category,
+        pinned,
+        body,
+        date: todayString(),
+        words
+      };
+      notes.unshift(note);
+      closeEditor();
+      renderNotes();
+      showToast("Note added");
+    }
+
+    fabNew.addEventListener("click", () => {
+      openEditor();
     });
 
-    themeMenuBtn.addEventListener("click", () => {
-      const current = [...themePills].find(p => p.classList.contains("active"))?.dataset.theme || "gold";
-      const order = ["gold", "silver", "diamond"];
-      const idx = order.indexOf(current);
-      const next = order[(idx + 1) % order.length];
-      setTheme(next);
+    editorCancel.addEventListener("click", () => {
+      closeEditor();
+    });
+
+    editorSave.addEventListener("click", () => {
+      saveNote();
+    });
+
+    searchInput.addEventListener("input", () => {
+      renderNotes();
     });
 
     tabButtons.forEach(btn => {
       btn.addEventListener("click", () => {
         tabButtons.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
-        filterNotes();
+        activeTab = btn.dataset.tab || "all";
+        renderNotes();
       });
     });
 
-    function filterNotes() {
-      const activeTab = [...tabButtons].find(b => b.classList.contains("active"))?.dataset.tab || "all";
-      const search = (searchInput.value || "").toLowerCase();
-      const cards = noteList.querySelectorAll(".note-card");
-      cards.forEach(card => {
-        const cat = card.dataset.category || "personal";
-        const text = card.innerText.toLowerCase();
-        let ok = true;
-        if (activeTab !== "all") {
-          if (activeTab === "personal" && cat !== "personal") ok = false;
-          if (activeTab === "work" && cat !== "work") ok = false;
-          if (activeTab === "ideas" && cat !== "ideas") ok = false;
-          if (activeTab === "todo" && cat !== "todo") ok = false;
+    settingsBtn.addEventListener("click", () => {
+      settingsPanel.classList.toggle("active");
+    });
+
+    settingsPills.forEach(pill => {
+      pill.addEventListener("click", () => {
+        const setting = pill.dataset.setting;
+        const value = pill.dataset.value;
+        const group = Array.from(settingsPills).filter(p => p.dataset.setting === setting);
+        group.forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+
+        if (setting === "theme") {
+          if (value === "void") {
+            appRoot.classList.remove("theme-aurora");
+          } else {
+            appRoot.classList.add("theme-aurora");
+          }
         }
-        if (search && !text.includes(search)) ok = false;
-        card.style.display = ok ? "block" : "none";
+        if (setting === "accent") {
+          appRoot.classList.remove("accent-gold", "accent-blue", "accent-purple");
+          appRoot.classList.add("accent-" + value);
+        }
+        if (setting === "font") {
+          appRoot.classList.remove("font-serif", "font-mono");
+          if (value === "serif") appRoot.classList.add("font-serif");
+          if (value === "mono") appRoot.classList.add("font-mono");
+        }
+        if (setting === "notesSize") {
+          appRoot.classList.remove("size-notes-small", "size-notes-large");
+          if (value === "small") appRoot.classList.add("size-notes-small");
+          if (value === "large") appRoot.classList.add("size-notes-large");
+        }
+        if (setting === "titleSize") {
+          appRoot.classList.remove("size-title-small", "size-title-large");
+          if (value === "small") appRoot.classList.add("size-title-small");
+          if (value === "large") appRoot.classList.add("size-title-large");
+        }
+        if (setting === "radius") {
+          appRoot.classList.remove("radius-soft", "radius-sharp");
+          if (value === "soft") appRoot.classList.add("radius-soft");
+          if (value === "sharp") appRoot.classList.add("radius-sharp");
+        }
+        if (setting === "shadow") {
+          appRoot.classList.remove("shadow-soft-mode", "shadow-ultra-mode");
+          if (value === "soft") appRoot.classList.add("shadow-soft-mode");
+          if (value === "ultra") appRoot.classList.add("shadow-ultra-mode");
+        }
+        if (setting === "blur") {
+          appRoot.classList.remove("glass-low");
+          if (value === "low") appRoot.classList.add("glass-low");
+        }
+        if (setting === "glow") {
+          appRoot.classList.remove("glow-low", "glow-high");
+          if (value === "low") appRoot.classList.add("glow-low");
+          if (value === "high") appRoot.classList.add("glow-high");
+        }
       });
-    }
+    });
 
-    searchInput.addEventListener("input", filterNotes);
+    settingsToggles.forEach(toggle => {
+      toggle.addEventListener("change", () => {
+        const key = toggle.dataset.toggle;
+        const on = toggle.checked;
+        if (key === "compact") {
+          appRoot.classList.toggle("compact-on", on);
+        }
+        if (key === "headingsLower") {
+          appRoot.classList.toggle("headings-lower", on);
+        }
+        if (key === "hideWords") {
+          appRoot.classList.toggle("hide-words", on);
+        }
+        if (key === "hideToday") {
+          appRoot.classList.toggle("hide-today", on);
+        }
+        if (key === "tabsHidden") {
+          appRoot.classList.toggle("tabs-hidden", on);
+        }
+        if (key === "fabOff") {
+          appRoot.classList.toggle("fab-off", on);
+        }
+      });
+    });
 
-    showScreenAuth();
+    notes.push({
+      id: "demo-1",
+      title: "WOD Funny Intro",
+      category: "personal",
+      pinned: false,
+      body: "WOD Notepad\nWelcome to WOD — the only place where your ideas stop running away from you.\n\nHere, every thought you type is grabbed, locked, and stored in your cloud before it even tries to escape.\nNo disappearing notes. No “I swear I wrote it.” No heartbreak.\n\nThis is your creative battlefield.\nYour mental gym.\nYour idea refrigerator — because nothing spoils here.\n\nWrite boldly.\nThink wildly.\nDiscover dangerously.\n\nYour genius starts now.",
+      date: todayString(),
+      words: 73
+    });
+
+    renderNotes();
   </script>
 </body>
 </html>
