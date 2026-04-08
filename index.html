@@ -137,31 +137,7 @@
       color: var(--text-main);
       font-size: 15px;
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
-    }
-
-    .search-row {
-      padding: 4px 2px: uppercase;
-      color: var(--text-muted);
-    }
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .icon-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.3);
-      background: radial-gradient(circle at top, #1f2933 0, #020617 70%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-main);
-      font-size: 15px;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+      cursor: pointer;
     }
 
     .search-row {
@@ -257,6 +233,7 @@
       border: 1px solid transparent;
       background: transparent;
       color: var(--text-muted);
+      cursor: pointer;
     }
 
     .tab-chip.active {
@@ -544,8 +521,6 @@
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.9);
     }
 
-    /* EDITOR SCREEN */
-
     .editor-shell {
       flex: 1;
       padding: 14px 14px 24px;
@@ -654,6 +629,146 @@
       box-shadow: 0 10px 26px rgba(0, 0, 0, 0.9);
     }
 
+    .pill-btn.danger {
+      border-color: rgba(248, 113, 113, 0.9);
+      color: #fecaca;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 12px;
+      transform: translateX(-50%);
+      background: #020617;
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 11px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.9);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+      z-index: 50;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-4px);
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 40;
+    }
+
+    .overlay.show {
+      display: flex;
+    }
+
+    .sheet {
+      width: 100%;
+      max-width: 480px;
+      background: radial-gradient(circle at top, #111827 0, #020617 70%);
+      border-radius: 18px 18px 0 0;
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -18px 40px rgba(0, 0, 0, 0.9);
+      padding: 14px 16px 18px;
+      animation: sheetUp 0.22s ease-out;
+    }
+
+    @keyframes sheetUp {
+      from {
+        transform: translateY(100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    .sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .sheet-title {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .sheet-close {
+      font-size: 18px;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    .sheet-section {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--text-main);
+    }
+
+    .sheet-section-title {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .sheet-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+      gap: 8px;
+    }
+
+    .sheet-label {
+      font-size: 12px;
+      color: var(--text-main);
+    }
+
+    .sheet-select,
+    .sheet-input {
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #020617;
+      color: var(--text-main);
+      font-size: 12px;
+      padding: 6px 10px;
+      outline: none;
+    }
+
+    .sheet-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .sheet-badge span {
+      font-size: 13px;
+    }
+
+    .about-text {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-top: 4px;
+    }
+
     @media (max-width: 360px) {
       .brand-title {
         font-size: 18px;
@@ -667,7 +782,6 @@
   </style>
 </head>
 <body>
-  <!-- HOME SCREEN -->
   <div id="homeScreen" class="screen show">
     <div class="app-shell">
       <div class="top-bar">
@@ -761,7 +875,6 @@
     <button class="fab" id="fab">+</button>
   </div>
 
-  <!-- EDITOR SCREEN -->
   <div id="editorScreen" class="screen hide-right">
     <div class="editor-shell">
       <div class="editor-top">
@@ -800,8 +913,69 @@
         </span>
         <span id="editorStatus">Ready</span>
       </div>
+
+      <div class="editor-footer" style="margin-top:10px;">
+        <button class="pill-btn danger" id="editorDeleteBtn">Delete</button>
+        <button class="pill-btn" id="editorPinBtn">📌 Pin</button>
+      </div>
     </div>
   </div>
+
+  <div class="overlay" id="settingsOverlay">
+    <div class="sheet">
+      <div class="sheet-header">
+        <div class="sheet-title">SETTINGS</div>
+        <div class="sheet-close" id="settingsCloseBtn">×</div>
+      </div>
+
+      <div class="sheet-section">
+        <div class="sheet-section-title">Appearance</div>
+        <div class="sheet-row">
+          <div class="sheet-label">Theme</div>
+          <select id="themeSelect" class="sheet-select">
+            <option value="dark">Dark (WOD)</option>
+            <option value="midnight">Midnight Gold</option>
+            <option value="ink">Deep Ink</option>
+          </select>
+        </div>
+        <div class="sheet-row">
+          <div class="sheet-label">Font size</div>
+          <select id="fontSizeSelect" class="sheet-select">
+            <option value="normal">Normal</option>
+            <option value="large">Large</option>
+            <option value="huge">Huge</option>
+          </select>
+        </div>
+        <div class="sheet-row">
+          <div class="sheet-label">Card shape</div>
+          <select id="cardShapeSelect" class="sheet-select">
+            <option value="rounded">Rounded</option>
+            <option value="pill">Pill</option>
+            <option value="square">Square</option>
+          </select>
+        </div>
+        <div class="sheet-badge">
+          <span>●</span>
+          <span>Changes are saved instantly on this device</span>
+        </div>
+      </div>
+
+      <div class="sheet-section">
+        <div class="sheet-section-title">About WOD</div>
+        <div class="about-text">
+          WOD Notepad (World of Discoveries) is a focused note space crafted for ideas,
+          plans, lyrics, code, and everything you don’t want to lose. Notes are stored
+          in your WOD cloud using Firebase Realtime Database.
+        </div>
+        <div class="about-text" style="margin-top:6px;">
+          Built for mobile first. Designed to feel like a studio, a notebook, and a
+          control room in your pocket.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
 
   <script>
     const DB_BASE = "https://let-s-talk-e57c6-default-rtdb.firebaseio.com/notes";
@@ -812,6 +986,7 @@
     let autoHighlight = false;
     let autoCorrect = true;
     let editingNoteId = null;
+    let editingPinned = false;
 
     const notesListEl = document.getElementById("notesList");
     const centerStateEl = document.getElementById("centerState");
@@ -831,12 +1006,33 @@
     const editorScreenEl = document.getElementById("editorScreen");
     const backBtnEl = document.getElementById("backBtn");
     const editorSaveBtn = document.getElementById("editorSaveBtn");
+    const editorDeleteBtn = document.getElementById("editorDeleteBtn");
+    const editorPinBtn = document.getElementById("editorPinBtn");
     const noteTitleInputEl = document.getElementById("noteTitleInput");
     const noteCategorySelectEl = document.getElementById("noteCategorySelect");
     const noteBodyInputEl = document.getElementById("noteBodyInput");
     const editorWordCountEl = document.getElementById("editorWordCount");
     const editorStatusEl = document.getElementById("editorStatus");
     const editorTitleLabelEl = document.getElementById("editorTitleLabel");
+    const toastEl = document.getElementById("toast");
+
+    const settingsOverlayEl = document.getElementById("settingsOverlay");
+    const settingsBtnEl = document.getElementById("settingsBtn");
+    const settingsCloseBtnEl = document.getElementById("settingsCloseBtn");
+    const themeSelectEl = document.getElementById("themeSelect");
+    const fontSizeSelectEl = document.getElementById("fontSizeSelect");
+    const cardShapeSelectEl = document.getElementById("cardShapeSelect");
+    const viewToggleBtnEl = document.getElementById("viewToggleBtn");
+    const trashViewBtnEl = document.getElementById("trashViewBtn");
+    const clockBtnEl = document.getElementById("clockBtn");
+
+    function showToast(message) {
+      toastEl.textContent = message;
+      toastEl.classList.add("show");
+      setTimeout(() => {
+        toastEl.classList.remove("show");
+      }, 1800);
+    }
 
     function setCenterState(show, title = "", sub = "") {
       if (!show) {
@@ -905,10 +1101,13 @@
               category: value.category || "Personal",
               pinned: !!value.pinned,
               createdAt: value.createdAt || Date.now(),
+              deleted: !!value.deleted,
             });
           }
         }
         notes.sort((a, b) => {
+          if (a.deleted && !b.deleted) return 1;
+          if (!a.deleted && b.deleted) return -1;
           if (a.pinned && !b.pinned) return -1;
           if (!a.pinned && b.pinned) return 1;
           return b.createdAt - a.createdAt;
@@ -926,6 +1125,7 @@
         category: note.category,
         pinned: !!note.pinned,
         createdAt: note.createdAt || Date.now(),
+        deleted: false,
       };
       const res = await fetch(DB_BASE + ".json", {
         method: "POST",
@@ -950,6 +1150,8 @@
       if (idx !== -1) {
         notes[idx] = { ...notes[idx], ...patch };
         notes.sort((a, b) => {
+          if (a.deleted && !b.deleted) return 1;
+          if (!a.deleted && b.deleted) return -1;
           if (a.pinned && !b.pinned) return -1;
           if (!a.pinned && b.pinned) return 1;
           return b.createdAt - a.createdAt;
@@ -960,18 +1162,24 @@
 
     async function deleteNote(id) {
       const res = await fetch(DB_BASE + "/" + id + ".json", {
-        method: "DELETE",
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deleted: true }),
       });
       if (!res.ok) throw new Error("Failed to delete note");
-      notes = notes.filter((n) => n.id !== id);
-      renderNotes();
+      const idx = notes.findIndex((n) => n.id === id);
+      if (idx !== -1) {
+        notes[idx].deleted = true;
+        renderNotes();
+      }
     }
 
     function renderStats() {
-      const total = notes.length;
-      const pinned = notes.filter((n) => n.pinned).length;
-      const words = notes.reduce((sum, n) => sum + wordCount(n.body), 0);
-      const today = notes.filter((n) => {
+      const activeNotes = notes.filter((n) => !n.deleted);
+      const total = activeNotes.length;
+      const pinned = activeNotes.filter((n) => n.pinned).length;
+      const words = activeNotes.reduce((sum, n) => sum + wordCount(n.body), 0);
+      const today = activeNotes.filter((n) => {
         const d = new Date(n.createdAt);
         const now = new Date();
         return (
@@ -988,7 +1196,7 @@
     }
 
     function getFilteredNotes() {
-      let filtered = [...notes];
+      let filtered = notes.filter((n) => !n.deleted);
       if (currentFilterTab !== "all") {
         filtered = filtered.filter((n) => n.category === currentFilterTab);
       }
@@ -1013,8 +1221,8 @@
       if (!filtered.length) {
         setCenterState(
           true,
-          notes.length ? "No notes here" : "No notes yet",
-          notes.length
+          notes.filter((n) => !n.deleted).length ? "No notes here" : "No notes yet",
+          notes.filter((n) => !n.deleted).length
             ? "Try changing filters or search"
             : "Tap + to create your first note"
         );
@@ -1083,6 +1291,7 @@
 
     function openEditor(note) {
       editingNoteId = note ? note.id : null;
+      editingPinned = note ? !!note.pinned : false;
       editorTitleLabelEl.textContent = note ? "EDIT NOTE" : "NEW NOTE";
       noteTitleInputEl.value = note ? note.title : "";
       noteCategorySelectEl.value = note ? note.category : "Personal";
@@ -1090,22 +1299,28 @@
       editorWordCountEl.textContent = wordCount(noteBodyInputEl.value) + " words";
       editorStatusEl.textContent = "Ready";
       noteBodyInputEl.spellcheck = autoCorrect;
+      editorPinBtn.textContent = editingPinned ? "📌 Unpin" : "📌 Pin";
 
-      homeScreenEl.classList.remove("show");
+      homeScreenEl.classList.remove("show", "hide-left", "hide-right");
+      editorScreenEl.classList.remove("show", "hide-left", "hide-right");
+
       homeScreenEl.classList.add("hide-left");
-      editorScreenEl.classList.remove("hide-right");
       editorScreenEl.classList.add("show");
+
       setTimeout(() => {
         noteTitleInputEl.focus();
       }, 80);
     }
 
     function closeEditor() {
-      editorScreenEl.classList.remove("show");
+      editorScreenEl.classList.remove("show", "hide-left", "hide-right");
+      homeScreenEl.classList.remove("show", "hide-left", "hide-right");
+
       editorScreenEl.classList.add("hide-right");
-      homeScreenEl.classList.remove("hide-left");
       homeScreenEl.classList.add("show");
+
       editingNoteId = null;
+      editingPinned = false;
     }
 
     async function saveEditor() {
@@ -1121,20 +1336,52 @@
       editorStatusEl.textContent = "Saving...";
       try {
         if (editingNoteId) {
-          await updateNote(editingNoteId, { title, body, category });
+          await updateNote(editingNoteId, { title, body, category, pinned: editingPinned });
         } else {
           await createNote({
             title,
             body,
             category,
-            pinned: false,
+            pinned: editingPinned,
             createdAt: Date.now(),
           });
         }
         editorStatusEl.textContent = "Saved";
+        showToast("Note saved to WOD cloud");
         setTimeout(closeEditor, 150);
       } catch (err) {
         editorStatusEl.textContent = "Error saving";
+        showToast("Error saving note");
+      }
+    }
+
+    async function deleteEditorNote() {
+      if (!editingNoteId) {
+        editorStatusEl.textContent = "Nothing to delete";
+        return;
+      }
+      editorStatusEl.textContent = "Deleting...";
+      try {
+        await deleteNote(editingNoteId);
+        editorStatusEl.textContent = "Deleted";
+        showToast("Moved to trash");
+        setTimeout(closeEditor, 150);
+      } catch (err) {
+        editorStatusEl.textContent = "Error deleting";
+        showToast("Error deleting note");
+      }
+    }
+
+    async function togglePinEditorNote() {
+      editingPinned = !editingPinned;
+      editorPinBtn.textContent = editingPinned ? "📌 Unpin" : "📌 Pin";
+      if (editingNoteId) {
+        try {
+          await updateNote(editingNoteId, { pinned: editingPinned });
+          showToast(editingPinned ? "Pinned" : "Unpinned");
+        } catch (err) {
+          showToast("Error updating pin");
+        }
       }
     }
 
@@ -1156,27 +1403,137 @@
       autoCorrect = !autoCorrect;
       toggleAutoCorrectEl.classList.toggle("on", autoCorrect);
       noteBodyInputEl.spellcheck = autoCorrect;
+      showToast(autoCorrect ? "Auto correct on" : "Auto correct off");
     });
 
     toggleAutoHighlightEl.addEventListener("click", () => {
       autoHighlight = !autoHighlight;
       toggleAutoHighlightEl.classList.toggle("on", autoHighlight);
       renderNotes();
+      showToast(autoHighlight ? "Highlight on" : "Highlight off");
     });
 
     fabEl.addEventListener("click", () => openEditor(null));
     backBtnEl.addEventListener("click", closeEditor);
     editorSaveBtn.addEventListener("click", saveEditor);
+    editorDeleteBtn.addEventListener("click", deleteEditorNote);
+    editorPinBtn.addEventListener("click", togglePinEditorNote);
 
     noteBodyInputEl.addEventListener("input", () => {
       editorWordCountEl.textContent = wordCount(noteBodyInputEl.value) + " words";
     });
 
-    document.getElementById("viewToggleBtn").addEventListener("click", () => {});
-    document.getElementById("trashViewBtn").addEventListener("click", () => {});
-    document.getElementById("settingsBtn").addEventListener("click", () => {});
-    document.getElementById("clockBtn").addEventListener("click", () => {});
+    viewToggleBtnEl.addEventListener("click", () => {
+      showToast("Grid/list view coming soon");
+    });
 
+    trashViewBtnEl.addEventListener("click", () => {
+      const trashed = notes.filter((n) => n.deleted).length;
+      showToast(trashed ? trashed + " notes in trash" : "Trash is empty");
+    });
+
+    clockBtnEl.addEventListener("click", () => {
+      const now = new Date();
+      const timeStr =
+        now.getHours().toString().padStart(2, "0") +
+        ":" +
+        now.getMinutes().toString().padStart(2, "0");
+      showToast("WOD time: " + timeStr);
+    });
+
+    settingsBtnEl.addEventListener("click", () => {
+      settingsOverlayEl.classList.add("show");
+    });
+
+    settingsCloseBtnEl.addEventListener("click", () => {
+      settingsOverlayEl.classList.remove("show");
+    });
+
+    settingsOverlayEl.addEventListener("click", (e) => {
+      if (e.target === settingsOverlayEl) {
+        settingsOverlayEl.classList.remove("show");
+      }
+    });
+
+    function applyTheme(theme) {
+      const root = document.documentElement;
+      if (theme === "midnight") {
+        root.style.setProperty("--bg", "#020617");
+        root.style.setProperty("--bg-alt", "#020617");
+        root.style.setProperty("--card", "#020617");
+        root.style.setProperty("--accent", "#facc15");
+        root.style.setProperty("--border", "#1f2937");
+      } else if (theme === "ink") {
+        root.style.setProperty("--bg", "#020617");
+        root.style.setProperty("--bg-alt", "#020617");
+        root.style.setProperty("--card", "#020617");
+        root.style.setProperty("--accent", "#38bdf8");
+        root.style.setProperty("--border", "#0f172a");
+      } else {
+        root.style.setProperty("--bg", "#050608");
+        root.style.setProperty("--bg-alt", "#101218");
+        root.style.setProperty("--card", "#151822");
+        root.style.setProperty("--accent", "#f5c451");
+        root.style.setProperty("--border", "#262938");
+      }
+      localStorage.setItem("wod_theme", theme);
+    }
+
+    function applyFontSize(size) {
+      const root = document.documentElement;
+      if (size === "large") {
+        root.style.setProperty("--font-main", 'system-ui, -apple-system, "Segoe UI", sans-serif');
+        document.body.style.fontSize = "15px";
+      } else if (size === "huge") {
+        document.body.style.fontSize = "17px";
+      } else {
+        document.body.style.fontSize = "14px";
+      }
+      localStorage.setItem("wod_font_size", size);
+    }
+
+    function applyCardShape(shape) {
+      const root = document.documentElement;
+      if (shape === "pill") {
+        root.style.setProperty("--radius-md", "999px");
+        root.style.setProperty("--radius-lg", "999px");
+      } else if (shape === "square") {
+        root.style.setProperty("--radius-md", "6px");
+        root.style.setProperty("--radius-lg", "10px");
+      } else {
+        root.style.setProperty("--radius-md", "12px");
+        root.style.setProperty("--radius-lg", "18px");
+      }
+      localStorage.setItem("wod_card_shape", shape);
+    }
+
+    themeSelectEl.addEventListener("change", () => {
+      applyTheme(themeSelectEl.value);
+    });
+
+    fontSizeSelectEl.addEventListener("change", () => {
+      applyFontSize(fontSizeSelectEl.value);
+    });
+
+    cardShapeSelectEl.addEventListener("change", () => {
+      applyCardShape(cardShapeSelectEl.value);
+    });
+
+    function loadPreferences() {
+      const theme = localStorage.getItem("wod_theme") || "dark";
+      const fontSize = localStorage.getItem("wod_font_size") || "normal";
+      const cardShape = localStorage.getItem("wod_card_shape") || "rounded";
+
+      themeSelectEl.value = theme;
+      fontSizeSelectEl.value = fontSize;
+      cardShapeSelectEl.value = cardShape;
+
+      applyTheme(theme);
+      applyFontSize(fontSize);
+      applyCardShape(cardShape);
+    }
+
+    loadPreferences();
     fetchNotes();
   </script>
 </body>
