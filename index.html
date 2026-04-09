@@ -713,13 +713,18 @@ function startMain(name, email){
 function loadNotesCloud(){
   if(!S.uid||!S.token) return;
   dbGet('users/'+S.uid+'/notes').then(function(data){
-    S.notes = data||{};
+    // Merge: Firebase is source of truth, clean up any temp keys from local
+    var cloudNotes = data||{};
+    // Remove any leftover temp_ keys from localStorage
+    Object.keys(cloudNotes).forEach(function(k){
+      if(k.startsWith('tmp_')) delete cloudNotes[k];
+    });
+    S.notes = cloudNotes;
     saveNotesLocal(); renderNotes(); updateStats();
-    var ls=el('loadingState'); if(ls) ls.style.display='none';
-  }).catch(function(){});
+    var ls=document.querySelector('.loading'); if(ls) ls.style.display='none';
+  }).catch(function(){ toast('Could not sync — offline?'); });
   dbGet('users/'+S.uid+'/trash').then(function(data){
     S.trash=data||{};
-    // Purge old trash
     var now=Date.now();
     Object.keys(S.trash).forEach(function(id){
       if(now-(S.trash[id].deletedAt||0)>30*864e5){ dbDel('users/'+S.uid+'/trash/'+id); delete S.trash[id]; }
@@ -727,7 +732,19 @@ function loadNotesCloud(){
   }).catch(function(){});
 }
 function saveNotesLocal(){ try{localStorage.setItem('wod_n_'+S.uid,JSON.stringify(S.notes));}catch(e){} }
-function loadNotesLocal(){ try{var d=localStorage.getItem('wod_n_'+S.uid);if(d){S.notes=JSON.parse(d);renderNotes();updateStats();var l=el('loadingState');if(l)l.style.display='none';}}catch(e){} }
+function loadNotesLocal(){
+  try{
+    var d=localStorage.getItem('wod_n_'+S.uid);
+    if(d){
+      var parsed=JSON.parse(d);
+      // Remove temp keys — they won't exist in Firebase after app restart
+      Object.keys(parsed).forEach(function(k){ if(k.startsWith('tmp_')) delete parsed[k]; });
+      S.notes=parsed;
+      renderNotes(); updateStats();
+      var l=document.querySelector('.loading'); if(l)l.style.display='none';
+    }
+  }catch(e){}
+}
 
 // ── AUTH ──
 var isSignup=false;
@@ -901,7 +918,17 @@ function doEditNote(id){
   el('edWrap').className='ew '+(n.pageStyle||'normal');
   updCounts(); showScreen('sEditor'); setTimeout(function(){el('ea').focus();},300);
 }
-function closeEditor(){ clearTimeout(S.saveTimer); doSave(); showScreen('sMain'); S.curId=null; }
+function closeEditor(){
+  clearTimeout(S.saveTimer);
+  if(S.curId && !S.curId.startsWith('tmp_')){
+    doSave();
+    showScreen('sMain'); S.curId=null;
+  } else {
+    // New note — must wait for push to complete
+    doSave();
+    setTimeout(function(){ showScreen('sMain'); S.curId=null; }, 800);
+  }
+}
 
 function doSave(){
   if(!S.uid||!S.token)return;
@@ -914,29 +941,39 @@ function doSave(){
   var words=text.trim()?text.trim().split(/\s+/).length:0;
   var imgEl=eaEl.querySelector('img');
   var pageStyle=(el('edWrap').className||'ew normal').replace('ew ','');
+  var existing = S.curId ? (S.notes[S.curId]||{}) : {};
   var data={
-    title:title,content:content,textContent:text.substring(0,600),wordCount:words,
+    title:title, content:content, textContent:text.substring(0,600), wordCount:words,
     font:eaEl.style.fontFamily||S.curFont, pageStyle:pageStyle,
-    category:S.curId&&S.notes[S.curId]?(S.notes[S.curId].category||''):'',
-    locked:S.curId&&S.notes[S.curId]?(S.notes[S.curId].locked||false):false,
-    pin:S.curId&&S.notes[S.curId]?(S.notes[S.curId].pin||''):'',
-    pinned:S.curId&&S.notes[S.curId]?(S.notes[S.curId].pinned||false):false,
+    category:existing.category||'',
+    locked:existing.locked||false,
+    pin:existing.pin||'',
+    pinned:existing.pinned||false,
     hasImage:!!imgEl, imageThumbnail:imgEl?imgEl.src.substring(0,300):'',
     updatedAt:Date.now(),
-    createdAt:S.curId&&S.notes[S.curId]?(S.notes[S.curId].createdAt||Date.now()):Date.now()
+    createdAt:existing.createdAt||Date.now()
   };
-  if(S.curId){
+  if(S.curId && !S.curId.startsWith('tmp_')){
+    // Existing real note — update it
     S.notes[S.curId]=data;
-    dbSet('users/'+S.uid+'/notes/'+S.curId,data);
+    dbSet('users/'+S.uid+'/notes/'+S.curId, data);
+    saveNotesLocal();
+    var dot=el('sdot'); if(dot){dot.style.opacity='1';setTimeout(function(){dot.style.opacity='0';},1800);}
   } else {
-    dbPush('users/'+S.uid+'/notes',data).then(function(r){
-      if(r&&r.name){ S.curId=r.name; S.notes[r.name]=data; }
-    }).catch(function(){});
-    // Optimistically show with temp id
-    var tid='tmp_'+Date.now(); S.curId=tid; S.notes[tid]=data;
+    // New note — push to Firebase and get real ID
+    dbPush('users/'+S.uid+'/notes', data).then(function(r){
+      if(r && r.name){
+        // Remove temp entry if existed
+        if(S.curId && S.curId.startsWith('tmp_')) delete S.notes[S.curId];
+        // Set real ID
+        S.curId = r.name;
+        S.notes[S.curId] = data;
+        saveNotesLocal();
+        renderNotes(); updateStats();
+        var dot=el('sdot'); if(dot){dot.style.opacity='1';setTimeout(function(){dot.style.opacity='0';},1800);}
+      }
+    }).catch(function(e){ toast('Save failed - check internet'); });
   }
-  saveNotesLocal();
-  var dot=el('sdot'); if(dot){dot.style.opacity='1';setTimeout(function(){dot.style.opacity='0';},1800);}
 }
 function onTitleInput(){ clearTimeout(S.saveTimer); S.saveTimer=setTimeout(doSave,800); }
 function onEInput(){
